@@ -30,7 +30,7 @@ public class LatestNewsServiceImpl implements LatestNewsService {
 			return new ShowNewsResponse(RtnCode.CANNOT_EMPTY.getMessage());
 		}
 
-		boolean status = request.isShow();
+		boolean status = request.isReveal();
 		List<LatestNews> result = latestNewsDao.searchNews(status);
 
 		return CollectionUtils.isEmpty(result) ? new ShowNewsResponse(RtnCode.NOT_FOUND.getMessage())
@@ -81,7 +81,7 @@ public class LatestNewsServiceImpl implements LatestNewsService {
 		}
 
 		List<Integer> idList = request.getNewsIdList();
-		return latestNewsDao.updateStatus(request.isShow(), idList) == idList.size()
+		return latestNewsDao.updateStatus(request.isReveal(), idList) == idList.size()
 				? new Response(RtnCode.SUCCESS.getMessage())
 				: new Response(RtnCode.INCORRECT.getMessage());
 	}

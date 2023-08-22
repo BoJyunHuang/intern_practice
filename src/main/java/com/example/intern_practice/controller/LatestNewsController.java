@@ -23,14 +23,14 @@ public class LatestNewsController {
 	@GetMapping(value = "show_opened_news")
 	public ShowNewsResponse showOpenedNews() {
 		ShowNewsRequest request = new ShowNewsRequest();
-		request.setShow(true);
+		request.setReveal(true);
 		return latestNewsService.showNews(request);
 	}
 	
 	@GetMapping(value = "show_closed_news")
 	public ShowNewsResponse showClosedNews() {
 		ShowNewsRequest request = new ShowNewsRequest();
-		request.setShow(false);
+		request.setReveal(false);
 		return latestNewsService.showNews(request);
 	}
 	

@@ -40,8 +40,8 @@ public class LatestNews {
 	private LocalDateTime releaseTime = LocalDateTime.now();
 		
 	// 表示
-	@Column(name = "show")
-	private boolean show = true;
+	@Column(name = "reveal")
+	private boolean reveal = true;
 
 	// コンストラクタ
 	public LatestNews() {
@@ -105,12 +105,12 @@ public class LatestNews {
 		this.releaseTime = releaseTime;
 	}
 
-	public boolean isShow() {
-		return show;
+	public boolean isReveal() {
+		return reveal;
 	}
 
-	public void setShow(boolean show) {
-		this.show = show;
+	public void setReveal(boolean reveal) {
+		this.reveal = reveal;
 	}
-		
+	
 }

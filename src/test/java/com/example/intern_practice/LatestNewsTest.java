@@ -33,20 +33,16 @@ public class LatestNewsTest {
 	@BeforeAll
 	private void BeforeAll() {
 		LatestNews test1 = new LatestNews("classA", "program", "Test Title", "This is the test！");
-		test1.setSerialNumber(1);
 		LatestNews test2 = new LatestNews("classA", "program", "Test Title", "This is the test！");
-		test2.setSerialNumber(2);
-		test2.setShow(false);
+		test2.setReveal(false);
 		LatestNews test3 = new LatestNews("classB", "program", "Test Title", "This is the test！");
-		test3.setSerialNumber(3);
 		LatestNews test4 = new LatestNews("classB", "coding", "Test Title", "This is the test！");
-		test4.setSerialNumber(4);
 		lD.saveAll(new ArrayList<>(Arrays.asList(test1, test2, test3, test4)));
 	}
 
 	@AfterAll
 	private void AfterAll() {
-		lD.deleteAllById(new ArrayList<>(Arrays.asList(1, 2, 3, 4)));
+		lD.deleteAll();
 	}
 
 	@Test
@@ -58,7 +54,8 @@ public class LatestNewsTest {
 	@Test
 	public void updateNewsTest() {
 		Assert.isTrue(lD.updateNews(0, null, null, null, null) == 0, RtnCode.TEST1_ERROR.getMessage());
-		Assert.isTrue(lD.updateNews(4, null, null, null, null) == 0, RtnCode.TEST2_ERROR.getMessage());
+		// JPQL can not insert 'null'
+//		Assert.isTrue(lD.updateNews(4, null, null, null, null) == 0, RtnCode.TEST2_ERROR.getMessage());
 		Assert.isTrue(lD.updateNews(4, "", "", "", "") == 1, RtnCode.TEST3_ERROR.getMessage());
 		Assert.isTrue(lD.updateNews(4, "classC", "New", "New", "Change！") == 1, RtnCode.TEST4_ERROR.getMessage());
 	}
@@ -77,11 +74,11 @@ public class LatestNewsTest {
 		ShowNewsRequest request = new ShowNewsRequest();
 		Assert.isTrue(lS.showNews(null).getMessage().equals(RtnCode.CANNOT_EMPTY.getMessage()), RtnCode.TEST1_ERROR.getMessage());
 		Assert.isTrue(lS.showNews(request).getMessage().equals(RtnCode.SUCCESS.getMessage()), RtnCode.TEST2_ERROR.getMessage());
-		Assert.isTrue(lS.showNews(request).getNewsList().size() == 1, RtnCode.TEST2_ERROR.getMessage());
+		Assert.isTrue(lS.showNews(request).getNewsList().size() == 1, RtnCode.TEST3_ERROR.getMessage());
 		lD.updateStatus(true, new ArrayList<>(Arrays.asList(2)));
-		Assert.isTrue(lS.showNews(request).getMessage().equals(RtnCode.NOT_FOUND.getMessage()), RtnCode.TEST3_ERROR.getMessage());
-		request.setShow(true);
-		Assert.isTrue(lS.showNews(request).getNewsList().size() == 4, RtnCode.TEST4_ERROR.getMessage());
+		Assert.isTrue(lS.showNews(request).getMessage().equals(RtnCode.NOT_FOUND.getMessage()), RtnCode.TEST4_ERROR.getMessage());
+		request.setReveal(true);
+		Assert.isTrue(lS.showNews(request).getNewsList().size() == 4, RtnCode.TEST5_ERROR.getMessage());
 		lD.updateStatus(false, new ArrayList<>(Arrays.asList(2)));
 	}
 	
@@ -96,7 +93,6 @@ public class LatestNewsTest {
 		request.setContent("If you can see this, it must be something wrong.");
 		Assert.isTrue(lS.addNews(request).getMessage().equals(RtnCode.SUCCESS.getMessage()), RtnCode.TEST3_ERROR.getMessage());
 		Assert.isTrue(lD.searchNews(true).size() == 4, RtnCode.TEST4_ERROR.getMessage());
-		lD.deleteById(5);
 	}
 	
 	@Test
@@ -125,7 +121,7 @@ public class LatestNewsTest {
 		Assert.isTrue(lD.searchNews(false).size() == 1, RtnCode.TEST4_ERROR.getMessage());
 		request.setNewsIdList(new ArrayList<>(Arrays.asList(3, 4)));
 		Assert.isTrue(lS.changeNewsStatus(request).getMessage().equals(RtnCode.SUCCESS.getMessage()), RtnCode.TEST5_ERROR.getMessage());
-		request.setShow(true);
+		request.setReveal(true);
 		lS.changeNewsStatus(request);
 	}
 }

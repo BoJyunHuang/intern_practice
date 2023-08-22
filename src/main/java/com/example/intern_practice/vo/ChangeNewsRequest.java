@@ -5,7 +5,7 @@ import java.util.List;
 public class ChangeNewsRequest {
 
 	private List<Integer> newsIdList;
-	private boolean show;
+	private boolean reveal;
 	
 	public List<Integer> getNewsIdList() {
 		return newsIdList;
@@ -13,11 +13,11 @@ public class ChangeNewsRequest {
 	public void setNewsIdList(List<Integer> newsIdList) {
 		this.newsIdList = newsIdList;
 	}
-	public boolean isShow() {
-		return show;
+	public boolean isReveal() {
+		return reveal;
 	}
-	public void setShow(boolean show) {
-		this.show = show;
+	public void setReveal(boolean reveal) {
+		this.reveal = reveal;
 	}
-	
+
 }

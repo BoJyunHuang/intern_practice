@@ -14,8 +14,8 @@ import com.example.intern_practice.entity.LatestNews;
 @Repository
 public interface LatestNewsDao extends JpaRepository<LatestNews, Integer>{
 
-	@Query(value = "select * from latest_news where show = :show", nativeQuery = true)
-	public List<LatestNews> searchNews(@Param("show") boolean show);
+	@Query(value = "select * from latest_news where reveal = :reveal", nativeQuery = true)
+	public List<LatestNews> searchNews(@Param("reveal") boolean reveal);
 	
 	@Transactional
 	@Modifying
@@ -26,7 +26,7 @@ public interface LatestNewsDao extends JpaRepository<LatestNews, Integer>{
 	
 	@Transactional
 	@Modifying
-	@Query(value = "update latest_news set show = :show where serial_number in :newsIdList", nativeQuery = true)
-	public int updateStatus(@Param("show") boolean show, @Param("newsIdList") List<Integer> newsIdList);
+	@Query(value = "update latest_news set reveal = :reveal where serial_number in :newsIdList", nativeQuery = true)
+	public int updateStatus(@Param("reveal") boolean reveal, @Param("newsIdList") List<Integer> newsIdList);
 	
 }

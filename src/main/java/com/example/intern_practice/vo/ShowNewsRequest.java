@@ -2,14 +2,14 @@ package com.example.intern_practice.vo;
 
 public class ShowNewsRequest {
 	
-	private boolean show;
+	private boolean reveal;
 
-	public boolean isShow() {
-		return show;
+	public boolean isReveal() {
+		return reveal;
 	}
 
-	public void setShow(boolean show) {
-		this.show = show;
+	public void setReveal(boolean reveal) {
+		this.reveal = reveal;
 	}
 	
 }
