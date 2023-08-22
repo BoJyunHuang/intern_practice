@@ -81,13 +81,9 @@ public class LatestNewsServiceImpl implements LatestNewsService {
 		}
 
 		List<Integer> idList = request.getNewsIdList();
-		List<LatestNews> result = latestNewsDao.findAllById(idList);
-		if (result.size() != idList.size()) {
-			return new Response(RtnCode.NOT_FOUND.getMessage());
-		}
-
-		return latestNewsDao.updateStatus(request.isShow(), idList) == 1 ? new Response(RtnCode.SUCCESS.getMessage())
-				: new Response(RtnCode.NOT_FOUND.getMessage());
+		return latestNewsDao.updateStatus(request.isShow(), idList) == idList.size()
+				? new Response(RtnCode.SUCCESS.getMessage())
+				: new Response(RtnCode.INCORRECT.getMessage());
 	}
 
 }
