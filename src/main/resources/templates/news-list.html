@@ -3,15 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>News List</title>
-    <link rel="stylesheet" href="news-list_style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-	<div class="main">
+	<div class="main-area">
         <div class=header>
             <h1>最新消息列表</h1>
         </div>
         <div class=button-area>
-            <button th:action="@{/turn_page}">新增</button>
+        	<a th:href="@{/turn_page}">
+    			<button>新增</button>
+			</a>
         </div>
         <div class=list-area>
             <table>

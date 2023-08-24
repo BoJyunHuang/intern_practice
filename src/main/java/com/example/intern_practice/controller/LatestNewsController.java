@@ -7,9 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.example.intern_practice.constants.RtnCode;
 import com.example.intern_practice.service.ifs.LatestNewsService;
 import com.example.intern_practice.vo.AddNewsRequest;
 import com.example.intern_practice.vo.ChangeNewsRequest;
+import com.example.intern_practice.vo.Response;
 import com.example.intern_practice.vo.ReviseNewsRequest;
 import com.example.intern_practice.vo.ShowNewsRequest;
 import com.example.intern_practice.vo.ShowNewsResponse;
@@ -55,9 +57,14 @@ public class LatestNewsController {
 //		return latestNewsService.addNews(request);
 //	}
 	@PostMapping(value = "/add_news")
-	public String addNews(@ModelAttribute AddNewsRequest request) {
-		latestNewsService.addNews(request);
-		return "redirect:/news_list_open"; // 重定向到列表頁面
+	public String addNews(@ModelAttribute("news") AddNewsRequest request, Model model) {
+		Response res = latestNewsService.addNews(request);
+		if (res.getMessage().equals(RtnCode.SUCCESS.getMessage())) {
+	        return "redirect:/news_list_open"; // 重定向到列表頁面
+	    } else {
+	        model.addAttribute("errorMessage", res.getMessage());
+	        return "add-news"; // 返回錯誤頁面（或其他適當的處理）
+	    }
 	}
 
 //	@PostMapping(value = "revise_news")
@@ -81,7 +88,8 @@ public class LatestNewsController {
 	}
 
 	@GetMapping(value = "turn_page")
-	public String turnPage() {
+	public String turnPage(Model model) {
+		model.addAttribute("news", new AddNewsRequest());
 		return "add-news";
 	}
 

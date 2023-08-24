@@ -3,16 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <title>Add News</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Add News</h1>
-    <form th:action="@{/add_news}" method="post">
-        <label for="title">Title:</label>
-        <input type="text" id="title" name="title"><br>
-        <label for="content">Content:</label>
-        <textarea id="content" name="content"></textarea><br>
-        <input type="submit" value="Add News">
-    </form>
-    <a th:href="@{/show_opened_news}">Back to News List</a>
+ <div class="main-area">
+        <div class=header>
+            <h1>新增最新消息</h1>
+        </div>
+        <div class="edit-area">
+            <form th:action="@{/add_news}" th:object="${news}" method="post">
+                <label for="title" class="aligned-label">標題：</label>
+                <input type="text" id="title" name="title" th:field="*{title}"><br>
+                <label for="catalog" class="aligned-label">目錄：</label>
+                <input type="text" id="catalog" name="catalog" th:field="*{catalog}"><br>
+                <label for="subcatalog" class="aligned-label">子目錄：</label>
+                <input type="text" id="subcatalog" name="subcatalog" th:field="*{subCatalog}"><br>
+                <label for="content" class="aligned-label">內容：</label>
+                <textarea id="content" name="content" th:field="*{content}"></textarea><br>
+                <input type="submit" value="新增">
+                <input type="submit" value="取消" th:action="@{/news_list_open}">
+            </form>
+        </div>
+
+    </div>
 </body>
 </html>
