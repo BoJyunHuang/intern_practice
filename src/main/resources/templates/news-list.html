@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>News List</title>
+    <link rel="stylesheet" href="news-list_style.css">
+</head>
+<body>
+	<div class="main">
+        <div class=header>
+            <h1>最新消息列表</h1>
+        </div>
+        <div class=button-area>
+            <button th:action="@{/turn_page}">新增</button>
+        </div>
+        <div class=list-area>
+            <table>
+                <tr>
+                    <th>選擇</th>
+                    <th>目錄</th>
+                    <th>子目錄</th>
+                    <th>標題</th>
+                    <th>內容</th>
+                </tr>
+
+                <tr th:each="news : ${newsList}">
+                    <td><input type="checkbox" th:checked="${news.reveal}"></td>
+                    <td th:text="${news.catalog}"></td>
+                    <td th:text="${news.subCatalog}"></td>
+                    <td th:text="${news.title}"></td>
+                    <td th:text="${news.content}"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
