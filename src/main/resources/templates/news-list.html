@@ -28,7 +28,7 @@
                 <tr th:each="news : ${newsList}">
                     <td><input type="checkbox" th:checked="${news.reveal}"></td>
                     <td th:text="${news.catalog}"></td>
-                    <td th:text="${news.subCatalog}"></td>
+                    <td th:text="${news.subcatalog}"></td>
                     <td th:text="${news.title}"></td>
                     <td th:text="${news.content}"></td>
                 </tr>

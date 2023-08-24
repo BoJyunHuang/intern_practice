@@ -24,8 +24,8 @@ public class LatestNews {
 	private String catalog;
 	
 	// サブカタログ
-	@Column(name = "sub_catalog")
-	private String subCatalog;
+	@Column(name = "subcatalog")
+	private String subcatalog;
 	
 	// タイトル
 	@Column(name = "title")
@@ -48,10 +48,10 @@ public class LatestNews {
 		super();
 	}
 
-	public LatestNews(String catalog, String subCatalog, String title, String content) {
+	public LatestNews(String catalog, String subcatalog, String title, String content) {
 		super();
 		this.catalog = catalog;
-		this.subCatalog = subCatalog;
+		this.subcatalog = subcatalog;
 		this.title = title;
 		this.content = content;
 	}
@@ -73,12 +73,12 @@ public class LatestNews {
 		this.catalog = catalog;
 	}
 
-	public String getSubCatalog() {
-		return subCatalog;
+	public String getSubcatalog() {
+		return subcatalog;
 	}
 
-	public void setSubCatalog(String subCatalog) {
-		this.subCatalog = subCatalog;
+	public void setSubcatalog(String subcatalog) {
+		this.subcatalog = subcatalog;
 	}
 
 	public String getTitle() {

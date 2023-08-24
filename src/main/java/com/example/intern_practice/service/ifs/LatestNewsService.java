@@ -9,15 +9,15 @@ import com.example.intern_practice.vo.ShowNewsResponse;
 
 public interface LatestNewsService {
 
-	// 顯示消息列表
+	// ニュース一覧を表示する
 	public ShowNewsResponse showNews(ShowNewsRequest request);
 	
-	// 新增最新消息
+	// ニュースを新規追加する
 	public Response addNews(AddNewsRequest request);
 	
-	// 編輯消息
+	// ニュースを編集する
 	public Response reviseNews(ReviseNewsRequest request);
 	
-	// 變更消息狀態
+	// ニュースの状態を変更する(削除)
 	public Response changeNewsStatus(ChangeNewsRequest request);
 }

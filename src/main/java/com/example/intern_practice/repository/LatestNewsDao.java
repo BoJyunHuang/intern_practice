@@ -19,10 +19,10 @@ public interface LatestNewsDao extends JpaRepository<LatestNews, Integer>{
 	
 	@Transactional
 	@Modifying
-	@Query(value = "update latest_news set catalog = :catalog, sub_catalog = :subCatalog, title = :title, "
+	@Query(value = "update latest_news set catalog = :catalog, subcatalog = :subcatalog, title = :title, "
 			+ "content = :content where serial_number = :serialNumber", nativeQuery = true)
 	public int updateNews(@Param("serialNumber") Integer serialNumber, @Param("catalog") String catalog, 
-			@Param("subCatalog") String subCatalog, @Param("title") String title, @Param("content") String content);
+			@Param("subcatalog") String subcatalog, @Param("title") String title, @Param("content") String content);
 	
 	@Transactional
 	@Modifying

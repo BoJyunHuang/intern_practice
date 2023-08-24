@@ -88,7 +88,7 @@ public class LatestNewsTest {
 		Assert.isTrue(lS.addNews(null).getMessage().equals(RtnCode.CANNOT_EMPTY.getMessage()), RtnCode.TEST1_ERROR.getMessage());
 		Assert.isTrue(lS.addNews(request).getMessage().equals(RtnCode.CANNOT_EMPTY.getMessage()), RtnCode.TEST2_ERROR.getMessage());
 		request.setCatalog("classA");
-		request.setSubCatalog("program");
+		request.setSubcatalog("program");
 		request.setTitle("Add News Test");
 		request.setContent("If you can see this, it must be something wrong.");
 		Assert.isTrue(lS.addNews(request).getMessage().equals(RtnCode.SUCCESS.getMessage()), RtnCode.TEST3_ERROR.getMessage());
@@ -103,7 +103,7 @@ public class LatestNewsTest {
 		request.setSerialNumber(0);
 		Assert.isTrue(lS.reviseNews(request).getMessage().equals(RtnCode.CANNOT_EMPTY.getMessage()), RtnCode.TEST3_ERROR.getMessage());
 		request.setCatalog("classA");
-		request.setSubCatalog("program");
+		request.setSubcatalog("program");
 		request.setTitle("Add News Test");
 		request.setContent("If you can see this, it must be something wrong.");
 		Assert.isTrue(lS.reviseNews(request).getMessage().equals(RtnCode.NOT_FOUND.getMessage()), RtnCode.TEST4_ERROR.getMessage());

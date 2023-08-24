@@ -4,7 +4,7 @@ public class ReviseNewsRequest {
 
 	private Integer serialNumber;
 	private String catalog;
-	private String subCatalog;
+	private String subcatalog;
 	private String title;
 	private String content;
 	
@@ -20,11 +20,11 @@ public class ReviseNewsRequest {
 	public void setCatalog(String catalog) {
 		this.catalog = catalog;
 	}
-	public String getSubCatalog() {
-		return subCatalog;
+	public String getSubcatalog() {
+		return subcatalog;
 	}
-	public void setSubCatalog(String subCatalog) {
-		this.subCatalog = subCatalog;
+	public void setSubcatalog(String subcatalog) {
+		this.subcatalog = subcatalog;
 	}
 	public String getTitle() {
 		return title;
