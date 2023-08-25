@@ -74,3 +74,13 @@ textarea{
     width:245px;
     height:150px;
 }
+
+.cancel-link {
+     display: inline-block;
+    padding: 5px 6px;
+    border: 1px solid;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 5px;
+}

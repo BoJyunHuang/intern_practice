@@ -28,7 +28,7 @@ public class LatestNewsController {
 		request.setReveal(true);
 		ShowNewsResponse response = latestNewsService.showNews(request);
 		model.addAttribute("newsList", response.getNewsList());
-		return "news-list"; // 對應到模板名稱
+		return "news-list";
 	}
 
 	@GetMapping(value = "/news_list_close")
@@ -37,34 +37,34 @@ public class LatestNewsController {
 		request.setReveal(false);
 		ShowNewsResponse response = latestNewsService.showNews(request);
 		model.addAttribute("newsList", response.getNewsList());
-		return "news-list"; // 對應到模板名稱
+		return "news-list";
 	}
 
 	@PostMapping(value = "/add_news")
 	public String addNews(@ModelAttribute("news") AddNewsRequest request, Model model) {
 		Response res = latestNewsService.addNews(request);
 		if (res.getMessage().equals(RtnCode.SUCCESS.getMessage())) {
-	        return "redirect:/news_list_open"; // 重定向到列表頁面
+	        return "redirect:/news_list_open";
 	    } else {
 	        model.addAttribute("errorMessage", res.getMessage());
-	        return "add-news"; // 返回錯誤頁面（或其他適當的處理）
+	        return "add-news"; 
 	    }
 	}
 
 	@PostMapping(value = "/revise_news")
 	public String reviseNews(@ModelAttribute ReviseNewsRequest request) {
 		latestNewsService.reviseNews(request);
-		return "redirect:/news_list_open"; // 重定向到列表頁面
+		return "redirect:/news_list_open";
 	}
 
 	@PostMapping(value = "/change_news_status")
 	public String changeNewsStatus(@ModelAttribute ChangeNewsRequest request) {
 		latestNewsService.changeNewsStatus(request);
-		return "redirect:/news_list_open"; // 重定向到列表頁面
+		return "redirect:/news_list_open";
 	}
 
-	@GetMapping(value = "/turn_page")
-	public String turnPage(Model model) {
+	@GetMapping(value = "/to_add_page")
+	public String toAddPage(Model model) {
 		model.addAttribute("news", new AddNewsRequest());
 		return "add-news";
 	}

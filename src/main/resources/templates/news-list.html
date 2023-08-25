@@ -11,26 +11,32 @@
             <h1>最新消息列表</h1>
         </div>
         <div class=button-area>
-        	<a th:href="@{/turn_page}">
+        	<a th:href="@{/to_add_page}">
     			<button>新增</button>
+			</a>
+			<a th:href="@{/news_list_close}">
+    			<button>未開放消息</button>
+			</a>
+			<a th:href="@{/news_list_open}">
+    			<button>已開放消息</button>
 			</a>
         </div>
         <div class=list-area>
             <table>
                 <tr>
-                    <th>選擇</th>
                     <th>目錄</th>
                     <th>子目錄</th>
                     <th>標題</th>
-                    <th>內容</th>
+                    <th>投稿時間</th>
+                    <th>開放與否</th>
                 </tr>
 
                 <tr th:each="news : ${newsList}">
-                    <td><input type="checkbox" th:checked="${news.reveal}"></td>
                     <td th:text="${news.catalog}"></td>
                     <td th:text="${news.subcatalog}"></td>
                     <td th:text="${news.title}"></td>
-                    <td th:text="${news.content}"></td>
+                    <td th:text="${news.releaseTime}"></td>
+                    <td><input type="checkbox" th:checked="${news.reveal}"></td>
                 </tr>
             </table>
         </div>
