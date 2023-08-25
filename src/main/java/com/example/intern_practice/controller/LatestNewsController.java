@@ -73,8 +73,9 @@ public class LatestNewsController {
 	}
 
 	@PostMapping("/change_news_status")
-	public String changeNewsStatus(@ModelAttribute ChangeNewsRequest request) {
-		latestNewsService.changeNewsStatus(request);
+	public String changeNewsStatus(@ModelAttribute ChangeNewsRequest request, Model model) {
+		Response res = latestNewsService.changeNewsStatus(request);
+		model.addAttribute("errorMessage", res.getMessage());
 		return "redirect:/news_list_open";
 	}
 	

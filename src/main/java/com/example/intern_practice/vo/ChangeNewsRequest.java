@@ -1,17 +1,15 @@
 package com.example.intern_practice.vo;
 
-import java.util.List;
-
 public class ChangeNewsRequest {
 
-	private List<Integer> newsIdList;
+	private Integer serialNumber;
 	private boolean reveal;
 	
-	public List<Integer> getNewsIdList() {
-		return newsIdList;
+	public Integer getSerialNumber() {
+		return serialNumber;
 	}
-	public void setNewsIdList(List<Integer> newsIdList) {
-		this.newsIdList = newsIdList;
+	public void setSerialNumber(Integer serialNumber) {
+		this.serialNumber = serialNumber;
 	}
 	public boolean isReveal() {
 		return reveal;

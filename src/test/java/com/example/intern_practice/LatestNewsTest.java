@@ -62,11 +62,9 @@ public class LatestNewsTest {
 	
 	@Test
 	public void updateStatusTest() {
-		Assert.isTrue(lD.updateStatus(false, new ArrayList<>(Arrays.asList(-1, 0))) == 0, RtnCode.TEST1_ERROR.getMessage());
-		Assert.isTrue(lD.updateStatus(false, new ArrayList<>(Arrays.asList(9999, 10000))) == 0, RtnCode.TEST2_ERROR.getMessage());
-		Assert.isTrue(lD.updateStatus(false, new ArrayList<>(Arrays.asList(1, 3, 4))) == 3, RtnCode.TEST3_ERROR.getMessage());
-		Assert.isTrue(lD.updateStatus(true, new ArrayList<>(Arrays.asList(1, 3))) == 2, RtnCode.TEST4_ERROR.getMessage());
-		Assert.isTrue(lD.updateStatus(true, new ArrayList<>(Arrays.asList(4))) == 1, RtnCode.TEST5_ERROR.getMessage());
+		Assert.isTrue(lD.updateStatus(false, -1) == 0, RtnCode.TEST1_ERROR.getMessage());
+		Assert.isTrue(lD.updateStatus(false, 10000) == 0, RtnCode.TEST2_ERROR.getMessage());
+		Assert.isTrue(lD.updateStatus(true, 1) == 1, RtnCode.TEST3_ERROR.getMessage());
 	}
 	
 	@Test
@@ -75,11 +73,11 @@ public class LatestNewsTest {
 		Assert.isTrue(lS.showNews(null).getMessage().equals(RtnCode.CANNOT_EMPTY.getMessage()), RtnCode.TEST1_ERROR.getMessage());
 		Assert.isTrue(lS.showNews(request).getMessage().equals(RtnCode.SUCCESS.getMessage()), RtnCode.TEST2_ERROR.getMessage());
 		Assert.isTrue(lS.showNews(request).getNewsList().size() == 1, RtnCode.TEST3_ERROR.getMessage());
-		lD.updateStatus(true, new ArrayList<>(Arrays.asList(2)));
+		lD.updateStatus(false, 2);
 		Assert.isTrue(lS.showNews(request).getMessage().equals(RtnCode.NOT_FOUND.getMessage()), RtnCode.TEST4_ERROR.getMessage());
 		request.setReveal(true);
 		Assert.isTrue(lS.showNews(request).getNewsList().size() == 4, RtnCode.TEST5_ERROR.getMessage());
-		lD.updateStatus(false, new ArrayList<>(Arrays.asList(2)));
+		lD.updateStatus(true, 2);
 	}
 	
 	@Test
@@ -116,10 +114,10 @@ public class LatestNewsTest {
 		ChangeNewsRequest request = new ChangeNewsRequest();
 		Assert.isTrue(lS.changeNewsStatus(null).getMessage().equals(RtnCode.CANNOT_EMPTY.getMessage()), RtnCode.TEST1_ERROR.getMessage());
 		Assert.isTrue(lS.changeNewsStatus(request).getMessage().equals(RtnCode.CANNOT_EMPTY.getMessage()), RtnCode.TEST2_ERROR.getMessage());
-		request.setNewsIdList(new ArrayList<>(Arrays.asList(0, 1)));
+		request.setSerialNumber(0);
 		Assert.isTrue(lS.changeNewsStatus(request).getMessage().equals(RtnCode.INCORRECT.getMessage()), RtnCode.TEST3_ERROR.getMessage());
 		Assert.isTrue(lD.searchNews(false).size() == 1, RtnCode.TEST4_ERROR.getMessage());
-		request.setNewsIdList(new ArrayList<>(Arrays.asList(3, 4)));
+		request.setSerialNumber(3);
 		Assert.isTrue(lS.changeNewsStatus(request).getMessage().equals(RtnCode.SUCCESS.getMessage()), RtnCode.TEST5_ERROR.getMessage());
 		request.setReveal(true);
 		lS.changeNewsStatus(request);

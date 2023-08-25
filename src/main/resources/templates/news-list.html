@@ -29,8 +29,8 @@
                     <th>目錄</th>
                     <th>子目錄</th>
                     <th>投稿時間</th>
-                    <th>變更狀態</th>
-                    <th></th>
+                    <th>顯示狀態</th>
+                    <th>*</th>
                 </tr>
 
                 <tr th:each="news : ${newsList}">
@@ -38,7 +38,7 @@
                     <td th:text="${news.catalog}"></td>
                     <td th:text="${news.subcatalog}"></td>
                     <td th:text="${#temporals.format(news.releaseTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                    <td><a class="status-link" data-newsid="${news.serialNumber}">狀態</a></td>
+                    <td><a href="#" th:onclick="'changeNewsStatus(' + ${news.serialNumber} + ', ' + ${news.reveal} + ')'">變更</a></td>
                     <td><a th:href="@{/revise_news/{newsId}(newsId=${news.serialNumber})}">修改</a></td>
                 </tr>
             </table>

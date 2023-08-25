@@ -26,7 +26,7 @@ public interface LatestNewsDao extends JpaRepository<LatestNews, Integer>{
 	
 	@Transactional
 	@Modifying
-	@Query(value = "update latest_news set reveal = :reveal where serial_number in :newsIdList", nativeQuery = true)
-	public int updateStatus(@Param("reveal") boolean reveal, @Param("newsIdList") List<Integer> newsIdList);
+	@Query(value = "update latest_news set reveal = :reveal where serial_number = :serialNumber", nativeQuery = true)
+	public int updateStatus(@Param("reveal") boolean reveal, @Param("serialNumber") Integer serialNumber);
 	
 }

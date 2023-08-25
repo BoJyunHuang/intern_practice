@@ -95,17 +95,17 @@ public class LatestNewsServiceImpl implements LatestNewsService {
 	public Response changeNewsStatus(ChangeNewsRequest request) {
 		// 空の入力を防ぐ
 		// リクエスト内の属性を含む
-		// 空リストを含むことはできません
-		if (request == null || CollectionUtils.isEmpty(request.getNewsIdList())) {
+		if (request == null || request.getSerialNumber() == null) {
 			return new Response(RtnCode.CANNOT_EMPTY.getMessage());
 		}
 		
 		// リクエスト内の属性を取得します
-		List<Integer> idList = request.getNewsIdList();
+		Integer id = request.getSerialNumber();
+		boolean reveal = request.isReveal();
 		
 		// Dao メソッドを使用して、データの状態をデータベースに更新します
 		// 更新が成功した場合、成功メッセージを返します。失敗した場合、エラーメッセージを返します
-		return latestNewsDao.updateStatus(request.isReveal(), idList) == idList.size()
+		return latestNewsDao.updateStatus(!reveal, id) == 1
 				? new Response(RtnCode.SUCCESS.getMessage())
 				: new Response(RtnCode.INCORRECT.getMessage());
 	}
