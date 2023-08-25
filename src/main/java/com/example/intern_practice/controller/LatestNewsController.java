@@ -24,7 +24,6 @@ import com.example.intern_practice.vo.ShowNewsResponse;
 @Controller
 public class LatestNewsController {
 
-	
 	@Autowired
 	private LatestNewsDao latestNewsDao;
 	

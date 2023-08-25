@@ -2,34 +2,34 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>News List</title>
+    <title>ニュースリスト</title>
     <link rel="stylesheet" th:href="@{/style.css}" />
     <script th:src="@{/js/check.js}" type="text/javascript"></script>
 </head>
 <body>
 	<div class="main-area">
         <div class=header>
-            <h1>最新消息列表</h1>
+            <h1>最新ニュースリスト</h1>
         </div>
         <div class=button-area>
         	<a th:href="@{/add_news}">
-    			<button>新增</button>
+    			<button>新規追加</button>
 			</a>
 			<a th:href="@{/news_list_close}">
-    			<button>未開放消息</button>
+    			<button>未公開</button>
 			</a>
 			<a th:href="@{/news_list_open}">
-    			<button>已開放消息</button>
+    			<button>公開中</button>
 			</a>
         </div>
         <div class=list-area>
             <table>
                 <tr>
-                    <th>標題</th>
-                    <th>目錄</th>
-                    <th>子目錄</th>
+                    <th>タイトル</th>
+                    <th>カタログ</th>
+                    <th>サブカタログ</th>
                     <th>投稿時間</th>
-                    <th>顯示狀態</th>
+                    <th>表示</th>
                     <th>*</th>
                 </tr>
 
@@ -38,8 +38,11 @@
                     <td th:text="${news.catalog}"></td>
                     <td th:text="${news.subcatalog}"></td>
                     <td th:text="${#temporals.format(news.releaseTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                    <td><a href="#" th:onclick="'changeNewsStatus(' + ${news.serialNumber} + ', ' + ${news.reveal} + ')'">變更</a></td>
-                    <td><a th:href="@{/revise_news/{newsId}(newsId=${news.serialNumber})}">修改</a></td>
+                    <td>
+                    	<a href="#" th:if="${news.reveal}" th:onclick="'changeNewsStatus(' + ${news.serialNumber} + ', ' + ${news.reveal} + ')'">削除</a>
+                    	<a href="#" th:unless="${news.reveal}" th:onclick="'changeNewsStatus(' + ${news.serialNumber} + ', ' + ${news.reveal} + ')'">復元</a>
+                    </td>
+                    <td><a th:href="@{/revise_news/{newsId}(newsId=${news.serialNumber})}">編集</a></td>
                 </tr>
             </table>
         </div>

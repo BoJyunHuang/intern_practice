@@ -45,13 +45,7 @@ table{
     border:1px solid;
     border-collapse: collapse;
     text-align: center;  
-}
-
-.edit-area{
-    margin:16px;
-    font-size:20px;
-    display:flex;
-    justify-content: center;
+    table-layout: fixed;
 }
 
 form{
@@ -60,10 +54,10 @@ form{
 
 .aligned-label {
     display: inline-block;
-    width: 100px; /* 調整你希望的寬度 */
+    width: 100px;
     text-align: right;
     vertical-align: top;
-    margin-right: 10px; /* 添加一些右邊間距 */
+    margin-right: 10px;
 }
 
 input{
@@ -73,6 +67,7 @@ input{
 textarea{
     width:245px;
     height:150px;
+    font-size:20px;
 }
 
 .box{
