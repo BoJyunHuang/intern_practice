@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>News List</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" th:href="@{/style.css}" />
+    <script th:src="@{/js/check.js}" type="text/javascript"></script>
 </head>
 <body>
 	<div class="main-area">
@@ -11,7 +12,7 @@
             <h1>最新消息列表</h1>
         </div>
         <div class=button-area>
-        	<a th:href="@{/to_add_page}">
+        	<a th:href="@{/add_news}">
     			<button>新增</button>
 			</a>
 			<a th:href="@{/news_list_close}">
@@ -24,19 +25,21 @@
         <div class=list-area>
             <table>
                 <tr>
+                    <th>標題</th>
                     <th>目錄</th>
                     <th>子目錄</th>
-                    <th>標題</th>
                     <th>投稿時間</th>
-                    <th>開放與否</th>
+                    <th>變更狀態</th>
+                    <th></th>
                 </tr>
 
                 <tr th:each="news : ${newsList}">
+                	<td th:text="${news.title}"></td>
                     <td th:text="${news.catalog}"></td>
                     <td th:text="${news.subcatalog}"></td>
-                    <td th:text="${news.title}"></td>
-                    <td th:text="${news.releaseTime}"></td>
-                    <td><input type="checkbox" th:checked="${news.reveal}"></td>
+                    <td th:text="${#temporals.format(news.releaseTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <td><a class="status-link" data-newsid="${news.serialNumber}">狀態</a></td>
+                    <td><a th:href="@{/revise_news/{newsId}(newsId=${news.serialNumber})}">修改</a></td>
                 </tr>
             </table>
         </div>

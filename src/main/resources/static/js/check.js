@@ -5,8 +5,9 @@ if (errorMessage && errorMessage.trim() !== '') {
 }
 
 function confirmAndSubmit() {
-    var confirmed = window.confirm("確定要新增嗎？");
+    var confirmed = window.confirm("確定要執行嗎？");
     if (confirmed) {
         document.getElementById("addNewsForm").submit();
     }
 }
+

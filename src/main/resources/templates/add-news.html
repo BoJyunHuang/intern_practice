@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Add News</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" th:href="@{/style.css}" />
     <script th:src="@{/js/check.js}" type="text/javascript"></script>
 </head>
 <body>
  <div class="main-area">
         <div class=header>
-            <h1>新增最新消息</h1>
+            <h1 th:if="${isNew}">新增最新消息</h1>
+            <h1 th:unless="${isNew}">修改消息</h1>
         </div>
         <div class=button-area>
 			<a href="/news_list_open">
@@ -17,16 +18,26 @@
 			</a>
         </div>
         <div class="edit-area">
-            <form th:action="@{/add_news}" th:object="${news}" method="post" id="addNewsForm">
-                <label for="title" class="aligned-label">標題：</label>
-                <input type="text" id="title" name="title" th:field="*{title}"><br>
-                <label for="catalog" class="aligned-label">目錄：</label>
-                <input type="text" id="catalog" name="catalog" th:field="*{catalog}"><br>
-                <label for="subcatalog" class="aligned-label">子目錄：</label>
-                <input type="text" id="subcatalog" name="subcatalog" th:field="*{subcatalog}"><br>
-                <label for="content" class="aligned-label">內容：</label>
-                <textarea id="content" name="content" th:field="*{content}"></textarea><br>
-	            <input type="submit" value="新增" onclick="confirmAndSubmit()">
+            <form th:action="${isNew ? '/add_news' : '/revise_news'}" th:object="${news}" method="post" id="addNewsForm">
+                <input type="hidden" id="newsId" name="id" th:unless="${isNew}" th:field="*{serialNumber}" />
+               	<div class=box>
+	                <label for="title" class="aligned-label">標題：</label>
+	                <input type="text" id="title" name="title" th:field="*{title}"><br>
+               	</div>
+               	<div class=box>
+	                <label for="catalog" class="aligned-label">目錄：</label>
+	                <input type="text" id="catalog" name="catalog" th:field="*{catalog}"><br>
+               	</div>
+               	<div class=box>
+	                <label for="subcatalog" class="aligned-label">子目錄：</label>
+	                <input type="text" id="subcatalog" name="subcatalog" th:field="*{subcatalog}"><br>
+               	</div>
+                <div class=box>
+	                <label for="content" class="aligned-label">內容：</label>
+	                <textarea id="content" name="content" th:field="*{content}"></textarea><br>
+                </div>
+	            <input type="submit" th:if="${isNew}" value="新增" onclick="confirmAndSubmit()">
+				<input type="submit" th:unless="${isNew}" value="修改" onclick="confirmAndSubmit()">
 	        </form>
         </div>
 
