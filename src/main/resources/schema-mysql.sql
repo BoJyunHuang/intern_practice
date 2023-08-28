@@ -6,9 +6,9 @@ CREATE TABLE IF NOT EXISTS `intern_practice`.`person_info` (
   `nationality` VARCHAR(45) NOT NULL,
   `gender` VARCHAR(20) NOT NULL,
   `birth_date` DATE NOT NULL,
-  `age` INT NOT NULL DEFAULT 0,
   `join_date` DATE NOT NULL,
   `departure_date` DATE NULL,
+  `deleted_flag` TINYINT NOT NULL,
   PRIMARY KEY (`employee_number`));
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS `intern_practice`.`extended_profile` (
   `bank_name` VARCHAR(45) NOT NULL,
   `store_name` VARCHAR(45) NOT NULL,
   `account_number` VARCHAR(45) NOT NULL,
+  `deleted_flag` TINYINT NOT NULL,
   PRIMARY KEY (`employee_number`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;

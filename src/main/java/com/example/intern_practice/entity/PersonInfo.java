@@ -43,10 +43,6 @@ public class PersonInfo {
 	@Column(name = "birth_date")
 	private LocalDate birthDate;
 	
-	//　年齢
-	@Column(name = "age")
-	private int age;
-	
 	//　入社日
 	@Column(name = "join_date")
 	private LocalDate joinDate;
@@ -54,14 +50,18 @@ public class PersonInfo {
 	//　退職日
 	@Column(name = "dparture_date")
 	private LocalDate departureDate;
-
+	
+	// 削除フラグ
+	@Column(name = "deleted_flag")
+	private boolean deletedFlag = false;
+	
 	// コンストラクタ
 	public PersonInfo() {
 		super();
 	}
 
 	public PersonInfo(String fullName, String kanaName, String romanizedName, String nationality, String gender,
-			LocalDate birthDate, int age, LocalDate joinDate, LocalDate departureDate) {
+			LocalDate birthDate, LocalDate joinDate, LocalDate departureDate) {
 		super();
 		this.fullName = fullName;
 		this.kanaName = kanaName;
@@ -69,7 +69,6 @@ public class PersonInfo {
 		this.nationality = nationality;
 		this.gender = gender;
 		this.birthDate = birthDate;
-		this.age = age;
 		this.joinDate = joinDate;
 		this.departureDate = departureDate;
 	}
@@ -131,14 +130,6 @@ public class PersonInfo {
 		this.birthDate = birthDate;
 	}
 
-	public int getAge() {
-		return age;
-	}
-
-	public void setAge(int age) {
-		this.age = age;
-	}
-
 	public LocalDate getJoinDate() {
 		return joinDate;
 	}
@@ -153,6 +144,14 @@ public class PersonInfo {
 
 	public void setDepartureDate(LocalDate departureDate) {
 		this.departureDate = departureDate;
+	}
+
+	public boolean isDeletedFlag() {
+		return deletedFlag;
+	}
+
+	public void setDeletedFlag(boolean deletedFlag) {
+		this.deletedFlag = deletedFlag;
 	}
 
 }

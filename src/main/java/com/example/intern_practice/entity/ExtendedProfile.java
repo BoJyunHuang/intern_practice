@@ -64,7 +64,6 @@ public class ExtendedProfile {
 	//　在留資格
 	@Column(name = "residence_card_status")
 	private String residenceCardStatus;
-
 	
 	//　給付情報
 	//　雇用保険番号
@@ -86,12 +85,16 @@ public class ExtendedProfile {
 	//　口座番号
 	@Column(name = "account_number")
 	private String accountNumber;
+	
+	// 削除フラグ
+	@Column(name = "deleted_flag")
+	private boolean deletedFlag = false;
 
+	// コンストラクタ
 	public ExtendedProfile() {
 		super();
 	}
 
-	// コンストラクタ
 	public ExtendedProfile(int employeeNumber, String telephone, String mobilePhone, String companyEmail,
 			String alternateEmail, String postalCode, String address, String passportNumber,
 			LocalDate passportExpiryDate, String residenceCardNumber, LocalDate residenceCardStartDate,
@@ -263,4 +266,12 @@ public class ExtendedProfile {
 		this.accountNumber = accountNumber;
 	}
 	
+	public boolean isDeletedFlag() {
+		return deletedFlag;
+	}
+
+	public void setDeletedFlag(boolean deletedFlag) {
+		this.deletedFlag = deletedFlag;
+	}
+
 }
