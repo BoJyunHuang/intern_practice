@@ -15,7 +15,7 @@ public class ExtendedProfile {
 	// マイナンバー
 	@Id
 	@Column(name = "employee_number")
-	private int employeeNumber;
+	private Integer employeeNumber;
 	
 	//　固定電話
 	@Column(name = "telephone")
@@ -95,7 +95,7 @@ public class ExtendedProfile {
 		super();
 	}
 
-	public ExtendedProfile(int employeeNumber, String telephone, String mobilePhone, String companyEmail,
+	public ExtendedProfile(Integer employeeNumber, String telephone, String mobilePhone, String companyEmail,
 			String alternateEmail, String postalCode, String address, String passportNumber,
 			LocalDate passportExpiryDate, String residenceCardNumber, LocalDate residenceCardStartDate,
 			LocalDate residenceCardExpirationDate, String residenceCardStatus, String employmentInsuranceNumber,
@@ -122,11 +122,11 @@ public class ExtendedProfile {
 	}
 
 	// ゲッターとセッター
-	public int getEmployeeNumber() {
+	public Integer getEmployeeNumber() {
 		return employeeNumber;
 	}
 
-	public void setEmployeeNumber(int employeeNumber) {
+	public void setEmployeeNumber(Integer employeeNumber) {
 		this.employeeNumber = employeeNumber;
 	}
 

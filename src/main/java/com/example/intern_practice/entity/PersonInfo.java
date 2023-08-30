@@ -48,7 +48,7 @@ public class PersonInfo {
 	private LocalDate joinDate;
 	
 	//　退職日
-	@Column(name = "dparture_date")
+	@Column(name = "departure_date")
 	private LocalDate departureDate;
 	
 	// 削除フラグ

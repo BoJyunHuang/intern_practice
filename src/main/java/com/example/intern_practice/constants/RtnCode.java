@@ -11,6 +11,8 @@ public enum RtnCode {
 	TEST3_ERROR("409","Test3 error"),
 	TEST4_ERROR("409","Test4 error"),
 	TEST5_ERROR("409","Test5 error"),
+	TEST6_ERROR("409","Test6 error"),
+	TEST7_ERROR("409","Test7 error"),
 	ALREADY_EXISTED("409", "Has already existed!"), 
 	PATTERNISNOTMATCH("422", "Pattern is not match!");
 

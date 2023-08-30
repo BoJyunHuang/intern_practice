@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class ExtendedProfileRequest {
 
-	private int employeeNumber;
+	private Integer employeeNumber;
 	private String telephone;
 	private String mobilePhone;
 	private String companyEmail;
@@ -23,10 +23,10 @@ public class ExtendedProfileRequest {
 	private String storeName;
 	private String accountNumber;
 	
-	public int getEmployeeNumber() {
+	public Integer getEmployeeNumber() {
 		return employeeNumber;
 	}
-	public void setEmployeeNumber(int employeeNumber) {
+	public void setEmployeeNumber(Integer employeeNumber) {
 		this.employeeNumber = employeeNumber;
 	}
 	public String getTelephone() {

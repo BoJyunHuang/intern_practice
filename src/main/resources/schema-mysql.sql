@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS `intern_practice`.`person_info` (
   `join_date` DATE NOT NULL,
   `departure_date` DATE NULL,
   `deleted_flag` TINYINT NOT NULL,
-  PRIMARY KEY (`employee_number`));
+  PRIMARY KEY (`employee_number`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS `intern_practice`.`extended_profile` (
   `company_email` VARCHAR(45) NOT NULL,
   `alternate_email` VARCHAR(45) NULL,
   `postal_code` VARCHAR(20) NULL,
-  `address` VARCHAR(45) NOT NULL,
+  `address` VARCHAR(90) NOT NULL,
   `passport_number` VARCHAR(45) NOT NULL,
   `passport_expiry_date` DATE NOT NULL,
   `residence_card_number` VARCHAR(45) NOT NULL,
