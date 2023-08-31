@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>個人情報</title>
+     <!-- 導入Bootstrap樣式表 -->
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.3/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/person_info-style.css}" />
+    <script th:src="@{/js/message.js}" type="text/javascript"></script>
+</head>
+<body>
+	<div class="main-area">
+        <div class=header>
+            <h1>在留情報</h1>
+        </div>
+        <div class=button-area>
+        	<a th:href="@{/revise_extended_profile}">
+    			<button>新規追加</button>
+			</a>
+        </div>
+        <form th:action="${isNew ? '/add_extended_profile' : '/revise_extended_profile'}" th:object="${extended_profile}" method="post" id="">
+                <div class=box>
+	                <label class="aligned-label">マイナンバー</label>
+	                <span th:text="*{'BM' + #strings.padLeft(employeeNumber, 6, '0')}"></span>
+               	</div>
+               	<div class=box>
+	                <label for="telephone" class="aligned-label">固定電話</label>
+	                <input type="text" id="telephone" name="telephone" th:field="*{telephone}"><br>
+               	</div>
+               	<div class=box>
+	                <label for="mobilePhone" class="aligned-label">携帯電話</label>
+	                <input type="text" id="mobilePhone" name="mobilePhone" th:field="*{mobilePhone}"><br>
+               	</div>
+               	<div class=box>
+	                <label for="companyEmail" class="aligned-label">メールアドレス（社内）</label>
+	                <input type="text" id="companyEmail" name="companyEmail" th:field="*{companyEmail}"><br>
+               	</div>
+                <div class=box>
+	                <label for="alternateEmail" class="aligned-label">メールアドレス（その他）</label>
+	                <input type="text" id="alternateEmail" name="alternateEmail" th:field="*{alternateEmail}"><br>
+               	</div>
+               	<div class=box>
+	                <label for="postalCode" class="aligned-label">郵便番号</label>
+	                <input type="text" id="postalCode" name="postalCode" th:field="*{postalCode}"><br>
+               	</div>
+               	<div class=box>
+	                <label for="address" class="aligned-label">住所</label>
+	                <input type="text" id="address" name="jaddress" th:field="*{address}"><br>
+               	</div>
+               	<div class=box>
+	                <label for="passportNumber" class="aligned-label">パスポート番号</label>
+	                <input type="text" id="passportNumber" name="passportNumber" th:field="*{passportNumber}"><br>
+               	</div>
+               	<div class=box>
+	                <label for="passportExpiryDate" class="aligned-label">パスポート期限</label>
+	                <input type="date" id="passportExpiryDate" name="passportExpiryDate" th:field="*{passportExpiryDate}"><br>
+               	</div>
+               	<div class=box>
+	                <label for="residenceCardNumber" class="aligned-label">在留カード番号</label>
+	                <input type="text" id="residenceCardNumber" name="residenceCardNumber" th:field="*{residenceCardNumber}"><br>
+               	</div>
+               	<div class=box>
+	                <label for="residenceCardStartDate" class="aligned-label">在留カード開始日付き</label>
+	                <input type="date" id="residenceCardStartDate" name="residenceCardStartDate" th:field="*{residenceCardStartDate}"><br>
+               	</div>
+               	<div class=box>
+	                <label for="residenceCardExpirationDate" class="aligned-label">在留カード終了日付き</label>
+	                <input type="date" id="residenceCardExpirationDate" name="residenceCardExpirationDate" th:field="*{residenceCardExpirationDate}"><br>
+               	</div>
+               	<div class=box>
+	                <label for="residenceCardStatus" class="aligned-label">在留資格</label>
+	                <input type="text" id="residenceCardStatus" name="residenceCardStatus" th:field="*{residenceCardStatus}"><br>
+               	</div>
+               	<h3>給付情報</h3>
+               	<div class=box>
+	                <label for="employmentInsuranceNumber" class="aligned-label">雇用保険番号</label>
+	                <input type="text" id="employmentInsuranceNumber" name="employmentInsuranceNumber" th:field="*{employmentInsuranceNumber}"><br>
+               	</div>
+               	<div class=box>
+	                <label for="pensionNumber" class="aligned-label">年金番号</label>
+	                <input type="text" id="pensionNumber" name="pensionNumber" th:field="*{pensionNumber}"><br>
+               	</div>
+               	<div class=box>
+	                <label for="bankName" class="aligned-label">銀行名称</label>
+	                <input type="text" id="bankName" name="bankName" th:field="*{bankName}"><br>
+               	</div>
+               	<div class=box>
+	                <label for="storeName" class="aligned-label">本店名</label>
+	                <input type="text" id="storeName" name="storeName" th:field="*{storeName}"><br>
+               	</div>
+               	<div class=box>
+	                <label for="accountNumber" class="aligned-label">口座番号</label>
+	                <input type="text" id="accountNumber" name="accountNumber" th:field="*{accountNumber}"><br>
+               	</div>
+	            <input type="submit" value="確認" onclick="confirmAndSubmit()">
+	     </form>
+    </div>
+</body>
+</html>

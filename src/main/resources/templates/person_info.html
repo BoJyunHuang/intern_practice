@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>ニュースリスト</title>
+    <title>個人情報</title>
      <!-- 導入Bootstrap樣式表 -->
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.3/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/person_info-style.css}" />
@@ -11,40 +11,55 @@
 <body>
 	<div class="main-area">
         <div class=header>
-            <h1>最新ニュースリスト</h1>
+            <h1>基本情報</h1>
         </div>
         <div class=button-area>
-        	<a th:href="@{/add_news}">
+        	<a th:href="@{/revise_person_info}">
     			<button>新規追加</button>
 			</a>
-			<a th:href="@{/news_list_close}">
-    			<button>未公開</button>
-			</a>
-			<a th:href="@{/news_list_open}">
-    			<button>公開中</button>
-			</a>
         </div>
-        <div class=list-area>
-            <table>
-                <tr>
-                    <th>タイトル</th>
-                    <th>カタログ</th>
-                    <th>表示</th>
-                    <th>*</th>
-                </tr>
-
-                <tr th:each="news : ${newsList}">
-                	<td th:text="${news.title}"></td>
-                    <td th:text="${news.catalog}"></td>
-                  
-                    <td>
-                    	<a href="#" th:if="${news.reveal}" th:onclick="'changeNewsStatus(' + ${news.serialNumber} + ', ' + ${news.reveal} + ')'">削除</a>
-                    	<a href="#" th:unless="${news.reveal}" th:onclick="'changeNewsStatus(' + ${news.serialNumber} + ', ' + ${news.reveal} + ')'">復元</a>
-                    </td>
-                    <td><a th:href="@{/revise_news/{newsId}(newsId=${news.serialNumber})}">編集</a></td>
-                </tr>
-            </table>
-        </div>
+        <form th:action="${isNew ? '/add_person_info' : '/revise_person_info'}" th:object="${person_info}" method="post" id="">
+                <div class=box>
+	                <label class="aligned-label">マイナンバー</label>
+	                <span th:text="*{'BM' + #strings.padLeft(employeeNumber, 6, '0')}"></span>
+               	</div>
+               	<div class=box>
+	                <label for="fullName" class="aligned-label">名前</label>
+	                <input type="text" id="fullName" name="fullName" th:field="*{fullName}"><br>
+               	</div>
+               	<div class=box>
+	                <label for="kanaName" class="aligned-label">カタカナ</label>
+	                <input type="text" id="kanaName" name="kanaName" th:field="*{kanaName}"><br>
+               	</div>
+               	<div class=box>
+	                <label for="romanizedName" class="aligned-label">ローマ字</label>
+	                <input type="text" id="romanizedName" name="romanizedName" th:field="*{romanizedName}"><br>
+               	</div>
+                <div class=box>
+	                <label for="nationality" class="aligned-label">国籍</label>
+	                <input type="text" id="nationality" name="nationality" th:field="*{nationality}"><br>
+               	</div>
+               	<div class=box>
+	                <label for="gender" class="aligned-label">性別</label>
+	                <select id="gender" name="gender" th:field="*{gender}">
+				        <option value="male">男性</option>
+				        <option value="female">女性</option>
+				    </select>
+               	</div>
+               	<div class=box>
+	                <label for="birthDate" class="aligned-label">生年月日</label>
+	                <input type="date" id="birthDate" name="birthDate" th:field="*{birthDate}"><br>
+               	</div>
+               	<div class=box>
+	                <label for="joinDate" class="aligned-label">入社日</label>
+	                <input type="date" id="joinDate" name="joinDate" th:field="*{joinDate}"><br>
+               	</div>
+               	<div class=box>
+	                <label for="departureDate" class="aligned-label">退職日</label>
+	                <input type="date" id="departureDate" name="departureDate" th:field="*{departureDate}"><br>
+               	</div>
+	            <input type="submit" value="確認" onclick="confirmAndSubmit()">
+	     </form>
     </div>
 </body>
 </html>
