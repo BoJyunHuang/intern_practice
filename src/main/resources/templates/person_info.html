@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ニュースリスト</title>
+     <!-- 導入Bootstrap樣式表 -->
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.3/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/person_info-style.css}" />
+    <script th:src="@{/js/message.js}" type="text/javascript"></script>
+</head>
+<body>
+	<div class="main-area">
+        <div class=header>
+            <h1>最新ニュースリスト</h1>
+        </div>
+        <div class=button-area>
+        	<a th:href="@{/add_news}">
+    			<button>新規追加</button>
+			</a>
+			<a th:href="@{/news_list_close}">
+    			<button>未公開</button>
+			</a>
+			<a th:href="@{/news_list_open}">
+    			<button>公開中</button>
+			</a>
+        </div>
+        <div class=list-area>
+            <table>
+                <tr>
+                    <th>タイトル</th>
+                    <th>カタログ</th>
+                    <th>表示</th>
+                    <th>*</th>
+                </tr>
+
+                <tr th:each="news : ${newsList}">
+                	<td th:text="${news.title}"></td>
+                    <td th:text="${news.catalog}"></td>
+                  
+                    <td>
+                    	<a href="#" th:if="${news.reveal}" th:onclick="'changeNewsStatus(' + ${news.serialNumber} + ', ' + ${news.reveal} + ')'">削除</a>
+                    	<a href="#" th:unless="${news.reveal}" th:onclick="'changeNewsStatus(' + ${news.serialNumber} + ', ' + ${news.reveal} + ')'">復元</a>
+                    </td>
+                    <td><a th:href="@{/revise_news/{newsId}(newsId=${news.serialNumber})}">編集</a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
