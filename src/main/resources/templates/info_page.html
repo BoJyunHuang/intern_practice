@@ -53,8 +53,8 @@
 		    <label>口座番号</label> <span th:text="${extendedProfile.accountNumber}"></span>
 		</div>
 	</div>
-	<div class="mt-5 mx-5 d-flex justify-content-evenly">
-		<a th:href="@{/person_list}" class="btn btn-primary">編輯</a>
+	<div class="mt-5 mx-5 d-flex justify-content-evenly" th:object="${personInfo}">
+		<a th:href="@{/revise_person_info/{personId}(personId=${personInfo.employeeNumber})}" class="btn btn-primary">編集</a>
 		<a th:href="@{/person_list}" class="btn btn-primary">返回</a>
 	</div>
 

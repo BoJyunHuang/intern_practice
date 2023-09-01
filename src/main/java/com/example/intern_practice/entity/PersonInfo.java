@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 @Entity
 @Table(name = "person_info")
 public class PersonInfo {
@@ -41,14 +43,17 @@ public class PersonInfo {
 	
 	//　生年月日
 	@Column(name = "birth_date")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate birthDate;
 	
 	//　入社日
 	@Column(name = "join_date")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate joinDate;
 	
 	//　退職日
 	@Column(name = "departure_date")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate departureDate;
 	
 	// 削除フラグ

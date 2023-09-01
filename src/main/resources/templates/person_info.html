@@ -11,7 +11,7 @@
 	<div class="mt-5 mx-5">
 		<h1>基本情報</h1>
 	</div>
-	<form th:action="${'/add_person_info'}" th:object="${personInfo}" method="post" id="addForm">
+	<form th:action="${isNew ? '/add_person_info' : '/revise_person_info'}" th:object="${personInfo}" method="post" id="addForm">
 		<div class=box>
 			<label class="aligned-label">マイナンバー</label> <span th:text="*{employeeNumber}"></span>
 		</div>

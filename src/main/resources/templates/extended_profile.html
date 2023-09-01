@@ -11,7 +11,7 @@
 	<div class="mt-5 mx-5">
 		<h1>其他情報</h1>
 	</div>
-	<form th:action="${'/add_extended_profile'}" th:object="${extendedProfile}" method="post" id="addForm">
+	<form th:action="${isNew ? '/add_extended_profile' : '/revise_extended_profile'}" th:object="${extendedProfile}" method="post" id="addForm">
 		<div class=box>
 			<label class="aligned-label">マイナンバー</label> <span th:text="*{employeeNumber}"></span>
 		</div>
