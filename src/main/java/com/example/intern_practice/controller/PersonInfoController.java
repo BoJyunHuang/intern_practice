@@ -5,24 +5,31 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.intern_practice.constants.RtnCode;
 import com.example.intern_practice.entity.PersonInfo;
+import com.example.intern_practice.repository.ExtendedProfileDao;
+import com.example.intern_practice.repository.PersonInfoDao;
 import com.example.intern_practice.service.ifs.ExtendedProfileService;
 import com.example.intern_practice.service.ifs.PersonInfoService;
 import com.example.intern_practice.vo.AddPersonInfoRequest;
 import com.example.intern_practice.vo.AddPersonInfoResponse;
 import com.example.intern_practice.vo.DeletePersonInfoRequest;
 import com.example.intern_practice.vo.ExtendedProfileRequest;
-import com.example.intern_practice.vo.FindExtendedProfileResponse;
 import com.example.intern_practice.vo.FindPersonInfoRequest;
 import com.example.intern_practice.vo.Response;
 import com.example.intern_practice.vo.RevisePersonInfoRequest;
-import com.example.intern_practice.vo.ShowPersonInfoResponse;
 
 @Controller
 public class PersonInfoController {
+
+	@Autowired
+	private PersonInfoDao personInfoDao;
+
+	@Autowired
+	private ExtendedProfileDao extendedProfileDao;
 
 	@Autowired
 	private PersonInfoService personInfoService;
@@ -31,86 +38,77 @@ public class PersonInfoController {
 	private ExtendedProfileService extendedProfileService;
 
 	@GetMapping("/person_list")
-	public String init() {
-		return "person_list";
+	public String init(Model model) {
+		model.addAttribute("search", new FindPersonInfoRequest());
+		model.addAttribute("person_list", personInfoService.showPersonInfo().getPersonInfoList());
+		return "search";
 	}
 
-	@GetMapping("/show_all")
-	public String showAll(Model model) {
-		ShowPersonInfoResponse response = personInfoService.showPersonInfo();
-		model.addAttribute("person_list", response.getPersonInfoList());
-		return "person_list";
-	}
-
-	@PostMapping("/find_some")
-	public String findSome(@ModelAttribute("request") FindPersonInfoRequest request, Model model) {
-		ShowPersonInfoResponse response = personInfoService.findPersonInfo(request);
-		model.addAttribute("person_list", response.getPersonInfoList());
-		return "person_list";
+	@PostMapping("/find_person")
+	public String findPerson(@ModelAttribute("search") FindPersonInfoRequest request, Model model) {
+		model.addAttribute("person_list", personInfoService.findPersonInfo(request).getPersonInfoList());
+		return "search";
 	}
 
 	@GetMapping("/show_person_info")
-	public String showPersonInfo(@ModelAttribute PersonInfo personInfo, Model model) {
-		model.addAttribute("person_info", personInfo);
-		return "person_info";
+	public String showPersonInfo(@RequestParam Integer personId, Model model) {
+		model.addAttribute("personInfo", personInfoDao.findById(personId).get());
+		model.addAttribute("extendedProfile", extendedProfileDao.findById(personId).get());
+		return "info_page";
 	}
-	
+
 	@GetMapping("/add_person_info")
-	public String showaddPage(@ModelAttribute AddPersonInfoRequest request, Model model) {
-		model.addAttribute("person_info", request);
+	public String showaddPage(Model model) {
+		model.addAttribute("personInfo", new PersonInfo());
 		return "person_info";
 	}
-	
-	// TODO
+
 	@PostMapping("/add_person_info")
-	public String addPersonInfo(@ModelAttribute AddPersonInfoRequest request, Model model) {
+	public String addPersonInfo(@ModelAttribute("personInfo") AddPersonInfoRequest request, Model model) {
 		AddPersonInfoResponse res = personInfoService.addPersonInfo(request);
-		model.addAttribute("message", res.getMessage());
+		if (res.getMessage().equals(RtnCode.SUCCESS.getMessage())) {
+			ExtendedProfileRequest extendedProfile = new ExtendedProfileRequest();
+			extendedProfile.setEmployeeNumber(res.getPersonInfo().getEmployeeNumber());
+			model.addAttribute("extendedProfile", extendedProfile);
+			return "extended_profile";			
+		}
+		model.addAttribute("errorMessage", res.getMessage());
 		return "person_info";
 	}
-	
+
+	@PostMapping("/add_extended_profile")
+	public String addExtendedProfile(@ModelAttribute("extendedProfile") ExtendedProfileRequest request, Model model) {
+		Response res = extendedProfileService.addExtendedProfile(request);
+		if (res.getMessage().equals(RtnCode.SUCCESS.getMessage())) {
+			model.addAttribute("errorMessage", res.getMessage());
+			return "redirect:/person_list";
+		}
+		model.addAttribute("errorMessage", res.getMessage());
+		return "extended_profile";
+	}
+
 	// TODO
 	@PostMapping("/revise_person_info")
-	public String revisePersonInfo(@ModelAttribute RevisePersonInfoRequest request, Model model) {
-		Response res = personInfoService.revisePersonInfo(request);
-		model.addAttribute("errorMessage", res.getMessage());
+	public String revisePersonInfo(@ModelAttribute RevisePersonInfoRequest pRequest,
+			@ModelAttribute ExtendedProfileRequest eRequest, Model model) {
+//		Response res1 = personInfoService.revisePersonInfo(pRequest);
+//		Response res2 = extendedProfileService.reviseExtendedProfile(eRequest);
+//		model.addAttribute("errorMessage", res.getMessage());
 		return "redirect:/show_person_info";
 	}
-	
+
 	@PostMapping("/delete_person_info")
-	public String deletePersonInfo(@ModelAttribute DeletePersonInfoRequest request, Model model) {
-		model.addAttribute("errorMessage", personInfoService.deletePersonInfo(request).getMessage());
+	public String deletePersonInfo(@RequestParam Integer personId, Model model) {
+		DeletePersonInfoRequest pRequest = new DeletePersonInfoRequest();
+		pRequest.setEmployeeNumber(personId);
+		Response pres = personInfoService.deletePersonInfo(pRequest);
+		ExtendedProfileRequest eRequest = new ExtendedProfileRequest();
+		eRequest.setEmployeeNumber(personId);
+		Response eres = extendedProfileService.deleteExtendedProfile(eRequest);
+		Object error = pres.getMessage().equals(RtnCode.SUCCESS.getMessage())
+				&& eres.getMessage().equals(RtnCode.SUCCESS.getMessage()) ? "success" : "failed";
+		model.addAttribute("errorMessage", error);
 		return "redirect:/person_list";
-	}
-	
-	@GetMapping("/find_extended_profile")
-	public String findExtendedProfile(@PathVariable Integer employeeNumber, Model model) {
-		ExtendedProfileRequest request = new ExtendedProfileRequest();
-		request.setEmployeeNumber(employeeNumber);
-		FindExtendedProfileResponse res = extendedProfileService.findExtendedProfile(request);
-		model.addAttribute("extended_profile", res);
-		return "extended_profile";
-	}
-	
-	@GetMapping("/add_extended_profile")
-	public String addExtendedProfile(@ModelAttribute ExtendedProfileRequest request, Model model) {
-		 Object res = extendedProfileService.addExtendedProfile(request);
-		model.addAttribute("extended_profile", res);
-		return "extended_profile";
-	}
-	
-	@GetMapping("/revise_extended_profile")
-	public String reviseExtendedProfile(@ModelAttribute ExtendedProfileRequest request, Model model) {
-		 Object res = extendedProfileService.reviseExtendedProfile(request);
-		model.addAttribute("extended_profile", res);
-		return "extended_profile";
-	}
-	
-	@GetMapping("/delete_extended_profile")
-	public String deleteExtendedProfile(@ModelAttribute ExtendedProfileRequest request, Model model) {
-		 Object res = extendedProfileService.deleteExtendedProfile(request);
-		model.addAttribute("extended_profile", res);
-		return "extended_profile";
 	}
 
 }
