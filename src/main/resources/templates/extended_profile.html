@@ -77,5 +77,22 @@
 
 	<script th:src="@{/js/message.js}" type="text/javascript"></script>
 	<script th:src="@{/webjars/bootstrap/5.2.3/js/bootstrap.min.js}" type="text/javascript"></script>
+	<script th:inline="javascript">
+    $(document).ready(function() {
+        var dateInputs = document.querySelectorAll("input[type='date']");
+        dateInputs.forEach(function(input) {
+            input.addEventListener('input', function() {
+                var dateValue = input.value;
+                if (dateValue) {
+                    // 修正日期格式为 'yyyy-MM-dd'
+                    var parts = dateValue.split('/');
+                    if (parts.length === 3) {
+                        input.value = parts[2] + '-' + parts[0] + '-' + parts[1];
+                    }
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>

@@ -35,13 +35,13 @@
 				</select>
 			</div>
 			<div >
-				<label for="birthDate" class="form-label text-end">生年月日</label> <span th:text="${formattedBirthDate}"></span> <input type="date" id="birthDate" name="birthDate" th:field="*{birthDate}"> <br>
+				<label for="birthDate" class="form-label text-end">生年月日</label> <span th:text="${formattedBirthDate}"></span> <input type="date" id="birthDate" name="birthDate" th:field="*{birthDate}" th:value="${#temporals.format(personInfo.birthDate, 'yyyy-MM-dd')}"> <br>
 			</div>
 			<div >
-				<label for="joinDate" class="form-label text-end">入社日</label> <span th:text="${formattedJoinDepartureDate}"></span> <input type="date" id="joinDate" name="joinDate" th:field="*{joinDate}"> <br>
+				<label for="joinDate" class="form-label text-end">入社日</label> <span th:text="${formattedJoinDepartureDate}"></span> <input type="date" id="joinDate" name="joinDate" th:field="*{joinDate}" th:value="${#temporals.format(personInfo.joinDate, 'yyyy-MM-dd')}"> <br>
 			</div>
 			<div >
-				<label for="departureDate" class="form-label text-end">退職日</label> <span th:text="${formattedDepartureDate}"></span> <input type="date" id="departureDate" name="departureDate" th:field="*{departureDate}"> <br>
+				<label for="departureDate" class="form-label text-end">退職日</label> <span th:text="${formattedDepartureDate}"></span> <input type="date" id="departureDate" name="departureDate" th:field="*{departureDate}" th:value="${#temporals.format(personInfo.departureDate, 'yyyy-MM-dd')}"> <br>
 			</div>
 			<div class="d-flex justify-content-evenly">
 				<input type="submit" class="btn btn-primary" value="確認" onclick="confirmAndSubmit()"> <a th:href="@{/person_list}" class="btn btn-primary">戻る</a>
@@ -51,5 +51,22 @@
 	
 	<script th:src="@{/js/message.js}" type="text/javascript"></script>
 	<script th:src="@{/webjars/bootstrap/5.2.3/js/bootstrap.min.js}" type="text/javascript"></script>
+	<script th:inline="javascript">
+    $(document).ready(function() {
+        var dateInputs = document.querySelectorAll("input[type='date']");
+        dateInputs.forEach(function(input) {
+            input.addEventListener('input', function() {
+                var dateValue = input.value;
+                if (dateValue) {
+                    // 修正日期格式为 'yyyy-MM-dd'
+                    var parts = dateValue.split('/');
+                    if (parts.length === 3) {
+                        input.value = parts[2] + '-' + parts[0] + '-' + parts[1];
+                    }
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>
