@@ -9,14 +9,14 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.intern_practice.entity.LatestNews;
+import com.example.intern_practice.entity.News;
 
 @Repository
-public interface LatestNewsDao extends JpaRepository<LatestNews, Integer>{
+public interface NewsDao extends JpaRepository<News, Integer>{
 
 	// データベースから、表示されたり非表示になったりするデータを取得する
 	@Query(value = "select * from latest_news where reveal = :reveal", nativeQuery = true)
-	public List<LatestNews> searchNews(@Param("reveal") boolean reveal);
+	public List<News> searchNews(@Param("reveal") boolean reveal);
 	
 	// キー値に基づいて、データのタイトル、カタログ、サブカタログ、内容の4つの情報を更新する
 	@Transactional

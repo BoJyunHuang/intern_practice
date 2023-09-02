@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "latest_news")
-public class LatestNews {
+public class News {
 
 	// シリアルナンバー
 	@Id
@@ -44,11 +44,11 @@ public class LatestNews {
 	private boolean reveal = true;
 
 	// コンストラクタ
-	public LatestNews() {
+	public News() {
 		super();
 	}
 
-	public LatestNews(String catalog, String subcatalog, String title, String content) {
+	public News(String catalog, String subcatalog, String title, String content) {
 		super();
 		this.catalog = catalog;
 		this.subcatalog = subcatalog;

@@ -8,9 +8,9 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import com.example.intern_practice.constants.RtnCode;
-import com.example.intern_practice.entity.LatestNews;
-import com.example.intern_practice.repository.LatestNewsDao;
-import com.example.intern_practice.service.ifs.LatestNewsService;
+import com.example.intern_practice.entity.News;
+import com.example.intern_practice.repository.NewsDao;
+import com.example.intern_practice.service.ifs.NewsService;
 import com.example.intern_practice.vo.AddNewsRequest;
 import com.example.intern_practice.vo.ChangeNewsRequest;
 import com.example.intern_practice.vo.Response;
@@ -19,10 +19,10 @@ import com.example.intern_practice.vo.ShowNewsRequest;
 import com.example.intern_practice.vo.ShowNewsResponse;
 
 @Service
-public class LatestNewsServiceImpl implements LatestNewsService {
+public class NewsServiceImpl implements NewsService {
 
 	@Autowired
-	private LatestNewsDao latestNewsDao;
+	private NewsDao newsDao;
 
 	@Override
 	public ShowNewsResponse showNews(ShowNewsRequest request) {
@@ -35,7 +35,7 @@ public class LatestNewsServiceImpl implements LatestNewsService {
 		boolean status = request.isReveal();
 		
 		// Daoメソッドを実行してニュースのリストを取得する
-		List<LatestNews> result = latestNewsDao.searchNews(status);
+		List<News> result = newsDao.searchNews(status);
 
 		// 結果を返す：結果が空の場合、Not_Foundのメッセージを返す。それ以外は成功メッセージとリストを返す
 		return CollectionUtils.isEmpty(result) ? new ShowNewsResponse(RtnCode.NOT_FOUND.getMessage())
@@ -59,8 +59,8 @@ public class LatestNewsServiceImpl implements LatestNewsService {
 		String newSubcatalog = request.getSubcatalog();
 		String newTitle = request.getTitle();
 		String newContent = request.getContent();
-		LatestNews news = new LatestNews(newCatalog, newSubcatalog, newTitle, newContent);
-		latestNewsDao.save(news);
+		News news = new News(newCatalog, newSubcatalog, newTitle, newContent);
+		newsDao.save(news);
 
 		// 結果を返す：成功メッセージを返す
 		return new Response(RtnCode.SUCCESS.getMessage());
@@ -86,7 +86,7 @@ public class LatestNewsServiceImpl implements LatestNewsService {
 
 		// Dao メソッドを使用して、新しいデータをデータベースに更新します
 		// 結果を返す：更新が成功した場合、成功メッセージを返します。失敗した場合、データが見つからないメッセージを返します
-		return latestNewsDao.updateNews(newsId, newCatalog, newSubcatalog, newTitle, newContent) == 1
+		return newsDao.updateNews(newsId, newCatalog, newSubcatalog, newTitle, newContent) == 1
 				? new Response(RtnCode.SUCCESS.getMessage())
 				: new Response(RtnCode.NOT_FOUND.getMessage());
 	}
@@ -105,7 +105,7 @@ public class LatestNewsServiceImpl implements LatestNewsService {
 		
 		// Dao メソッドを使用して、データの状態をデータベースに更新します
 		// 更新が成功した場合、成功メッセージを返します。失敗した場合、エラーメッセージを返します
-		return latestNewsDao.updateStatus(!reveal, id) == 1
+		return newsDao.updateStatus(!reveal, id) == 1
 				? new Response(RtnCode.SUCCESS.getMessage())
 				: new Response(RtnCode.INCORRECT.getMessage());
 	}

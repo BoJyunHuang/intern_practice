@@ -2,12 +2,12 @@ package com.example.intern_practice.vo;
 
 import java.util.List;
 
-import com.example.intern_practice.entity.LatestNews;
+import com.example.intern_practice.entity.News;
 
 public class ShowNewsResponse {
 
 	private String message;
-	private List<LatestNews> newsList;
+	private List<News> newsList;
 	
 	public ShowNewsResponse() {
 		super();
@@ -18,7 +18,7 @@ public class ShowNewsResponse {
 		this.message = message;
 	}
 
-	public ShowNewsResponse(String message, List<LatestNews> newsList) {
+	public ShowNewsResponse(String message, List<News> newsList) {
 		super();
 		this.message = message;
 		this.newsList = newsList;
@@ -32,11 +32,11 @@ public class ShowNewsResponse {
 		this.message = message;
 	}
 
-	public List<LatestNews> getNewsList() {
+	public List<News> getNewsList() {
 		return newsList;
 	}
 
-	public void setNewsList(List<LatestNews> newsList) {
+	public void setNewsList(List<News> newsList) {
 		this.newsList = newsList;
 	}
 	

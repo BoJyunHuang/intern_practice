@@ -12,9 +12,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
 
 import com.example.intern_practice.constants.RtnCode;
-import com.example.intern_practice.entity.LatestNews;
-import com.example.intern_practice.repository.LatestNewsDao;
-import com.example.intern_practice.service.ifs.LatestNewsService;
+import com.example.intern_practice.entity.News;
+import com.example.intern_practice.repository.NewsDao;
+import com.example.intern_practice.service.ifs.NewsService;
 import com.example.intern_practice.vo.AddNewsRequest;
 import com.example.intern_practice.vo.ChangeNewsRequest;
 import com.example.intern_practice.vo.ReviseNewsRequest;
@@ -25,18 +25,18 @@ import com.example.intern_practice.vo.ShowNewsRequest;
 public class LatestNewsTest {
 
 	@Autowired
-	private LatestNewsDao lD;
+	private NewsDao lD;
 
 	@Autowired
-	private LatestNewsService lS;
+	private NewsService lS;
 
 	@BeforeAll
 	private void BeforeAll() {
-		LatestNews test1 = new LatestNews("classA", "program", "Test Title", "This is the test！");
-		LatestNews test2 = new LatestNews("classA", "program", "Test Title", "This is the test！");
+		News test1 = new News("classA", "program", "Test Title", "This is the test！");
+		News test2 = new News("classA", "program", "Test Title", "This is the test！");
 		test2.setReveal(false);
-		LatestNews test3 = new LatestNews("classB", "program", "Test Title", "This is the test！");
-		LatestNews test4 = new LatestNews("classB", "coding", "Test Title", "This is the test！");
+		News test3 = new News("classB", "program", "Test Title", "This is the test！");
+		News test4 = new News("classB", "coding", "Test Title", "This is the test！");
 		lD.saveAll(new ArrayList<>(Arrays.asList(test1, test2, test3, test4)));
 	}
 

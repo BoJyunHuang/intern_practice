@@ -7,7 +7,7 @@ import com.example.intern_practice.vo.ReviseNewsRequest;
 import com.example.intern_practice.vo.ShowNewsRequest;
 import com.example.intern_practice.vo.ShowNewsResponse;
 
-public interface LatestNewsService {
+public interface NewsService {
 
 	// ニュース一覧を表示する
 	public ShowNewsResponse showNews(ShowNewsRequest request);

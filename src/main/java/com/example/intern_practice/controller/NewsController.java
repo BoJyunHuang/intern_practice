@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.example.intern_practice.constants.RtnCode;
-import com.example.intern_practice.entity.LatestNews;
-import com.example.intern_practice.repository.LatestNewsDao;
-import com.example.intern_practice.service.ifs.LatestNewsService;
+import com.example.intern_practice.entity.News;
+import com.example.intern_practice.repository.NewsDao;
+import com.example.intern_practice.service.ifs.NewsService;
 import com.example.intern_practice.vo.AddNewsRequest;
 import com.example.intern_practice.vo.ChangeNewsRequest;
 import com.example.intern_practice.vo.Response;
@@ -22,13 +22,13 @@ import com.example.intern_practice.vo.ShowNewsRequest;
 import com.example.intern_practice.vo.ShowNewsResponse;
 
 @Controller
-public class LatestNewsController {
+public class NewsController {
 
 	@Autowired
-	private LatestNewsDao latestNewsDao;
+	private NewsDao latestNewsDao;
 	
 	@Autowired
-	private LatestNewsService latestNewsService;
+	private NewsService latestNewsService;
 
 	/**
 	 * 開かれたニュースを表示するためのメソッドです。
@@ -104,7 +104,7 @@ public class LatestNewsController {
 	@GetMapping("/revise_news/{newsId}")
 	public String showReviseNewsForm(@PathVariable Integer newsId, Model model) {
 		// ニュースIDを用いてデータベースからニュースを取得し、共通メソッドを呼び出して表示します
-	    Optional<LatestNews> news = latestNewsDao.findById(newsId);
+	    Optional<News> news = latestNewsDao.findById(newsId);
 	    return showNewsForm(model, news.get(), false);
 	}
 
