@@ -4,21 +4,28 @@ import java.util.List;
 
 import com.example.intern_practice.entity.News;
 
-public class ShowNewsResponse {
+public class NewsResponse {
 
 	private String message;
+	private News news;
 	private List<News> newsList;
 	
-	public ShowNewsResponse() {
+	public NewsResponse() {
 		super();
 	}
-
-	public ShowNewsResponse(String message) {
+	
+	public NewsResponse(String message) {
 		super();
 		this.message = message;
 	}
-
-	public ShowNewsResponse(String message, List<News> newsList) {
+	
+	public NewsResponse(String message, News news) {
+		super();
+		this.message = message;
+		this.news = news;
+	}
+	
+	public NewsResponse(String message, List<News> newsList) {
 		super();
 		this.message = message;
 		this.newsList = newsList;
@@ -30,6 +37,14 @@ public class ShowNewsResponse {
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+	
+	public News getNews() {
+		return news;
+	}
+	
+	public void setNews(News news) {
+		this.news = news;
 	}
 
 	public List<News> getNewsList() {

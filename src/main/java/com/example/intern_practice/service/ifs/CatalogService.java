@@ -1,16 +1,16 @@
 package com.example.intern_practice.service.ifs;
 
+import com.example.intern_practice.vo.CatalogRequest;
+import com.example.intern_practice.vo.CatalogResponse;
+
 public interface CatalogService {
 
-	// カタログを新規
-	public void addCatalog();
+	// カタログを追加または変更
+	public CatalogResponse editCatalog(CatalogRequest request);
 	
 	// カタログを検索
-	public void findCatalog();
-	
-	// カタログを編集
-	public void reviseCatalog();
-	
+	public CatalogResponse findCatalog(CatalogRequest request);
+		
 	// カタログを削除
-	public void deleteCatalog();
+	public CatalogResponse deleteCatalog(CatalogRequest request);
 }

@@ -28,19 +28,23 @@ public class Catalog {
 	// ニュース数
 	@Column(name = "news_amount")
 	private int newsAmount;
+	
+	// 削除フラグ
+	@Column(name = "delete_flag")
+	private boolean deleteFlag;
 
 	// コンストラクタ
 	public Catalog() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public Catalog(Integer catalogId, String catalog, String subcatalog, int newsAmount) {
+	public Catalog(Integer catalogId, String catalog, String subcatalog, int newsAmount, boolean deleteFlag) {
 		super();
 		this.catalogId = catalogId;
 		this.catalog = catalog;
 		this.subcatalog = subcatalog;
 		this.newsAmount = newsAmount;
+		this.deleteFlag = deleteFlag;
 	}
 
 	// ゲッターとセッター
@@ -74,6 +78,14 @@ public class Catalog {
 
 	public void setNewsAmount(int newsAmount) {
 		this.newsAmount = newsAmount;
+	}
+
+	public boolean isDeleteFlag() {
+		return deleteFlag;
+	}
+
+	public void setDeleteFlag(boolean deleteFlag) {
+		this.deleteFlag = deleteFlag;
 	}
 		
 }
