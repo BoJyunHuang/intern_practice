@@ -1,6 +1,7 @@
 package com.example.intern_practice.vo;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class NewsRequest {
 
@@ -24,6 +25,7 @@ public class NewsRequest {
 	private int importance;
 	private int audienceLevel;
 	private boolean deleteFlag;
+	private List<Integer> idList;
 	
 	public Integer getNewsId() {
 		return newsId;
@@ -144,6 +146,12 @@ public class NewsRequest {
 	}
 	public void setDeleteFlag(boolean deleteFlag) {
 		this.deleteFlag = deleteFlag;
+	}
+	public List<Integer> getIdList() {
+		return idList;
+	}
+	public void setIdList(List<Integer> idList) {
+		this.idList = idList;
 	}
 	
 }

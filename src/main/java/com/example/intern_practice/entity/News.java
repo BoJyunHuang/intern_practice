@@ -18,79 +18,75 @@ public class News {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "news_id")
 	private Integer newsId;
-	
+
 	// カタログID
 	@Column(name = "catalog_id")
 	private int catalogId;
-		
+
 	// タイトル
 	@Column(name = "title")
 	private String title;
-	
+
 	// サブタイトル
 	@Column(name = "subtitle")
 	private String subtitle;
-	
+
 	// タグ
 	@Column(name = "tags")
 	private String tags;
-	
+
 	// 本文
 	@Column(name = "content")
 	private String content;
-		
+
 	// 追加時間
 	@Column(name = "create_time")
 	private LocalDateTime createTime;
-		
+
 	// 公表時間
 	@Column(name = "publish_time")
 	private LocalDateTime publishTime;
-	
+
 	// 編集時間
 	@Column(name = "edit_time")
 	private LocalDateTime editTime;
-	
+
 	// 取り下げる時間
 	@Column(name = "remove_time")
 	private LocalDateTime removeTime;
-	
-	// 自動的に取り下げる機能
-	@Column(name = "auto_removal")
-	private boolean autoRemoval;
-	
+
 	// 創造者
 	@Column(name = "creator")
 	private String creator;
-	
+
 	// 編集者
 	@Column(name = "editor")
-	private String editor;	
-	
+	private String editor;
+
 	// 取り下げる人
 	@Column(name = "remover")
 	private String remover;
-	
+
 	// 再生回数
 	@Column(name = "views")
 	private int views;
-	
+
 	// いいね数
 	@Column(name = "likes")
 	private int likes;
-	
+
 	// 嫌い数
 	@Column(name = "dislikes")
 	private int dislikes;
-	
+
 	// 重要性
 	@Column(name = "importance")
 	private int importance;
-	
+
 	// 視聴者のレベル
 	@Column(name = "audience_level")
 	private int audienceLevel;
-	
+
 	// 削除フラグ
 	@Column(name = "delete_flag")
 	private boolean deleteFlag;
@@ -102,8 +98,8 @@ public class News {
 
 	public News(Integer newsId, int catalogId, String title, String subtitle, String tags, String content,
 			LocalDateTime createTime, LocalDateTime publishTime, LocalDateTime editTime, LocalDateTime removeTime,
-			boolean autoRemoval, String creator, String editor, String remover, int views, int likes, int dislikes,
-			int importance, int audienceLevel, boolean deleteFlag) {
+			String creator, String editor, String remover, int views, int likes, int dislikes, int importance,
+			int audienceLevel, boolean deleteFlag) {
 		super();
 		this.newsId = newsId;
 		this.catalogId = catalogId;
@@ -115,7 +111,6 @@ public class News {
 		this.publishTime = publishTime;
 		this.editTime = editTime;
 		this.removeTime = removeTime;
-		this.autoRemoval = autoRemoval;
 		this.creator = creator;
 		this.editor = editor;
 		this.remover = remover;
@@ -206,14 +201,6 @@ public class News {
 
 	public void setRemoveTime(LocalDateTime removeTime) {
 		this.removeTime = removeTime;
-	}
-
-	public boolean isAutoRemoval() {
-		return autoRemoval;
-	}
-
-	public void setAutoRemoval(boolean autoRemoval) {
-		this.autoRemoval = autoRemoval;
 	}
 
 	public String getCreator() {

@@ -1,22 +1,15 @@
 package com.example.intern_practice.service.impl;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import com.example.intern_practice.constants.NewsAction;
 import com.example.intern_practice.constants.RtnCode;
-import com.example.intern_practice.entity.News;
 import com.example.intern_practice.repository.NewsDao;
 import com.example.intern_practice.service.ifs.NewsService;
-import com.example.intern_practice.vo.AddNewsRequest;
-import com.example.intern_practice.vo.ChangeNewsRequest;
-import com.example.intern_practice.vo.Response;
-import com.example.intern_practice.vo.ReviseNewsRequest;
-import com.example.intern_practice.vo.ShowNewsRequest;
-import com.example.intern_practice.vo.ShowNewsResponse;
+import com.example.intern_practice.vo.NewsRequest;
+import com.example.intern_practice.vo.NewsResponse;
 
 @Service
 public class NewsServiceImpl implements NewsService {
@@ -25,89 +18,64 @@ public class NewsServiceImpl implements NewsService {
 	private NewsDao newsDao;
 
 	@Override
-	public ShowNewsResponse showNews(ShowNewsRequest request) {
-		// 空の入力を防止する
-		if (request == null) {
-			return new ShowNewsResponse(RtnCode.CANNOT_EMPTY.getMessage());
-		}
-
-		// 表示・非表示の引数を設定する
-		boolean status = request.isReveal();
-		
-		// Daoメソッドを実行してニュースのリストを取得する
-		List<News> result = newsDao.searchNews(status);
-
-		// 結果を返す：結果が空の場合、Not_Foundのメッセージを返す。それ以外は成功メッセージとリストを返す
-		return CollectionUtils.isEmpty(result) ? new ShowNewsResponse(RtnCode.NOT_FOUND.getMessage())
-				: new ShowNewsResponse(RtnCode.SUCCESS.getMessage(), result);
+	public NewsResponse addNews(NewsRequest request) {
+		return checkNull(request, NewsAction.ADD) ? new NewsResponse(RtnCode.CANNOT_EMPTY.getMessage())
+				: newsDao.insertNews(0, request.getTitle(), request.getSubtitle(), request.getTags(),
+						request.getContent(), request.getCreateTime(), request.getPublishTime(),
+						request.getRemoveTime(), request.getCreator(), request.getRemover(), 0,
+						0) == 1 ? new NewsResponse(RtnCode.CANNOT_EMPTY.getMessage())
+								: new NewsResponse(RtnCode.CANNOT_EMPTY.getMessage());
 	}
 
 	@Override
-	public Response addNews(AddNewsRequest request) {
-		// 空の入力を防ぐ
-		// リクエスト内の属性を含む
-		// 空文字列を含むことはできません
-		if (request == null || !StringUtils.hasText(request.getCatalog())
-				|| !StringUtils.hasText(request.getSubcatalog()) || !StringUtils.hasText(request.getTitle())
-				|| !StringUtils.hasText(request.getContent())) {
-			return new Response(RtnCode.CANNOT_EMPTY.getMessage());
-		}
-
-		// リクエスト内の属性を取得し、新しい LatestNews を宣言します
-		// Dao メソッドを使用してデータベースに保存します
-		String newCatalog = request.getCatalog();
-		String newSubcatalog = request.getSubcatalog();
-		String newTitle = request.getTitle();
-		String newContent = request.getContent();
-		News news = new News(newCatalog, newSubcatalog, newTitle, newContent);
-		newsDao.save(news);
-
-		// 結果を返す：成功メッセージを返す
-		return new Response(RtnCode.SUCCESS.getMessage());
+	public NewsResponse findNews(NewsRequest request) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
-	public Response reviseNews(ReviseNewsRequest request) {
-		// 空の入力を防ぐ
-		// リクエスト内の属性を含む
-		// 空文字列を含むことはできません
-		if (request == null || request.getSerialNumber() == null || !StringUtils.hasText(request.getCatalog())
-				|| !StringUtils.hasText(request.getSubcatalog()) || !StringUtils.hasText(request.getTitle())
-				|| !StringUtils.hasText(request.getContent())) {
-			return new Response(RtnCode.CANNOT_EMPTY.getMessage());
-		}
-
-		// リクエスト内の属性を取得します
-		Integer newsId = request.getSerialNumber();
-		String newCatalog = request.getCatalog();
-		String newSubcatalog = request.getSubcatalog();
-		String newTitle = request.getTitle();
-		String newContent = request.getContent();
-
-		// Dao メソッドを使用して、新しいデータをデータベースに更新します
-		// 結果を返す：更新が成功した場合、成功メッセージを返します。失敗した場合、データが見つからないメッセージを返します
-		return newsDao.updateNews(newsId, newCatalog, newSubcatalog, newTitle, newContent) == 1
-				? new Response(RtnCode.SUCCESS.getMessage())
-				: new Response(RtnCode.NOT_FOUND.getMessage());
+	public NewsResponse reviseNews(NewsRequest request) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
-	public Response changeNewsStatus(ChangeNewsRequest request) {
-		// 空の入力を防ぐ
-		// リクエスト内の属性を含む
-		if (request == null || request.getSerialNumber() == null) {
-			return new Response(RtnCode.CANNOT_EMPTY.getMessage());
+	public NewsResponse viewNews(NewsRequest request) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public NewsResponse likeNews(NewsRequest request) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public NewsResponse dislikeNews(NewsRequest request) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public NewsResponse deleteNews(NewsRequest request) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private boolean checkNull(NewsRequest request, NewsAction action) {
+		switch (action) {
+		case ADD:
+			return request.getCatalogId() < 1 || StringUtils.hasText(request.getTitle())
+					|| StringUtils.hasText(request.getSubtitle()) || StringUtils.hasText(request.getTags())
+					|| StringUtils.hasText(request.getContent()) || request.getCreateTime() == null
+					|| request.getPublishTime() == null || request.getRemoveTime() == null
+					|| StringUtils.hasText(request.getCreator()) || StringUtils.hasText(request.getEditor())
+					|| StringUtils.hasText(request.getRemover()) || request.getImportance() < 1
+					|| request.getAudienceLevel() < 1;
+		default:
+			return true;
 		}
-		
-		// リクエスト内の属性を取得します
-		Integer id = request.getSerialNumber();
-		boolean reveal = request.isReveal();
-		
-		// Dao メソッドを使用して、データの状態をデータベースに更新します
-		// 更新が成功した場合、成功メッセージを返します。失敗した場合、エラーメッセージを返します
-		return newsDao.updateStatus(!reveal, id) == 1
-				? new Response(RtnCode.SUCCESS.getMessage())
-				: new Response(RtnCode.INCORRECT.getMessage());
 	}
 
 }

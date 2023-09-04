@@ -24,7 +24,7 @@ public class CatalogResponse {
 		this.message = message;
 		this.catalog = catalog;
 	}
-
+	
 	public CatalogResponse(String message, List<Catalog> catalogList) {
 		super();
 		this.message = message;

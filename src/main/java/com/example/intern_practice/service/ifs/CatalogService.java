@@ -5,11 +5,20 @@ import com.example.intern_practice.vo.CatalogResponse;
 
 public interface CatalogService {
 
-	// カタログを追加または変更
-	public CatalogResponse editCatalog(CatalogRequest request);
+	// カタログを新規
+	public CatalogResponse addCatalog(CatalogRequest request);
 	
 	// カタログを検索
 	public CatalogResponse findCatalog(CatalogRequest request);
+	
+	// カタログを編集
+	public CatalogResponse reviseCatalog(CatalogRequest request);
+	
+	// カタログのニュース数を1つ増やす
+	public CatalogResponse plusNew(CatalogRequest request);
+	
+	// カタログのニュース数を1つ減らす
+	public CatalogResponse minusNews(CatalogRequest request);
 		
 	// カタログを削除
 	public CatalogResponse deleteCatalog(CatalogRequest request);

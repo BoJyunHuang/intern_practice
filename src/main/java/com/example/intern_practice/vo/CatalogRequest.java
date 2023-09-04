@@ -1,5 +1,7 @@
 package com.example.intern_practice.vo;
 
+import java.util.List;
+
 public class CatalogRequest {
 
 	private Integer catalogId;
@@ -7,6 +9,7 @@ public class CatalogRequest {
 	private String subcatalog;
 	private int newsAmount;
 	private boolean deleteFlag;
+	private List<Integer> idList;
 	
 	public Integer getCatalogId() {
 		return catalogId;
@@ -37,6 +40,12 @@ public class CatalogRequest {
 	}
 	public void setDeleteFlag(boolean deleteFlag) {
 		this.deleteFlag = deleteFlag;
+	}
+	public List<Integer> getIdList() {
+		return idList;
+	}
+	public void setIdList(List<Integer> idList) {
+		this.idList = idList;
 	}
 	
 }
