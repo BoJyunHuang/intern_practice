@@ -1,6 +1,7 @@
 package com.example.intern_practice.repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -61,9 +62,16 @@ public interface NewsDao extends JpaRepository<News, Integer> {
 			+ "where news_id = :newsId", nativeQuery = true)
 	public int deleteNews(@Param("newsId") Integer newsId, @Param("removeTime") LocalDateTime removeTime,
 			@Param("remover") String remover);
-	
+
 	@Transactional
 	@Modifying
 	@Query(value = "update news set delete_flag = true where remove_time < :currentTime", nativeQuery = true)
 	public int checkRemoveTime(@Param("currentTime") LocalDateTime currentTime);
+
+	public List<News> findByCatalogId(int catalogId);
+
+	@Query(value = "select * from news where title regexp :word or subtitle regexp :word or tags regexp :word or "
+			+ "content regexp :word", nativeQuery = true)
+	public List<News> findByWord(@Param("word") String word);
+	
 }
