@@ -39,19 +39,23 @@ public class News {
 	@Column(name = "content")
 	private String content;
 
-	// 追加時間
+	// 作成日時
 	@Column(name = "create_time")
 	private LocalDateTime createTime;
 
-	// 公表時間
+	// 公開日時
 	@Column(name = "publish_time")
 	private LocalDateTime publishTime;
 
-	// 編集時間
+	// 編集日時
 	@Column(name = "edit_time")
 	private LocalDateTime editTime;
 
-	// 取り下げる時間
+	// 取り下げる日時
+	@Column(name = "expiration_time")
+	private LocalDateTime expirationTime;
+	
+	// 削除日時
 	@Column(name = "remove_time")
 	private LocalDateTime removeTime;
 
@@ -63,7 +67,7 @@ public class News {
 	@Column(name = "editor")
 	private String editor;
 
-	// 取り下げる人
+	// 削除者
 	@Column(name = "remover")
 	private String remover;
 
@@ -97,9 +101,9 @@ public class News {
 	}
 
 	public News(Integer newsId, int catalogId, String title, String subtitle, String tags, String content,
-			LocalDateTime createTime, LocalDateTime publishTime, LocalDateTime editTime, LocalDateTime removeTime,
-			String creator, String editor, String remover, int views, int likes, int dislikes, int importance,
-			int audienceLevel, boolean deleteFlag) {
+			LocalDateTime createTime, LocalDateTime publishTime, LocalDateTime editTime, LocalDateTime expirationTime,
+			LocalDateTime removeTime, String creator, String editor, String remover, int views, int likes, int dislikes,
+			int importance, int audienceLevel, boolean deleteFlag) {
 		super();
 		this.newsId = newsId;
 		this.catalogId = catalogId;
@@ -110,6 +114,7 @@ public class News {
 		this.createTime = createTime;
 		this.publishTime = publishTime;
 		this.editTime = editTime;
+		this.expirationTime = expirationTime;
 		this.removeTime = removeTime;
 		this.creator = creator;
 		this.editor = editor;
@@ -193,6 +198,14 @@ public class News {
 
 	public void setEditTime(LocalDateTime editTime) {
 		this.editTime = editTime;
+	}
+
+	public LocalDateTime getExpirationTime() {
+		return expirationTime;
+	}
+
+	public void setExpirationTime(LocalDateTime expirationTime) {
+		this.expirationTime = expirationTime;
 	}
 
 	public LocalDateTime getRemoveTime() {

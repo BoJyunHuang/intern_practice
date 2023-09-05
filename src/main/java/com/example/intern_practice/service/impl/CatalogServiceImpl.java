@@ -21,9 +21,8 @@ public class CatalogServiceImpl implements CatalogService {
 	@Override
 	public CatalogResponse addCatalog(CatalogRequest request) {
 		return checkNull(request, CatalogAction.ADD) ? new CatalogResponse(RtnCode.CANNOT_EMPTY.getMessage())
-				: outOfLimit(request) || catalogDao.insertCatalog(request.getCatalog(), request.getSubcatalog()) != 1
-						? new CatalogResponse(RtnCode.INCORRECT.getMessage())
-						: new CatalogResponse(RtnCode.SUCCESS.getMessage());
+				: result(checkInput(request)
+						&& catalogDao.insertCatalog(request.getCatalog(), request.getSubcatalog()) == 1);
 	}
 
 	@Override
@@ -36,33 +35,26 @@ public class CatalogServiceImpl implements CatalogService {
 	@Override
 	public CatalogResponse reviseCatalog(CatalogRequest request) {
 		return checkNull(request, CatalogAction.REVISE) ? new CatalogResponse(RtnCode.CANNOT_EMPTY.getMessage())
-				: outOfLimit(request) || catalogDao.updateCatalog(request.getCatalogId(), request.getCatalog(),
-						request.getSubcatalog()) != 1 ? new CatalogResponse(RtnCode.INCORRECT.getMessage())
-								: new CatalogResponse(RtnCode.SUCCESS.getMessage());
+				: result(checkInput(request) && catalogDao.updateCatalog(request.getCatalogId(), request.getCatalog(),
+						request.getSubcatalog()) == 1);
 	}
 
 	@Override
 	public CatalogResponse plusNew(CatalogRequest request) {
 		return checkNull(request, CatalogAction.PLUS) ? new CatalogResponse(RtnCode.CANNOT_EMPTY.getMessage())
-				: catalogDao.plusNewsAmount(request.getCatalogId()) == 1
-						? new CatalogResponse(RtnCode.SUCCESS.getMessage())
-						: new CatalogResponse(RtnCode.INCORRECT.getMessage());
+				: result(catalogDao.plusNewsAmount(request.getCatalogId()) == 1);
 	}
 
 	@Override
 	public CatalogResponse minusNews(CatalogRequest request) {
 		return checkNull(request, CatalogAction.MINUS) ? new CatalogResponse(RtnCode.CANNOT_EMPTY.getMessage())
-				: catalogDao.minusNewsAmount(request.getCatalogId()) == 1
-						? new CatalogResponse(RtnCode.SUCCESS.getMessage())
-						: new CatalogResponse(RtnCode.INCORRECT.getMessage());
+				: result(catalogDao.minusNewsAmount(request.getCatalogId()) == 1);
 	}
 
 	@Override
 	public CatalogResponse deleteCatalog(CatalogRequest request) {
 		return checkNull(request, CatalogAction.DELETE) ? new CatalogResponse(RtnCode.CANNOT_EMPTY.getMessage())
-				: catalogDao.deleteCatalog(request.getIdList()) != request.getIdList().size()
-						? new CatalogResponse(RtnCode.INCORRECT.getMessage())
-						: new CatalogResponse(RtnCode.SUCCESS.getMessage());
+				: result(catalogDao.deleteCatalog(request.getIdList()) == request.getIdList().size());
 	}
 
 	private boolean checkNull(CatalogRequest request, CatalogAction action) {
@@ -84,8 +76,13 @@ public class CatalogServiceImpl implements CatalogService {
 		}
 	}
 
-	private boolean outOfLimit(CatalogRequest request) {
-		return request.getCatalog().length() > 10 || request.getSubcatalog().length() > 10;
+	private boolean checkInput(CatalogRequest request) {
+		return request.getCatalog().length() <= 15 && request.getSubcatalog().length() <= 15;
+	}
+
+	private CatalogResponse result(boolean isSuccess) {
+		return isSuccess ? new CatalogResponse(RtnCode.SUCCESS.getMessage())
+				: new CatalogResponse(RtnCode.INCORRECT.getMessage());
 	}
 
 }

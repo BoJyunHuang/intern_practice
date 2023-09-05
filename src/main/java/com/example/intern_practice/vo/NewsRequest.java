@@ -14,8 +14,8 @@ public class NewsRequest {
 	private LocalDateTime createTime;
 	private LocalDateTime publishTime;
 	private LocalDateTime editTime;
+	private LocalDateTime expirationTime;
 	private LocalDateTime removeTime;
-	private boolean autoRemoval;
 	private String creator;
 	private String editor;	
 	private String remover;
@@ -81,17 +81,17 @@ public class NewsRequest {
 	public void setEditTime(LocalDateTime editTime) {
 		this.editTime = editTime;
 	}
+	public LocalDateTime getExpirationTime() {
+		return expirationTime;
+	}
+	public void setExpirationTime(LocalDateTime expirationTime) {
+		this.expirationTime = expirationTime;
+	}
 	public LocalDateTime getRemoveTime() {
 		return removeTime;
 	}
 	public void setRemoveTime(LocalDateTime removeTime) {
 		this.removeTime = removeTime;
-	}
-	public boolean isAutoRemoval() {
-		return autoRemoval;
-	}
-	public void setAutoRemoval(boolean autoRemoval) {
-		this.autoRemoval = autoRemoval;
 	}
 	public String getCreator() {
 		return creator;

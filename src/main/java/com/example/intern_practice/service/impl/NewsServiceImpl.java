@@ -22,12 +22,10 @@ public class NewsServiceImpl implements NewsService {
 	@Override
 	public NewsResponse addNews(NewsRequest request) {
 		return checkNull(request, NewsAction.ADD) ? new NewsResponse(RtnCode.CANNOT_EMPTY.getMessage())
-				: newsDao.insertNews(request.getCatalogId(), request.getTitle(), request.getSubtitle(),
-						request.getTags(), request.getContent(), LocalDateTime.now(), request.getPublishTime(),
-						request.getRemoveTime(), request.getCreator(), NewsAction.SYSTEM.getCode(),
-						request.getImportance(), request.getAudienceLevel()) == 1
-								? new NewsResponse(RtnCode.SUCCESS.getMessage())
-								: new NewsResponse(RtnCode.INCORRECT.getMessage());
+				: result(checkInput(request, NewsAction.ADD) && newsDao.insertNews(request.getCatalogId(),
+						request.getTitle(), request.getSubtitle(), request.getTags(), request.getContent(),
+						LocalDateTime.now(), request.getPublishTime(), request.getExpirationTime(),
+						request.getCreator(), request.getImportance(), request.getAudienceLevel()) == 1);
 	}
 
 	@Override
@@ -39,40 +37,36 @@ public class NewsServiceImpl implements NewsService {
 	@Override
 	public NewsResponse reviseNews(NewsRequest request) {
 		return checkNull(request, NewsAction.REVISE) ? new NewsResponse(RtnCode.CANNOT_EMPTY.getMessage())
-				: newsDao.updateNews(request.getNewsId(), request.getCatalogId(), request.getTitle(),
-						request.getSubtitle(), request.getTags(), request.getContent(), request.getPublishTime(),
-						LocalDateTime.now(), request.getRemoveTime(), request.getEditor(), request.getImportance(),
-						request.getAudienceLevel()) == 1 ? new NewsResponse(RtnCode.SUCCESS.getMessage())
-								: new NewsResponse(RtnCode.INCORRECT.getMessage());
+				: result(checkInput(request, NewsAction.REVISE)
+						&& newsDao.updateNews(request.getNewsId(), request.getCatalogId(), request.getTitle(),
+								request.getSubtitle(), request.getTags(), request.getContent(),
+								request.getPublishTime(), LocalDateTime.now(), request.getExpirationTime(),
+								request.getEditor(), request.getImportance(), request.getAudienceLevel()) == 1);
 	}
 
 	@Override
 	public NewsResponse viewNews(NewsRequest request) {
 		return checkNull(request, NewsAction.PLUS) ? new NewsResponse(RtnCode.CANNOT_EMPTY.getMessage())
-				: newsDao.plusView(request.getNewsId()) == 1 ? new NewsResponse(RtnCode.SUCCESS.getMessage())
-						: new NewsResponse(RtnCode.INCORRECT.getMessage());
+				: result(newsDao.plusView(request.getNewsId()) == 1);
 	}
 
 	@Override
 	public NewsResponse likeNews(NewsRequest request) {
 		return checkNull(request, NewsAction.PLUS) ? new NewsResponse(RtnCode.CANNOT_EMPTY.getMessage())
-				: newsDao.plusLike(request.getNewsId()) == 1 ? new NewsResponse(RtnCode.SUCCESS.getMessage())
-						: new NewsResponse(RtnCode.INCORRECT.getMessage());
+				: result(newsDao.plusLike(request.getNewsId()) == 1);
 	}
 
 	@Override
 	public NewsResponse dislikeNews(NewsRequest request) {
 		return checkNull(request, NewsAction.PLUS) ? new NewsResponse(RtnCode.CANNOT_EMPTY.getMessage())
-				: newsDao.plusDislike(request.getNewsId()) == 1 ? new NewsResponse(RtnCode.SUCCESS.getMessage())
-						: new NewsResponse(RtnCode.INCORRECT.getMessage());
+				: result(newsDao.plusDislike(request.getNewsId()) == 1);
 	}
 
 	@Override
 	public NewsResponse deleteNews(NewsRequest request) {
-		return (checkNull(request, NewsAction.DELETE) ? newsDao.checkRemoveTime(LocalDateTime.now())
-				: newsDao.deleteNews(request.getNewsId(), LocalDateTime.now(), request.getRemover())) == 1
-						? new NewsResponse(RtnCode.SUCCESS.getMessage())
-						: new NewsResponse(RtnCode.INCORRECT.getMessage());
+		return checkNull(request, NewsAction.DELETE) ? new NewsResponse(RtnCode.CANNOT_EMPTY.getMessage())
+				: result(checkInput(request, NewsAction.DELETE)
+						&& newsDao.deleteNews(request.getNewsId(), LocalDateTime.now(), request.getRemover()) == 1);
 	}
 
 	private boolean checkNull(NewsRequest request, NewsAction action) {
@@ -81,7 +75,7 @@ public class NewsServiceImpl implements NewsService {
 			return request.getCatalogId() < 1 || !StringUtils.hasText(request.getTitle())
 					|| !StringUtils.hasText(request.getSubtitle()) || !StringUtils.hasText(request.getTags())
 					|| !StringUtils.hasText(request.getContent()) || request.getPublishTime() == null
-					|| request.getRemoveTime() == null || !StringUtils.hasText(request.getCreator())
+					|| request.getExpirationTime() == null || !StringUtils.hasText(request.getCreator())
 					|| request.getImportance() < 1 || request.getAudienceLevel() < 1;
 		case FIND:
 			return request == null;
@@ -89,16 +83,40 @@ public class NewsServiceImpl implements NewsService {
 			return request.getNewsId() == null || request.getCatalogId() < 1 || !StringUtils.hasText(request.getTitle())
 					|| !StringUtils.hasText(request.getSubtitle()) || !StringUtils.hasText(request.getTags())
 					|| !StringUtils.hasText(request.getContent()) || request.getPublishTime() == null
-					|| request.getRemoveTime() == null || !StringUtils.hasText(request.getEditor())
+					|| request.getExpirationTime() == null || !StringUtils.hasText(request.getEditor())
 					|| request.getImportance() < 1 || request.getAudienceLevel() < 1;
 		case PLUS:
 			return request.getNewsId() == null;
 		case DELETE:
-			return request.getNewsId() == null || request.getRemoveTime() == null
-					|| !StringUtils.hasText(request.getRemover());
+			return request.getNewsId() == null || !StringUtils.hasText(request.getRemover());
 		default:
 			return true;
 		}
 	}
 
+	private boolean checkInput(NewsRequest request, NewsAction action) {
+		switch (action) {
+		case ADD:
+			return request.getTitle().length() <= 40 && request.getSubtitle().length() <= 80
+					&& request.getTags().length() <= 120 && request.getContent().length() <= 1000
+					&& request.getPublishTime().isAfter(LocalDateTime.now())
+					&& request.getExpirationTime().isAfter(request.getPublishTime())
+					&& request.getCreator().length() <= 45;
+		case REVISE:
+			return request.getTitle().length() <= 40 && request.getSubtitle().length() <= 80
+					&& request.getTags().length() <= 120 && request.getContent().length() <= 1000
+					&& request.getPublishTime().isAfter(LocalDateTime.now())
+					&& request.getExpirationTime().isAfter(request.getPublishTime())
+					&& request.getEditor().length() <= 45;
+		case DELETE:
+			return request.getRemover().length() <= 45;
+		default:
+			return true;
+		}
+	}
+
+	private NewsResponse result(boolean isSuccess) {
+		return isSuccess ? new NewsResponse(RtnCode.SUCCESS.getMessage())
+				: new NewsResponse(RtnCode.INCORRECT.getMessage());
+	}
 }
