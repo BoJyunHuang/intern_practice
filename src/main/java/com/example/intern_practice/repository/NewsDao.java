@@ -31,7 +31,7 @@ public interface NewsDao extends JpaRepository<News, Integer> {
 
 	@Transactional
 	@Modifying
-	@Query(value = "update news set catalogId = :catalogId, title = :title, subtitle = :subtitle, tags = :tags, "
+	@Query(value = "update news set catalog_id = :catalogId, title = :title, subtitle = :subtitle, tags = :tags, "
 			+ "content = :content, publish_time = :publishTime, edit_time = :editTime, expiration_time = :expirationTime, "
 			+ "editor = :editor, importance = :importance, audience_level = :audienceLevel "
 			+ "where news_id = :newsId", nativeQuery = true)

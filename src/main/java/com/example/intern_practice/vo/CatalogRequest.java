@@ -4,17 +4,17 @@ import java.util.List;
 
 public class CatalogRequest {
 
-	private Integer catalogId;
+	private int catalogId;
 	private String catalog;
 	private String subcatalog;
 	private int newsAmount;
 	private boolean deleteFlag;
 	private List<Integer> idList;
 	
-	public Integer getCatalogId() {
+	public int getCatalogId() {
 		return catalogId;
 	}
-	public void setCatalogId(Integer catalogId) {
+	public void setCatalogId(int catalogId) {
 		this.catalogId = catalogId;
 	}
 	public String getCatalog() {

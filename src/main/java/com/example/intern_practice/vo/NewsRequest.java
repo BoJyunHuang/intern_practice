@@ -5,7 +5,7 @@ import java.util.List;
 
 public class NewsRequest {
 
-	private Integer newsId;
+	private int newsId;
 	private int catalogId;
 	private String title;
 	private String subtitle;
@@ -27,10 +27,10 @@ public class NewsRequest {
 	private boolean deleteFlag;
 	private List<Integer> idList;
 	
-	public Integer getNewsId() {
+	public int getNewsId() {
 		return newsId;
 	}
-	public void setNewsId(Integer newsId) {
+	public void setNewsId(int newsId) {
 		this.newsId = newsId;
 	}
 	public int getCatalogId() {

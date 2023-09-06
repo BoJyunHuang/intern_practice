@@ -15,7 +15,7 @@ public interface CatalogService {
 	public CatalogResponse reviseCatalog(CatalogRequest request);
 	
 	// カタログのニュース数を1つ増やす
-	public CatalogResponse plusNew(CatalogRequest request);
+	public CatalogResponse plusNews(CatalogRequest request);
 	
 	// カタログのニュース数を1つ減らす
 	public CatalogResponse minusNews(CatalogRequest request);

@@ -31,7 +31,7 @@ public class NewsServiceImpl implements NewsService {
 	@Override
 	public NewsResponse findNews(NewsRequest request) {
 		return checkNull(request, NewsAction.FIND) ? new NewsResponse(RtnCode.SUCCESS.getMessage(), newsDao.findAll())
-				: new NewsResponse(RtnCode.SUCCESS.getMessage(), newsDao.findById(request.getNewsId()).get());
+				: new NewsResponse(RtnCode.SUCCESS.getMessage(), newsDao.findById(request.getNewsId()).orElse(null));
 	}
 
 	@Override
@@ -80,15 +80,15 @@ public class NewsServiceImpl implements NewsService {
 		case FIND:
 			return request == null;
 		case REVISE:
-			return request.getNewsId() == null || request.getCatalogId() < 1 || !StringUtils.hasText(request.getTitle())
+			return request.getNewsId() == 0 || request.getCatalogId() < 1 || !StringUtils.hasText(request.getTitle())
 					|| !StringUtils.hasText(request.getSubtitle()) || !StringUtils.hasText(request.getTags())
 					|| !StringUtils.hasText(request.getContent()) || request.getPublishTime() == null
 					|| request.getExpirationTime() == null || !StringUtils.hasText(request.getEditor())
 					|| request.getImportance() < 1 || request.getAudienceLevel() < 1;
 		case PLUS:
-			return request.getNewsId() == null;
+			return request.getNewsId() == 0;
 		case DELETE:
-			return request.getNewsId() == null || !StringUtils.hasText(request.getRemover());
+			return request.getNewsId() == 0 || !StringUtils.hasText(request.getRemover());
 		default:
 			return true;
 		}

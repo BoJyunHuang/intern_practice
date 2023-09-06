@@ -29,7 +29,8 @@ public class CatalogServiceImpl implements CatalogService {
 	public CatalogResponse findCatalog(CatalogRequest request) {
 		return checkNull(request, CatalogAction.FIND)
 				? new CatalogResponse(RtnCode.SUCCESS.getMessage(), catalogDao.findAll())
-				: new CatalogResponse(RtnCode.SUCCESS.getMessage(), catalogDao.findById(request.getCatalogId()).get());
+				: new CatalogResponse(RtnCode.SUCCESS.getMessage(),
+						catalogDao.findById(request.getCatalogId()).orElse(null));
 	}
 
 	@Override
@@ -40,7 +41,7 @@ public class CatalogServiceImpl implements CatalogService {
 	}
 
 	@Override
-	public CatalogResponse plusNew(CatalogRequest request) {
+	public CatalogResponse plusNews(CatalogRequest request) {
 		return checkNull(request, CatalogAction.PLUS) ? new CatalogResponse(RtnCode.CANNOT_EMPTY.getMessage())
 				: result(catalogDao.plusNewsAmount(request.getCatalogId()) == 1);
 	}
@@ -64,11 +65,11 @@ public class CatalogServiceImpl implements CatalogService {
 		case FIND:
 			return request == null;
 		case REVISE:
-			return request.getCatalogId() == null || !StringUtils.hasText(request.getCatalog())
+			return request.getCatalogId() == 0 || !StringUtils.hasText(request.getCatalog())
 					|| !StringUtils.hasText(request.getSubcatalog());
 		case PLUS:
 		case MINUS:
-			return request.getCatalogId() == null;
+			return request.getCatalogId() == 0;
 		case DELETE:
 			return CollectionUtils.isEmpty(request.getIdList());
 		default:
