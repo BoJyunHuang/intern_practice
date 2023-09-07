@@ -25,26 +25,46 @@ public class CatalogCotroller {
 		return "catalog-list";
 	}
 
-	@GetMapping({ "/add_catalog", "/revise_catalog/{catalogId}" })
-	public String editCatalog(@PathVariable(required = false) Integer catalogId, Model model) {
-		CatalogRequest request = new CatalogRequest();
-		if (catalogId != null) {
-			request.setCatalogId(catalogId);
-		}
-		model.addAttribute("catalog", catalogId == null ? request : catalogService.findCatalog(request).getCatalog());
-		return "catalog-edit";
+	@GetMapping("/add_catalog")
+	public String addCatalog(Model model) {
+		return toEditPage(model, new CatalogRequest(), false);
 	}
 
-	@PostMapping("/edit_catalog")
-	public String editCatalog(@ModelAttribute("catalog") CatalogRequest request, Model model) {
-		CatalogResponse res = request.getCatalogId() != 0 ? catalogService.reviseCatalog(request)
-				: catalogService.addCatalog(request);
-		model.addAttribute(res.getMessage().equals(RtnCode.SUCCESS.getMessage()) ? "success" : "errorMessage",
-				res.getMessage());
-		return "catalog-edit";
+	@GetMapping("/revise_catalog/{catalogId}")
+	public String reviseCatalog(@PathVariable Integer catalogId, Model model) {
+		CatalogRequest request = new CatalogRequest();
+		request.setCatalogId(catalogId);
+		return toEditPage(model, catalogService.findCatalog(request).getCatalog(), false);
+	}
+
+	@PostMapping("/add_catalog")
+	public String addCatalog(@ModelAttribute("catalog") CatalogRequest request, Model model) {
+		CatalogResponse res = catalogService.addCatalog(request);
+		return processResponse(res, model, true);
+	}
+
+	@PostMapping("/revise_catalog")
+	public String reviseCatalog(@ModelAttribute("catalog") CatalogRequest request, Model model) {
+		CatalogResponse res = catalogService.reviseCatalog(request);
+		return processResponse(res, model, false);
 	}
 
 	public String deleteCatalog() {
 		return "catalog-list";
+	}
+
+	private String toEditPage(Model model, Object catalog, boolean isNew) {
+		model.addAttribute("catalog", catalog);
+		model.addAttribute("isNew", isNew);
+		return "catalog-edit";
+	}
+
+	private String processResponse(CatalogResponse res, Model model, boolean isNew) {
+		model.addAttribute("errorMessage", res.getMessage());
+		if (res.getMessage().equals(RtnCode.SUCCESS.getMessage())) {
+			return "redirect:/show_catalog_list";
+		} else {
+			return toEditPage(model, model.getAttribute("catalog"), isNew);
+		}
 	}
 }

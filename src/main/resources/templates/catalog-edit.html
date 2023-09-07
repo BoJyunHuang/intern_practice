@@ -5,17 +5,19 @@
 <title>カタログ</title>
 <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.3/css/bootstrap.min.css}">
 <link rel="stylesheet" th:href="@{/style.css}" />
+<script th:src="@{/js/check.js}" type="text/javascript"></script>
 </head>
 <body>
 	<div class="container d-flex justify-content-center flex-column align-items-center w-75">
 		<div class="mt-5 mx-5">
 			<h1>カタログ</h1>
 		</div>
-		<form th:action="${'/edit_catalog'}" th:object="${catalog}" method="post" id="Excute">
+		<form th:action="${isNew ? '/add_catalog' : '/revise_catalog'}" th:object="${catalog}" method="post"
+			id="Excute">
 			<div>
 				<label for="catalogId" class="form-label text-end">カタログID</label>
 				<input type="number" id="catalogId" name="catalogId" th:field="*{catalogId}" readonly="readonly"
-					class="form-control" disabled>
+					class="form-control">
 				<br>
 			</div>
 			<div>
@@ -35,6 +37,5 @@
 		</form>
 	</div>
 	<script th:src="@{/webjars/bootstrap/5.2.3/js/bootstrap.min.js}" type="text/javascript"></script>
-	<script th:src="@{/js/check.js}" type="text/javascript"></script>
 </body>
 </html>
