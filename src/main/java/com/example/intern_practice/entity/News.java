@@ -19,9 +19,13 @@ public class News {
 	@Column(name = "news_id")
 	private Integer newsId;
 
-	// カタログID
-	@Column(name = "catalog_id")
-	private int catalogId;
+	// カタログ
+	@Column(name = "catalog")
+	private String catalog;
+
+	// サブカタログ
+	@Column(name = "subcatalog")
+	private String subcatalog;
 
 	// タイトル
 	@Column(name = "title")
@@ -54,7 +58,7 @@ public class News {
 	// 取り下げる日時
 	@Column(name = "expiration_time")
 	private LocalDateTime expirationTime;
-	
+
 	// 削除日時
 	@Column(name = "remove_time")
 	private LocalDateTime removeTime;
@@ -100,13 +104,14 @@ public class News {
 		super();
 	}
 
-	public News(Integer newsId, int catalogId, String title, String subtitle, String tags, String content,
-			LocalDateTime createTime, LocalDateTime publishTime, LocalDateTime editTime, LocalDateTime expirationTime,
-			LocalDateTime removeTime, String creator, String editor, String remover, int views, int likes, int dislikes,
-			int importance, int audienceLevel, boolean deleteFlag) {
+	public News(Integer newsId, String catalog, String subcatalog, String title, String subtitle, String tags,
+			String content, LocalDateTime createTime, LocalDateTime publishTime, LocalDateTime editTime,
+			LocalDateTime expirationTime, LocalDateTime removeTime, String creator, String editor, String remover,
+			int views, int likes, int dislikes, int importance, int audienceLevel, boolean deleteFlag) {
 		super();
 		this.newsId = newsId;
-		this.catalogId = catalogId;
+		this.catalog = catalog;
+		this.subcatalog = subcatalog;
 		this.title = title;
 		this.subtitle = subtitle;
 		this.tags = tags;
@@ -136,12 +141,20 @@ public class News {
 		this.newsId = newsId;
 	}
 
-	public int getCatalogId() {
-		return catalogId;
+	public String getCatalog() {
+		return catalog;
 	}
 
-	public void setCatalogId(int catalogId) {
-		this.catalogId = catalogId;
+	public void setCatalog(String catalog) {
+		this.catalog = catalog;
+	}
+
+	public String getSubcatalog() {
+		return subcatalog;
+	}
+
+	public void setSubcatalog(String subcatalog) {
+		this.subcatalog = subcatalog;
 	}
 
 	public String getTitle() {

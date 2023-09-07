@@ -1,13 +1,14 @@
-var errorMessage = '';
-
-if (errorMessage && errorMessage.trim() !== '') {
-    window.alert(errorMessage);
+if (success) {
+    window.alert("操作成功");
+    window.location.href = '/show_catalog_list';
+} else {
+    window.alert("操作失敗：" + errorMessage);
 }
 
 function confirmAndSubmit() {
     var confirmed = window.confirm("以下の操作を実行してもよろしいでしょうか？");
     if (confirmed) {
-        document.getElementById("addNewsForm").submit();
+        document.getElementById("Excute").submit();
     }
 }
 

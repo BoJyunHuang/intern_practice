@@ -21,8 +21,7 @@ public class CatalogServiceImpl implements CatalogService {
 	@Override
 	public CatalogResponse addCatalog(CatalogRequest request) {
 		return checkNull(request, CatalogAction.ADD) ? new CatalogResponse(RtnCode.CANNOT_EMPTY.getMessage())
-				: result(checkInput(request)
-						&& catalogDao.insertCatalog(request.getCatalog(), request.getSubcatalog()) == 1);
+				: result(checkInput(request) && catalogDao.insertCatalog(request.getName(), request.getParent()) == 1);
 	}
 
 	@Override
@@ -36,20 +35,20 @@ public class CatalogServiceImpl implements CatalogService {
 	@Override
 	public CatalogResponse reviseCatalog(CatalogRequest request) {
 		return checkNull(request, CatalogAction.REVISE) ? new CatalogResponse(RtnCode.CANNOT_EMPTY.getMessage())
-				: result(checkInput(request) && catalogDao.updateCatalog(request.getCatalogId(), request.getCatalog(),
-						request.getSubcatalog()) == 1);
+				: result(checkInput(request) && catalogDao.updateCatalog(request.getCatalogId(), request.getName(),
+						request.getParent()) == 1);
 	}
 
 	@Override
 	public CatalogResponse plusNews(CatalogRequest request) {
 		return checkNull(request, CatalogAction.PLUS) ? new CatalogResponse(RtnCode.CANNOT_EMPTY.getMessage())
-				: result(catalogDao.plusNewsAmount(request.getCatalogId()) == 1);
+				: result(catalogDao.plusNewsAmount(request.getIdList()) == request.getIdList().size());
 	}
 
 	@Override
 	public CatalogResponse minusNews(CatalogRequest request) {
 		return checkNull(request, CatalogAction.MINUS) ? new CatalogResponse(RtnCode.CANNOT_EMPTY.getMessage())
-				: result(catalogDao.minusNewsAmount(request.getCatalogId()) == 1);
+				: result(catalogDao.minusNewsAmount(request.getIdList()) == request.getIdList().size());
 	}
 
 	@Override
@@ -61,15 +60,13 @@ public class CatalogServiceImpl implements CatalogService {
 	private boolean checkNull(CatalogRequest request, CatalogAction action) {
 		switch (action) {
 		case ADD:
-			return !StringUtils.hasText(request.getCatalog()) || !StringUtils.hasText(request.getSubcatalog());
+			return !StringUtils.hasText(request.getName());
 		case FIND:
 			return request == null;
 		case REVISE:
-			return request.getCatalogId() == 0 || !StringUtils.hasText(request.getCatalog())
-					|| !StringUtils.hasText(request.getSubcatalog());
+			return request.getCatalogId() == 0 || !StringUtils.hasText(request.getName());
 		case PLUS:
 		case MINUS:
-			return request.getCatalogId() == 0;
 		case DELETE:
 			return CollectionUtils.isEmpty(request.getIdList());
 		default:
@@ -78,7 +75,7 @@ public class CatalogServiceImpl implements CatalogService {
 	}
 
 	private boolean checkInput(CatalogRequest request) {
-		return request.getCatalog().length() <= 15 && request.getSubcatalog().length() <= 15;
+		return request.getName().length() <= 15;
 	}
 
 	private CatalogResponse result(boolean isSuccess) {

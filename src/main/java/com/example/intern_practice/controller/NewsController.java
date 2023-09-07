@@ -1,7 +1,5 @@
 package com.example.intern_practice.controller;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,20 +9,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.example.intern_practice.constants.RtnCode;
-import com.example.intern_practice.entity.News;
-import com.example.intern_practice.repository.NewsDao;
 import com.example.intern_practice.service.ifs.NewsService;
 import com.example.intern_practice.vo.NewsRequest;
 import com.example.intern_practice.vo.NewsResponse;
 
 @Controller
 public class NewsController {
-
-	@Autowired
-	private NewsDao latestNewsDao;
 	
 	@Autowired
-	private NewsService latestNewsService;
+	private NewsService newsService;
 
 	@GetMapping("/news_list_open")
 	public String showOpenedNews(Model model) {
@@ -39,19 +32,18 @@ public class NewsController {
 
 	@PostMapping("/add_news")
 	public String addNews(@ModelAttribute("news") NewsRequest request, Model model) {
-	    NewsResponse res = latestNewsService.addNews(request);
+	    NewsResponse res = newsService.addNews(request);
 	    return processResponse(res, model, true);
 	}
 
 	@GetMapping("/revise_news/{newsId}")
 	public String showReviseNewsForm(@PathVariable Integer newsId, Model model) {
-	    Optional<News> news = latestNewsDao.findById(newsId);
-	    return showNewsForm(model, news.get(), false);
+	    return showNewsForm(model, "", false);
 	}
 
 	@PostMapping("/revise_news")
 	public String reviseNews(@ModelAttribute("news") NewsRequest request, Model model) {
-	    NewsResponse res = latestNewsService.reviseNews(request);
+	    NewsResponse res = newsService.reviseNews(request);
 	    return processResponse(res, model, false);
 	}
 

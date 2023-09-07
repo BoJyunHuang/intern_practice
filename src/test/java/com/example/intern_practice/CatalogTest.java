@@ -28,33 +28,36 @@ public class CatalogTest {
 
 	@BeforeAll
 	private void BeforeAll() {
-		catalogDao.saveAll(new ArrayList<>(Arrays.asList(new Catalog(1, "トップ", "政治", 0, false),
-				new Catalog(2, "トップ", "社会", 0, false), new Catalog(3, "スポーツ", "野球", 0, false))));
+		catalogDao.saveAll(new ArrayList<>(Arrays.asList(new Catalog(1, "トップ", "none", 0, false),
+				new Catalog(2, "政治", "トップ", 0, false), new Catalog(3, "社会", "トップ", 0, false),
+				new Catalog(4, "スポーツ", "none", 0, false), new Catalog(5, "野球", "スポーツ", 0, false))));
 	}
 
 	@Test
 	public void insertCatalogTest() {
-		Assert.isTrue(catalogDao.insertCatalog("スポーツ", "野球") == 0, RtnCode.TEST1_ERROR.getMessage());
-		Assert.isTrue(catalogDao.insertCatalog("スポーツ", "サッカー") == 1, RtnCode.TEST2_ERROR.getMessage());
+		Assert.isTrue(catalogDao.insertCatalog("スポーツ", "none") == 0, RtnCode.TEST1_ERROR.getMessage());
+		Assert.isTrue(catalogDao.insertCatalog("野球", "スポーツ") == 0, RtnCode.TEST2_ERROR.getMessage());
+		Assert.isTrue(catalogDao.insertCatalog("科学", "none") == 1, RtnCode.TEST3_ERROR.getMessage());
+		Assert.isTrue(catalogDao.insertCatalog("サッカー", "スポーツ") == 1, RtnCode.TEST4_ERROR.getMessage());
 	}
 
 	@Test
 	public void updateCatalogTest() {
-		catalogDao.insertCatalog("科学", "");
-		Assert.isTrue(catalogDao.updateCatalog(0, "科学", "原子力") == 0, RtnCode.TEST1_ERROR.getMessage());
-		Assert.isTrue(catalogDao.updateCatalog(4, "科学", "原子力") == 1, RtnCode.TEST2_ERROR.getMessage());
+		catalogDao.insertCatalog("原力", "none");
+		Assert.isTrue(catalogDao.updateCatalog(0, "原子力", "科学") == 0, RtnCode.TEST1_ERROR.getMessage());
+		Assert.isTrue(catalogDao.updateCatalog(8, "原子力", "科学") == 1, RtnCode.TEST2_ERROR.getMessage());
 	}
 
 	@Test
 	public void plusNewsAmountTest() {
-		Assert.isTrue(catalogDao.plusNewsAmount(0) == 0, RtnCode.TEST1_ERROR.getMessage());
-		Assert.isTrue(catalogDao.plusNewsAmount(4) == 1, RtnCode.TEST2_ERROR.getMessage());
+		Assert.isTrue(catalogDao.plusNewsAmount(new ArrayList<>(Arrays.asList(0))) == 0, RtnCode.TEST1_ERROR.getMessage());
+		Assert.isTrue(catalogDao.plusNewsAmount(new ArrayList<>(Arrays.asList(4))) == 1, RtnCode.TEST2_ERROR.getMessage());
 	}
 
 	@Test
 	public void minusNewsAmountTest() {
-		Assert.isTrue(catalogDao.minusNewsAmount(0) == 0, RtnCode.TEST1_ERROR.getMessage());
-		Assert.isTrue(catalogDao.minusNewsAmount(4) == 1, RtnCode.TEST2_ERROR.getMessage());
+		Assert.isTrue(catalogDao.minusNewsAmount(new ArrayList<>(Arrays.asList(0))) == 0, RtnCode.TEST1_ERROR.getMessage());
+		Assert.isTrue(catalogDao.minusNewsAmount(new ArrayList<>(Arrays.asList(4))) == 1, RtnCode.TEST2_ERROR.getMessage());
 	}
 
 	@Test
@@ -70,15 +73,14 @@ public class CatalogTest {
 		CatalogRequest request = new CatalogRequest();
 		Assert.isTrue(catalogService.addCatalog(request).getMessage().equals(RtnCode.CANNOT_EMPTY.getMessage()),
 				RtnCode.TEST1_ERROR.getMessage());
-		request.setCatalog("");
-		request.setSubcatalog("");
+		request.setName("");
 		Assert.isTrue(catalogService.addCatalog(request).getMessage().equals(RtnCode.CANNOT_EMPTY.getMessage()),
 				RtnCode.TEST2_ERROR.getMessage());
-		request.setCatalog("科学");
-		request.setSubcatalog("医療医療医療医療医療医療医療医療");
+		request.setParent("科学");
+		request.setName("医療医療医療医療医療医療医療医療");
 		Assert.isTrue(catalogService.addCatalog(request).getMessage().equals(RtnCode.INCORRECT.getMessage()),
 				RtnCode.TEST3_ERROR.getMessage());
-		request.setSubcatalog("医療");
+		request.setName("医療");
 		Assert.isTrue(catalogService.addCatalog(request).getMessage().equals(RtnCode.SUCCESS.getMessage()),
 				RtnCode.TEST4_ERROR.getMessage());
 	}
@@ -98,16 +100,15 @@ public class CatalogTest {
 		CatalogRequest request = new CatalogRequest();
 		Assert.isTrue(catalogService.reviseCatalog(request).getMessage().equals(RtnCode.CANNOT_EMPTY.getMessage()),
 				RtnCode.TEST1_ERROR.getMessage());
-		request.setCatalog("");
-		request.setSubcatalog("");
+		request.setName("");
 		Assert.isTrue(catalogService.reviseCatalog(request).getMessage().equals(RtnCode.CANNOT_EMPTY.getMessage()),
 				RtnCode.TEST2_ERROR.getMessage());
-		request.setCatalogId(7);
-		request.setCatalog("科学");
-		request.setSubcatalog("健康・医療");
+		request.setCatalogId(100);
+		request.setParent("科学");
+		request.setName("健康・医療");
 		Assert.isTrue(catalogService.reviseCatalog(request).getMessage().equals(RtnCode.INCORRECT.getMessage()),
 				RtnCode.TEST3_ERROR.getMessage());
-		request.setCatalogId(6);
+		request.setCatalogId(9);
 		Assert.isTrue(catalogService.reviseCatalog(request).getMessage().equals(RtnCode.SUCCESS.getMessage()),
 				RtnCode.TEST4_ERROR.getMessage());
 	}
@@ -117,27 +118,27 @@ public class CatalogTest {
 		CatalogRequest request = new CatalogRequest();
 		Assert.isTrue(catalogService.plusNews(request).getMessage().equals(RtnCode.CANNOT_EMPTY.getMessage()),
 				RtnCode.TEST1_ERROR.getMessage());
-		request.setCatalogId(7);
+		request.setIdList(new ArrayList<>(Arrays.asList(0, -1)));
 		Assert.isTrue(catalogService.plusNews(request).getMessage().equals(RtnCode.INCORRECT.getMessage()),
 				RtnCode.TEST2_ERROR.getMessage());
-		request.setCatalogId(6);
+		request.setIdList(new ArrayList<>(Arrays.asList(1, 2)));
 		Assert.isTrue(catalogService.plusNews(request).getMessage().equals(RtnCode.SUCCESS.getMessage()),
 				RtnCode.TEST3_ERROR.getMessage());
 	}
-	
+
 	@Test
 	public void minusNewsTest() {
 		CatalogRequest request = new CatalogRequest();
 		Assert.isTrue(catalogService.minusNews(request).getMessage().equals(RtnCode.CANNOT_EMPTY.getMessage()),
 				RtnCode.TEST1_ERROR.getMessage());
-		request.setCatalogId(7);
+		request.setIdList(new ArrayList<>(Arrays.asList(0, -1)));
 		Assert.isTrue(catalogService.minusNews(request).getMessage().equals(RtnCode.INCORRECT.getMessage()),
 				RtnCode.TEST2_ERROR.getMessage());
-		request.setCatalogId(6);
+		request.setIdList(new ArrayList<>(Arrays.asList(1, 2)));
 		Assert.isTrue(catalogService.minusNews(request).getMessage().equals(RtnCode.SUCCESS.getMessage()),
 				RtnCode.TEST3_ERROR.getMessage());
 	}
-	
+
 	@Test
 	public void deleteCatalogImplTest() {
 		CatalogRequest request = new CatalogRequest();

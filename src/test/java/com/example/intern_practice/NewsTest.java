@@ -36,8 +36,7 @@ public class NewsTest {
 	private String news2 = "　自民党の麻生太郎副総裁は6日、東京都内で講演し、高水準の賃上げが実現した今年の春闘に関し、岸田政権と連合による「共闘」成果だとの認識を示した。"
 			+ "「連合の芳野友子会長が自民党と一緒に取り組んだ結果、3.58％まで上がった」と述べた。自民内には連合が推す国民民主党との連立論がくすぶっている。\r\n"
 			+ "\r\n　春闘では、連合が5％程度の賃上げ要求を掲げ、政府も経済界に大幅な賃上げを要請、29年ぶりに3％台を達成した。"
-			+ "麻生氏は「一つの流れとして、変化が出てきている」と手応えを強調した。物価上昇に合わせ、給料も引き上げるべきだとし"
-			+ "「従業員の幸せを考えないと長期的に経営は成り立たない」とも語った。";
+			+ "麻生氏は「一つの流れとして、変化が出てきている」と手応えを強調した。物価上昇に合わせ、給料も引き上げるべきだとし" + "「従業員の幸せを考えないと長期的に経営は成り立たない」とも語った。";
 
 	private String news3 = "秋篠宮悠仁さま誕生\r\n" + "2006（平成18）年　秋篠宮妃紀子さまが、長男悠仁さまを出産された。皇族での男子誕生は秋篠宮さま以来41年ぶり。\r\n" + "\r\n"
 			+ "関連記事\r\n" + "「愛子さまを皇太子に」と訴えるイベント開催：女性天皇への道は開けるか\r\n" + "皇位継承はどうなるか（前編）：「未来の天皇」悠仁さままでの流れを前提とした有識者会議案\r\n"
@@ -73,15 +72,16 @@ public class NewsTest {
 
 	@BeforeAll
 	private void BeforeAll() {
-		newsDao.save(new News(1, 1, "首相、処理水の安全性説明へ　中国に科学的対応要求", "【ジャカルタ共同】岸田文雄首相は6日、インドネシアで開かれた東南アジア諸国連合（ASEAN）プラス3",
-				"主要,政治", news1, LocalDateTime.of(2023, 9, 6, 11, 28), LocalDateTime.of(2023, 9, 6, 17, 11), null,
+		newsDao.save(new News(1, "トップ", "政治", "首相、処理水の安全性説明へ　中国に科学的対応要求",
+				"【ジャカルタ共同】岸田文雄首相は6日、インドネシアで開かれた東南アジア諸国連合（ASEAN）プラス3", "主要,政治", news1,
+				LocalDateTime.of(2023, 9, 6, 11, 28), LocalDateTime.of(2023, 9, 6, 17, 11), null,
 				LocalDateTime.of(2023, 9, 9, 00, 00), null, "© 一般社団法人共同通信社", null, null, 0, 0, 0, 1, 1, false));
 	}
 
 	@Test
 	public void insertNewsTest() {
 		Assert.isTrue(
-				newsDao.insertNews(1, "麻生氏、連合と「共闘」成果強調　国民党との連立論くすぶる",
+				newsDao.insertNews("トップ", "政治", "麻生氏、連合と「共闘」成果強調　国民党との連立論くすぶる",
 						"自民党の麻生太郎副総裁は6日、東京都内で講演し、高水準の賃上げが実現した今年の春闘に関し、岸田政権と...", "政治", news2,
 						LocalDateTime.of(2023, 9, 6, 15, 43), LocalDateTime.of(2023, 9, 6, 19, 19),
 						LocalDateTime.of(2023, 9, 9, 00, 00), "© 一般社団法人共同通信社", 1, 1) == 1,
@@ -91,13 +91,13 @@ public class NewsTest {
 	@Test
 	public void updateNewsTest() {
 		Assert.isTrue(
-				newsDao.updateNews(0, 1, "麻生氏、連合と「共闘」成果強調　国民党との連立論くすぶる",
+				newsDao.updateNews(0, "トップ", "政治", "麻生氏、連合と「共闘」成果強調　国民党との連立論くすぶる",
 						"自民党の麻生太郎副総裁は6日、東京都内で講演し、高水準の賃上げが実現した今年の春闘に関し、岸田政権と...", "政治", news2,
 						LocalDateTime.of(2023, 9, 6, 19, 27), LocalDateTime.of(2023, 9, 6, 19, 21),
 						LocalDateTime.of(2023, 9, 9, 00, 00), "© 一般社団法人共同通信社", 1, 1) == 0,
 				RtnCode.TEST1_ERROR.getMessage());
 		Assert.isTrue(
-				newsDao.updateNews(2, 1, "麻生氏、連合と「共闘」成果強調　国民党との連立論くすぶる",
+				newsDao.updateNews(2, "トップ", "政治", "麻生氏、連合と「共闘」成果強調　国民党との連立論くすぶる",
 						"自民党の麻生太郎副総裁は6日、東京都内で講演し、高水準の賃上げが実現した今年の春闘に関し、岸田政権と...", "政治", news2,
 						LocalDateTime.of(2023, 9, 6, 19, 27), LocalDateTime.of(2023, 9, 6, 19, 21),
 						LocalDateTime.of(2023, 9, 9, 00, 00), "© 一般社団法人共同通信社", 1, 1) == 1,
@@ -135,7 +135,8 @@ public class NewsTest {
 		NewsRequest request = new NewsRequest();
 		Assert.isTrue(newsService.addNews(request).getMessage().equals(RtnCode.CANNOT_EMPTY.getMessage()),
 				RtnCode.TEST1_ERROR.getMessage());
-		request.setCatalogId(7);
+		request.setCatalog("社会");
+		request.setSubcatalog("文化");
 		request.setTitle("今日は何の日：9月6日");
 		request.setSubtitle("秋篠宮悠仁さま誕生");
 		request.setTags("皇室,映画,秋篠宮家,黒澤明,北野武／ビートたけし");
@@ -167,7 +168,8 @@ public class NewsTest {
 		Assert.isTrue(newsService.reviseNews(request).getMessage().equals(RtnCode.CANNOT_EMPTY.getMessage()),
 				RtnCode.TEST1_ERROR.getMessage());
 		request.setNewsId(100);
-		request.setCatalogId(7);
+		request.setCatalog("社会");
+		request.setSubcatalog("文化");
 		request.setTitle("今日は何の日：9月6日");
 		request.setSubtitle("秋篠宮悠仁さま誕生");
 		request.setTags("映画,秋篠宮家,黒澤明,北野武／ビートたけし");
@@ -196,7 +198,7 @@ public class NewsTest {
 		Assert.isTrue(newsService.viewNews(request).getMessage().equals(RtnCode.SUCCESS.getMessage()),
 				RtnCode.TEST3_ERROR.getMessage());
 	}
-	
+
 	@Test
 	public void likeNewsTest() {
 		NewsRequest request = new NewsRequest();
@@ -209,7 +211,7 @@ public class NewsTest {
 		Assert.isTrue(newsService.likeNews(request).getMessage().equals(RtnCode.SUCCESS.getMessage()),
 				RtnCode.TEST3_ERROR.getMessage());
 	}
-	
+
 	@Test
 	public void dislikeNewsTest() {
 		NewsRequest request = new NewsRequest();
@@ -222,7 +224,7 @@ public class NewsTest {
 		Assert.isTrue(newsService.dislikeNews(request).getMessage().equals(RtnCode.SUCCESS.getMessage()),
 				RtnCode.TEST3_ERROR.getMessage());
 	}
-	
+
 	@Test
 	public void deleteNewsImplTest() {
 		NewsRequest request = new NewsRequest();

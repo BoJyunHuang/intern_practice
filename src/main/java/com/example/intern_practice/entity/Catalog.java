@@ -17,13 +17,13 @@ public class Catalog {
 	@Column(name = "catalog_id")
 	private Integer catalogId;
 	
-	// カタログ
-	@Column(name = "catalog")
-	private String catalog;
+	// 名前
+	@Column(name = "name")
+	private String name;
 	
-	// サブカタログ
-	@Column(name = "subcatalog")
-	private String subcatalog;
+	// 親カタログ
+	@Column(name = "parent")
+	private String parent;
 	
 	// ニュース数
 	@Column(name = "news_amount")
@@ -38,11 +38,11 @@ public class Catalog {
 		super();
 	}
 
-	public Catalog(Integer catalogId, String catalog, String subcatalog, int newsAmount, boolean deleteFlag) {
+	public Catalog(Integer catalogId, String name, String parent, int newsAmount, boolean deleteFlag) {
 		super();
 		this.catalogId = catalogId;
-		this.catalog = catalog;
-		this.subcatalog = subcatalog;
+		this.name = name;
+		this.parent = parent;
 		this.newsAmount = newsAmount;
 		this.deleteFlag = deleteFlag;
 	}
@@ -56,20 +56,20 @@ public class Catalog {
 		this.catalogId = catalogId;
 	}
 
-	public String getCatalog() {
-		return catalog;
+	public String getName() {
+		return name;
 	}
 
-	public void setCatalog(String catalog) {
-		this.catalog = catalog;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getSubcatalog() {
-		return subcatalog;
+	public String getParent() {
+		return parent;
 	}
 
-	public void setSubcatalog(String subcatalog) {
-		this.subcatalog = subcatalog;
+	public void setParent(String parent) {
+		this.parent = parent;
 	}
 
 	public int getNewsAmount() {

@@ -22,10 +22,11 @@ public class NewsServiceImpl implements NewsService {
 	@Override
 	public NewsResponse addNews(NewsRequest request) {
 		return checkNull(request, NewsAction.ADD) ? new NewsResponse(RtnCode.CANNOT_EMPTY.getMessage())
-				: result(checkInput(request, NewsAction.ADD) && newsDao.insertNews(request.getCatalogId(),
-						request.getTitle(), request.getSubtitle(), request.getTags(), request.getContent(),
-						LocalDateTime.now(), request.getPublishTime(), request.getExpirationTime(),
-						request.getCreator(), request.getImportance(), request.getAudienceLevel()) == 1);
+				: result(checkInput(request, NewsAction.ADD)
+						&& newsDao.insertNews(request.getCatalog(), request.getSubcatalog(), request.getTitle(),
+								request.getSubtitle(), request.getTags(), request.getContent(), LocalDateTime.now(),
+								request.getPublishTime(), request.getExpirationTime(), request.getCreator(),
+								request.getImportance(), request.getAudienceLevel()) == 1);
 	}
 
 	@Override
@@ -38,8 +39,8 @@ public class NewsServiceImpl implements NewsService {
 	public NewsResponse reviseNews(NewsRequest request) {
 		return checkNull(request, NewsAction.REVISE) ? new NewsResponse(RtnCode.CANNOT_EMPTY.getMessage())
 				: result(checkInput(request, NewsAction.REVISE)
-						&& newsDao.updateNews(request.getNewsId(), request.getCatalogId(), request.getTitle(),
-								request.getSubtitle(), request.getTags(), request.getContent(),
+						&& newsDao.updateNews(request.getNewsId(), request.getCatalog(), request.getSubcatalog(),
+								request.getTitle(), request.getSubtitle(), request.getTags(), request.getContent(),
 								request.getPublishTime(), LocalDateTime.now(), request.getExpirationTime(),
 								request.getEditor(), request.getImportance(), request.getAudienceLevel()) == 1);
 	}
@@ -72,15 +73,17 @@ public class NewsServiceImpl implements NewsService {
 	private boolean checkNull(NewsRequest request, NewsAction action) {
 		switch (action) {
 		case ADD:
-			return request.getCatalogId() < 1 || !StringUtils.hasText(request.getTitle())
-					|| !StringUtils.hasText(request.getSubtitle()) || !StringUtils.hasText(request.getTags())
-					|| !StringUtils.hasText(request.getContent()) || request.getPublishTime() == null
-					|| request.getExpirationTime() == null || !StringUtils.hasText(request.getCreator())
-					|| request.getImportance() < 1 || request.getAudienceLevel() < 1;
+			return !StringUtils.hasText(request.getCatalog()) || !StringUtils.hasText(request.getSubcatalog())
+					|| !StringUtils.hasText(request.getTitle()) || !StringUtils.hasText(request.getSubtitle())
+					|| !StringUtils.hasText(request.getTags()) || !StringUtils.hasText(request.getContent())
+					|| request.getPublishTime() == null || request.getExpirationTime() == null
+					|| !StringUtils.hasText(request.getCreator()) || request.getImportance() < 1
+					|| request.getAudienceLevel() < 1;
 		case FIND:
 			return request == null;
 		case REVISE:
-			return request.getNewsId() == 0 || request.getCatalogId() < 1 || !StringUtils.hasText(request.getTitle())
+			return request.getNewsId() == 0 || !StringUtils.hasText(request.getCatalog())
+					|| !StringUtils.hasText(request.getSubcatalog()) || !StringUtils.hasText(request.getTitle())
 					|| !StringUtils.hasText(request.getSubtitle()) || !StringUtils.hasText(request.getTags())
 					|| !StringUtils.hasText(request.getContent()) || request.getPublishTime() == null
 					|| request.getExpirationTime() == null || !StringUtils.hasText(request.getEditor())
@@ -97,13 +100,15 @@ public class NewsServiceImpl implements NewsService {
 	private boolean checkInput(NewsRequest request, NewsAction action) {
 		switch (action) {
 		case ADD:
-			return request.getTitle().length() <= 40 && request.getSubtitle().length() <= 80
+			return request.getCatalog().length() <= 15 && request.getSubcatalog().length() <= 15
+					&& request.getTitle().length() <= 40 && request.getSubtitle().length() <= 80
 					&& request.getTags().length() <= 120 && request.getContent().length() <= 1000
 					&& request.getPublishTime().isAfter(LocalDateTime.now())
 					&& request.getExpirationTime().isAfter(request.getPublishTime())
 					&& request.getCreator().length() <= 45;
 		case REVISE:
-			return request.getTitle().length() <= 40 && request.getSubtitle().length() <= 80
+			return request.getCatalog().length() <= 15 && request.getSubcatalog().length() <= 15
+					&& request.getTitle().length() <= 40 && request.getSubtitle().length() <= 80
 					&& request.getTags().length() <= 120 && request.getContent().length() <= 1000
 					&& request.getPublishTime().isAfter(LocalDateTime.now())
 					&& request.getExpirationTime().isAfter(request.getPublishTime())

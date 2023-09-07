@@ -6,7 +6,8 @@ import java.util.List;
 public class NewsRequest {
 
 	private int newsId;
-	private int catalogId;
+	private String catalog;
+	private String subcatalog;
 	private String title;
 	private String subtitle;
 	private String tags;
@@ -33,11 +34,17 @@ public class NewsRequest {
 	public void setNewsId(int newsId) {
 		this.newsId = newsId;
 	}
-	public int getCatalogId() {
-		return catalogId;
+	public String getCatalog() {
+		return catalog;
 	}
-	public void setCatalogId(int catalogId) {
-		this.catalogId = catalogId;
+	public void setCatalog(String catalog) {
+		this.catalog = catalog;
+	}
+	public String getSubcatalog() {
+		return subcatalog;
+	}
+	public void setSubcatalog(String subcatalog) {
+		this.subcatalog = subcatalog;
 	}
 	public String getTitle() {
 		return title;

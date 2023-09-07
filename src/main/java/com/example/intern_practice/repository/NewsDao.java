@@ -17,30 +17,31 @@ public interface NewsDao extends JpaRepository<News, Integer> {
 
 	@Transactional
 	@Modifying
-	@Query(value = "insert into news (catalog_id, title, subtitle, tags, content, "
+	@Query(value = "insert into news (catalog, subcatalog, title, subtitle, tags, content, "
 			+ "create_time, publish_time, edit_time, expiration_time, remove_time, "
 			+ "creator, editor, remover, views, likes, dislikes, importance, audience_level, delete_flag) "
-			+ "values (:catalogId, :title, :subtitle, :tags, :content, "
+			+ "values (:catalog, :subcatalog, :title, :subtitle, :tags, :content, "
 			+ ":createTime, :publishTime, null, :expirationTime, null, "
 			+ ":creator, null, null, 0, 0, 0, :importance, :audienceLevel, false)", nativeQuery = true)
-	public int insertNews(@Param("catalogId") int catalogId, @Param("title") String title,
-			@Param("subtitle") String subtitle, @Param("tags") String tags, @Param("content") String content,
-			@Param("createTime") LocalDateTime createTime, @Param("publishTime") LocalDateTime publishTime,
-			@Param("expirationTime") LocalDateTime expirationTime, @Param("creator") String creator,
-			@Param("importance") int importance, @Param("audienceLevel") int audienceLevel);
+	public int insertNews(@Param("catalog") String catalog, @Param("subcatalog") String subcatalog,
+			@Param("title") String title, @Param("subtitle") String subtitle, @Param("tags") String tags,
+			@Param("content") String content, @Param("createTime") LocalDateTime createTime,
+			@Param("publishTime") LocalDateTime publishTime, @Param("expirationTime") LocalDateTime expirationTime,
+			@Param("creator") String creator, @Param("importance") int importance,
+			@Param("audienceLevel") int audienceLevel);
 
 	@Transactional
 	@Modifying
-	@Query(value = "update news set catalog_id = :catalogId, title = :title, subtitle = :subtitle, tags = :tags, "
+	@Query(value = "update news set catalog = :catalog, subcatalog = :subcatalog, title = :title, subtitle = :subtitle, tags = :tags, "
 			+ "content = :content, publish_time = :publishTime, edit_time = :editTime, expiration_time = :expirationTime, "
 			+ "editor = :editor, importance = :importance, audience_level = :audienceLevel "
 			+ "where news_id = :newsId", nativeQuery = true)
-	public int updateNews(@Param("newsId") Integer newsId, @Param("catalogId") int catalogId,
-			@Param("title") String title, @Param("subtitle") String subtitle, @Param("tags") String tags,
-			@Param("content") String content, @Param("publishTime") LocalDateTime publishTime,
-			@Param("editTime") LocalDateTime editTime, @Param("expirationTime") LocalDateTime expirationTime,
-			@Param("editor") String editor, @Param("importance") int importance,
-			@Param("audienceLevel") int audienceLevel);
+	public int updateNews(@Param("newsId") Integer newsId, @Param("catalog") String catalog,
+			@Param("subcatalog") String subcatalog, @Param("title") String title, @Param("subtitle") String subtitle,
+			@Param("tags") String tags, @Param("content") String content,
+			@Param("publishTime") LocalDateTime publishTime, @Param("editTime") LocalDateTime editTime,
+			@Param("expirationTime") LocalDateTime expirationTime, @Param("editor") String editor,
+			@Param("importance") int importance, @Param("audienceLevel") int audienceLevel);
 
 	@Transactional
 	@Modifying
@@ -64,7 +65,6 @@ public interface NewsDao extends JpaRepository<News, Integer> {
 	public int deleteNews(@Param("newsId") Integer newsId, @Param("removeTime") LocalDateTime removeTime,
 			@Param("remover") String remover);
 
-	public List<News> findByCatalogId(int catalogId);
 
 	@Query(value = "select * from news where title regexp :word or subtitle regexp :word or tags regexp :word or "
 			+ "content regexp :word", nativeQuery = true)
