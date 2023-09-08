@@ -1,51 +1,51 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>ニュースリスト</title>
-    <link rel="stylesheet" th:href="@{/style.css}" />
-    <script th:src="@{/js/check.js}" type="text/javascript"></script>
+<meta charset="UTF-8">
+<title>ニュースリスト</title>
+<link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.3/css/bootstrap.min.css}">
+<link rel="stylesheet" th:href="@{/style.css}" />
 </head>
 <body>
-	<div class="main-area">
-        <div class=header>
-            <h1>最新ニュースリスト</h1>
-        </div>
-        <div class=button-area>
-        	<a th:href="@{/add_news}">
-    			<button>新規追加</button>
-			</a>
-			<a th:href="@{/news_list_close}">
-    			<button>未公開</button>
-			</a>
-			<a th:href="@{/news_list_open}">
-    			<button>公開中</button>
-			</a>
-        </div>
-        <div class=list-area>
-            <table>
-                <tr>
-                    <th>タイトル</th>
-                    <th>カタログ</th>
-                    <th>サブカタログ</th>
-                    <th>投稿時間</th>
-                    <th>表示</th>
-                    <th>*</th>
-                </tr>
-
-                <tr th:each="news : ${newsList}">
-                	<td th:text="${news.title}"></td>
-                    <td th:text="${news.catalog}"></td>
-                    <td th:text="${news.subcatalog}"></td>
-                    <td th:text="${#temporals.format(news.releaseTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                    <td>
-                    	<a href="#" th:if="${news.reveal}" th:onclick="'changeNewsStatus(' + ${news.serialNumber} + ', ' + ${news.reveal} + ')'">削除</a>
-                    	<a href="#" th:unless="${news.reveal}" th:onclick="'changeNewsStatus(' + ${news.serialNumber} + ', ' + ${news.reveal} + ')'">復元</a>
-                    </td>
-                    <td><a th:href="@{/revise_news/{newsId}(newsId=${news.serialNumber})}">編集</a></td>
-                </tr>
-            </table>
-        </div>
-    </div>
+	<div class="container d-flex justify-content-center flex-column align-items-center w-100">
+		<div class="mt-5 mx-5">
+			<h1>ニュースリスト</h1>
+		</div>
+		<div class="d-flex justify-content-center">
+			<a th:href="@{/add_news}" class="btn btn-primary mx-5">新規追加</a>
+			<a th:href="@{/catalog_list}" class="btn btn-primary mx-5">カタログリスト</a>
+			<a class="btn btn-primary mx-5" onclick="confirmDelete()">削除</a>
+		</div>
+		<table class="table table-hover mt-5 w-100" style="table-layout: auto;">
+			<tr>
+				<th class="text-center">ニュースID</th>
+				<th class="text-center">カタログ</th>
+				<th class="text-center">サブカタログ</th>
+				<th class="text-center">タイトル</th>
+				<th class="text-center">作成日時</th>
+				<th class="text-center">作者</th>
+				<th class="text-center">公開日時</th>
+				<th class="text-center">操作</th>
+				<th class="text-center">選ぶ</th>
+			</tr>
+			<tr th:each="news : ${newsList}" th:object="${news}" th:if="${!news.deleteFlag}">
+				<td class="text-center align-middle" th:text="*{newsId}"></td>
+				<td class="text-center align-middle" th:text="*{catalog}"></td>
+				<td class="text-center align-middle" th:text="*{subcatalog}"></td>
+				<td class="text-center align-middle" th:text="*{title}"></td>
+				<td class="text-center align-middle" th:text="*{#temporals.format(createTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+				<td class="text-center align-middle" th:text="*{creator}"></td>
+				<td class="text-center align-middle" th:text="*{#temporals.format(publishTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+				<td class="text-center align-middle">
+					<a th:href="@{/revise_news/{newsId}(newsId=*{newsId})}">編集</a>
+				</td>
+				<td class="text-center align-middle">
+					<input type="checkbox" class="news-checkbox" th:value="*{newsId}">
+				</td>
+			</tr>
+		</table>
+	</div>
+	<script th:src="@{/webjars/bootstrap/5.2.3/js/bootstrap.min.js}" type="text/javascript"></script>
+	<script th:src="@{/js/check.js}" type="text/javascript"></script>
 </body>
 </html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>ニュース</title>
+<link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.3/css/bootstrap.min.css}">
+<link rel="stylesheet" th:href="@{/style.css}" />
+</head>
+<body>
+	<div class="container d-flex justify-content-center flex-column align-items-center w-75">
+		<div class="mt-5 mx-5">
+			<h1>カタログ</h1>
+		</div>
+		<form th:action="${isNew ? '/add_news' : '/revise_news'}" th:object="${news}" method="post" id="Excute" class="w-100">
+			<div class="form-group">
+				<label for="newsId" class="form-label text-end">ニュースID</label>
+				<input type="number" id="newsId" name="newsId" th:field="*{newsId}" class="form-control" readonly="readonly">
+				<br>
+			</div>
+			<div class="form-group">
+				<label for="catalog" class="form-label text-end">カタログ</label>
+				<input type="text" id="catalog" name="catalog" th:field="*{catalog}" class="form-control" required>
+				<div th:if="${#fields.hasErrors('catalog')}" class="invalid-feedback">
+					<span th:errors="*{catalog}"></span>
+				</div>
+				<br>
+			</div>
+			<div>
+				<label for="subcatalog" class="form-label text-end">サブカタログ</label>
+				<input type="text" id="subcatalog" name="subcatalog" th:field="*{subcatalog}" class="form-control" required>
+				<br>
+			</div>
+			<div class="form-group">
+				<label for="title" class="form-label text-end">タイトル</label>
+				<input type="text" id="title" name="title" th:field="*{title}" class="form-control" required>
+				<div th:if="${#fields.hasErrors('title')}" class="invalid-feedback">
+					<span th:errors="*{title}"></span>
+				</div>
+				<br>
+			</div>
+			<div class="form-group">
+				<label for="subtitle" class="form-label text-end">サブタイトル</label>
+				<input type="text" id="subtitle" name="subtitle" th:field="*{subtitle}" class="form-control" required>
+				<div th:if="${#fields.hasErrors('subtitle')}" class="invalid-feedback">
+					<span th:errors="*{subtitle}"></span>
+				</div>
+				<br>
+			</div>
+			<div>
+				<label for="tags" class="form-label text-end">タグ</label>
+				<input type="text" id="tags" name="tags" th:field="*{tags}" class="form-control" required>
+				<br>
+			</div>
+			<div class="form-group">
+				<label for="content" class="form-label text-end">本文</label>
+				<input type="text" id="content" name="content" th:field="*{content}" class="form-control" required>
+				<div th:if="${#fields.hasErrors('content')}" class="invalid-feedback">
+					<span th:errors="*{content}"></span>
+				</div>
+				<br>
+			</div>
+			<div class="form-group">
+				<label for="publishTime" class="form-label text-end">公開日時</label>
+				<input type="text" id="publishTime" name="publishTime" th:field="*{publishTime}" class="form-control" required>
+				<div th:if="${#fields.hasErrors('publishTime')}" class="invalid-feedback">
+					<span th:errors="*{publishTime}"></span>
+				</div>
+				<br>
+			</div>
+			<div class="form-group">
+				<label for="expirationTime" class="form-label text-end">取り下げる日時</label>
+				<input type="text" id="expirationTime" name="expirationTime" th:field="*{expirationTime}" class="form-control" required>
+				<div th:if="${#fields.hasErrors('expirationTime')}" class="invalid-feedback">
+					<span th:errors="*{expirationTime}"></span>
+				</div>
+				<br>
+			</div>
+			<div class="form-group">
+				<label for="creator" class="form-label text-end">編集者</label>
+				<input type="text" id="creator" name="creator" th:field="*{creator}" class="form-control" required>
+				<div th:if="${#fields.hasErrors('creator')}" class="invalid-feedback">
+					<span th:errors="*{creator}"></span>
+				</div>
+				<br>
+			</div>
+			<div class="form-group">
+				<label for="importance" class="form-label text-end">重要性</label>
+				<input type="text" id="importance" name="importance" th:field="*{importance}" class="form-control" required>
+				<div th:if="${#fields.hasErrors('importance')}" class="invalid-feedback">
+					<span th:errors="*{importance}"></span>
+				</div>
+				<br>
+			</div>
+			<div class="form-group">
+				<label for="audienceLevel" class="form-label text-end">視聴者のレベル</label>
+				<input type="text" id="audienceLevel" name="audienceLevel" th:field="*{audienceLevel}" class="form-control" required>
+				<div th:if="${#fields.hasErrors('audienceLevel')}" class="invalid-feedback">
+					<span th:errors="*{audienceLevel}"></span>
+				</div>
+				<br>
+			</div>
+			<div class="d-flex justify-content-evenly">
+				<input type="submit" class="btn btn-primary" value="確認" onclick="confirmAndSubmit()">
+				<a th:href="@{/news_list}" class="btn btn-primary">戻る</a>
+			</div>
+		</form>
+	</div>
+	<script th:src="@{/webjars/bootstrap/5.2.3/js/bootstrap.min.js}" type="text/javascript"></script>
+	<script th:src="@{/js/check.js}" type="text/javascript"></script>
+</body>
+</html>

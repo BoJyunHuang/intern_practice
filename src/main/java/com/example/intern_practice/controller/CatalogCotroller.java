@@ -7,8 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.example.intern_practice.constants.RtnCode;
 import com.example.intern_practice.service.ifs.CatalogService;
 import com.example.intern_practice.vo.CatalogRequest;
 import com.example.intern_practice.vo.CatalogResponse;
@@ -19,7 +20,7 @@ public class CatalogCotroller {
 	@Autowired
 	private CatalogService catalogService;
 
-	@GetMapping("/show_catalog_list")
+	@GetMapping("/catalog_list")
 	public String showCatalogList(Model model) {
 		model.addAttribute("catalogList", catalogService.findCatalog(null).getCatalogList());
 		return "catalog-list";
@@ -27,7 +28,7 @@ public class CatalogCotroller {
 
 	@GetMapping("/add_catalog")
 	public String addCatalog(Model model) {
-		return toEditPage(model, new CatalogRequest(), false);
+		return toEditPage(model, new CatalogRequest(), true);
 	}
 
 	@GetMapping("/revise_catalog/{catalogId}")
@@ -39,18 +40,20 @@ public class CatalogCotroller {
 
 	@PostMapping("/add_catalog")
 	public String addCatalog(@ModelAttribute("catalog") CatalogRequest request, Model model) {
-		CatalogResponse res = catalogService.addCatalog(request);
-		return processResponse(res, model, true);
+		model.addAttribute("result", catalogService.addCatalog(request).getMessage());
+		return "response";
 	}
 
 	@PostMapping("/revise_catalog")
 	public String reviseCatalog(@ModelAttribute("catalog") CatalogRequest request, Model model) {
-		CatalogResponse res = catalogService.reviseCatalog(request);
-		return processResponse(res, model, false);
+		model.addAttribute("result", catalogService.reviseCatalog(request).getMessage());
+		return "response";
 	}
 
-	public String deleteCatalog() {
-		return "catalog-list";
+	@PostMapping("/delete_catalog")
+	@ResponseBody
+	public CatalogResponse deleteCatalog(@RequestBody CatalogRequest request) {
+		return catalogService.deleteCatalog(request);
 	}
 
 	private String toEditPage(Model model, Object catalog, boolean isNew) {
@@ -59,12 +62,4 @@ public class CatalogCotroller {
 		return "catalog-edit";
 	}
 
-	private String processResponse(CatalogResponse res, Model model, boolean isNew) {
-		model.addAttribute("errorMessage", res.getMessage());
-		if (res.getMessage().equals(RtnCode.SUCCESS.getMessage())) {
-			return "redirect:/show_catalog_list";
-		} else {
-			return toEditPage(model, model.getAttribute("catalog"), isNew);
-		}
-	}
 }

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>カタログ</title>
+<link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.3/css/bootstrap.min.css}">
+<link rel="stylesheet" th:href="@{/style.css}" />
+</head>
+<body>
+	<div class="container d-flex justify-content-center flex-column align-items-center w-75">
+		<div class="mt-5 mx-5">
+			<div th:if="${result == 'Success!'}">
+				<p>操作成功!</p>
+				<a th:href="@{/show_catalog_list}" class="btn btn-primary">確認</a>
+			</div>
+			<div th:unless="${result == 'Success!'}">
+				<p>操作失败!</p>
+				<button class="btn btn-primary" onclick="goBack()">戻る</button>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/webjars/bootstrap/5.2.3/js/bootstrap.min.js}" type="text/javascript"></script>
+	<script th:src="@{/js/check.js}" type="text/javascript"></script>
+</body>
+</html>

@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import com.example.intern_practice.constants.NewsAction;
@@ -66,8 +67,8 @@ public class NewsServiceImpl implements NewsService {
 	@Override
 	public NewsResponse deleteNews(NewsRequest request) {
 		return checkNull(request, NewsAction.DELETE) ? new NewsResponse(RtnCode.CANNOT_EMPTY.getMessage())
-				: result(checkInput(request, NewsAction.DELETE)
-						&& newsDao.deleteNews(request.getNewsId(), LocalDateTime.now(), request.getRemover()) == 1);
+				: result(checkInput(request, NewsAction.DELETE) && newsDao.deleteNews(request.getIdList(),
+						LocalDateTime.now(), request.getRemover()) == request.getIdList().size());
 	}
 
 	private boolean checkNull(NewsRequest request, NewsAction action) {
@@ -91,7 +92,7 @@ public class NewsServiceImpl implements NewsService {
 		case PLUS:
 			return request.getNewsId() == 0;
 		case DELETE:
-			return request.getNewsId() == 0 || !StringUtils.hasText(request.getRemover());
+			return CollectionUtils.isEmpty(request.getIdList()) || !StringUtils.hasText(request.getRemover());
 		default:
 			return true;
 		}

@@ -1,6 +1,8 @@
 package com.example.intern_practice;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -124,10 +126,10 @@ public class NewsTest {
 
 	@Test
 	public void deleteNewsTest() {
-		Assert.isTrue(newsDao.deleteNews(0, LocalDateTime.of(2023, 9, 6, 19, 27), "© 一般社団法人共同通信社") == 0,
-				RtnCode.TEST1_ERROR.getMessage());
-		Assert.isTrue(newsDao.deleteNews(2, LocalDateTime.of(2023, 9, 6, 19, 27), "© 一般社団法人共同通信社") == 1,
-				RtnCode.TEST2_ERROR.getMessage());
+		Assert.isTrue(newsDao.deleteNews(new ArrayList<>(Arrays.asList(0)), LocalDateTime.of(2023, 9, 6, 19, 27),
+				"© 一般社団法人共同通信社") == 0, RtnCode.TEST1_ERROR.getMessage());
+		Assert.isTrue(newsDao.deleteNews(new ArrayList<>(Arrays.asList(2)), LocalDateTime.of(2023, 9, 6, 19, 27),
+				"© 一般社団法人共同通信社") == 1, RtnCode.TEST2_ERROR.getMessage());
 	}
 
 	@Test
@@ -230,7 +232,7 @@ public class NewsTest {
 		NewsRequest request = new NewsRequest();
 		Assert.isTrue(newsService.deleteNews(request).getMessage().equals(RtnCode.CANNOT_EMPTY.getMessage()),
 				RtnCode.TEST1_ERROR.getMessage());
-		request.setNewsId(2);
+		request.setIdList(new ArrayList<>(Arrays.asList(2)));
 		request.setRemover("管理者管理者管理者管理者管理者管理者管理者管理者管理者管理者管理者管理者管理者管理者管理者1");
 		Assert.isTrue(newsService.deleteNews(request).getMessage().equals(RtnCode.INCORRECT.getMessage()),
 				RtnCode.TEST2_ERROR.getMessage());

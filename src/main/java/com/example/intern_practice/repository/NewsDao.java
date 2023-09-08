@@ -61,8 +61,8 @@ public interface NewsDao extends JpaRepository<News, Integer> {
 	@Transactional
 	@Modifying
 	@Query(value = "update news set remove_time = :removeTime, remover = :remover, delete_flag = true "
-			+ "where news_id = :newsId", nativeQuery = true)
-	public int deleteNews(@Param("newsId") Integer newsId, @Param("removeTime") LocalDateTime removeTime,
+			+ "where news_id in :idList", nativeQuery = true)
+	public int deleteNews(@Param("idList") List<Integer> idList, @Param("removeTime") LocalDateTime removeTime,
 			@Param("remover") String remover);
 
 
