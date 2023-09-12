@@ -45,3 +45,7 @@ function deleteSelected() {
 		alert("请选择要删除的项目");
 	}
 }
+
+function goBack() {
+	window.history.back();
+}

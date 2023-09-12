@@ -9,6 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+
 @Entity
 @Table(name = "news")
 public class News {
@@ -48,6 +51,7 @@ public class News {
 	private LocalDateTime createTime;
 
 	// 公開日時
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
 	@Column(name = "publish_time")
 	private LocalDateTime publishTime;
 
@@ -56,6 +60,7 @@ public class News {
 	private LocalDateTime editTime;
 
 	// 取り下げる日時
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
 	@Column(name = "expiration_time")
 	private LocalDateTime expirationTime;
 

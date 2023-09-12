@@ -15,7 +15,7 @@ import com.example.intern_practice.vo.CatalogRequest;
 import com.example.intern_practice.vo.CatalogResponse;
 
 @Controller
-public class CatalogCotroller {
+public class CatalogController {
 
 	@Autowired
 	private CatalogService catalogService;
@@ -56,10 +56,14 @@ public class CatalogCotroller {
 		return catalogService.deleteCatalog(request);
 	}
 
+	@PostMapping("/find_catalog")
+	@ResponseBody
+	public CatalogResponse findCatalog(@RequestBody CatalogRequest request) {
+		return catalogService.findCatalogByParent(request);
+	}
+
 	private String toEditPage(Model model, Object catalog, boolean isNew) {
-		CatalogRequest request = new CatalogRequest();
-		request.setParent("none");
-		model.addAttribute("catalogOptions", catalogService.findCatalogByParent(request).getCatalogList());
+		model.addAttribute("catalogOptions", findCatalog(new CatalogRequest()).getCatalogList());
 		model.addAttribute("catalog", catalog);
 		model.addAttribute("isNew", isNew);
 		return "catalog-edit";

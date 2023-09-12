@@ -15,6 +15,7 @@
 			</div>
 			<div th:unless="${result == 'Success!'}">
 				<p>操作失败!</p>
+				<span th:text="${result}"></span>
 				<button class="btn btn-primary" onclick="goBack()">戻る</button>
 			</div>
 		</div>

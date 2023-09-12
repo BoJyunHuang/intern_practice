@@ -11,24 +11,28 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.intern_practice.service.ifs.NewsService;
+import com.example.intern_practice.vo.CatalogRequest;
 import com.example.intern_practice.vo.NewsRequest;
 import com.example.intern_practice.vo.NewsResponse;
 
 @Controller
 public class NewsController {
-	
+
 	@Autowired
 	private NewsService newsService;
+
+	@Autowired
+	private CatalogController catalogController;
 
 	@GetMapping("/news_list")
 	public String showNewsList(Model model) {
 		model.addAttribute("newsList", newsService.findNews(null).getNewsList());
 		return "news-list";
 	}
-		
+
 	@GetMapping("/add_news")
 	public String addNews(Model model) {
-	    return showNewsForm(model, new NewsRequest(), true);
+		return showNewsForm(model, new NewsRequest(), true);
 	}
 
 	@GetMapping("/revise_news/{newsId}")
@@ -40,14 +44,14 @@ public class NewsController {
 
 	@PostMapping("/add_news")
 	public String addNews(@ModelAttribute("news") NewsRequest request, Model model) {
-	    model.addAttribute("result", newsService.addNews(request).getMessage());
-	    return "response";
+		model.addAttribute("result", newsService.addNews(request).getMessage());
+		return "response";
 	}
 
 	@PostMapping("/revise_news")
 	public String reviseNews(@ModelAttribute("news") NewsRequest request, Model model) {
 		model.addAttribute("result", newsService.reviseNews(request).getMessage());
-	    return "response";
+		return "response";
 	}
 
 	@PostMapping("/delete_news")
@@ -55,11 +59,12 @@ public class NewsController {
 	public NewsResponse changeNewsStatus(@RequestBody NewsRequest request) {
 		return newsService.deleteNews(request);
 	}
-	
+
 	private String showNewsForm(Model model, Object news, boolean isNew) {
+		model.addAttribute("catalogOptions", catalogController.findCatalog(new CatalogRequest()).getCatalogList());
 		model.addAttribute("news", news);
 		model.addAttribute("isNew", isNew);
 		return "news-edit";
 	}
-	
+
 }

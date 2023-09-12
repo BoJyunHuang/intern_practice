@@ -3,6 +3,8 @@ package com.example.intern_practice.vo;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class NewsRequest {
 
 	private int newsId;
@@ -13,8 +15,10 @@ public class NewsRequest {
 	private String tags;
 	private String content;
 	private LocalDateTime createTime;
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
 	private LocalDateTime publishTime;
 	private LocalDateTime editTime;
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
 	private LocalDateTime expirationTime;
 	private LocalDateTime removeTime;
 	private String creator;

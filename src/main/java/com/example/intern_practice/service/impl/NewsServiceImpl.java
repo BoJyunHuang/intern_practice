@@ -76,19 +76,18 @@ public class NewsServiceImpl implements NewsService {
 		case ADD:
 			return !StringUtils.hasText(request.getCatalog()) || !StringUtils.hasText(request.getSubcatalog())
 					|| !StringUtils.hasText(request.getTitle()) || !StringUtils.hasText(request.getSubtitle())
-					|| !StringUtils.hasText(request.getTags()) || !StringUtils.hasText(request.getContent())
-					|| request.getPublishTime() == null || request.getExpirationTime() == null
-					|| !StringUtils.hasText(request.getCreator()) || request.getImportance() < 1
-					|| request.getAudienceLevel() < 1;
+					|| !StringUtils.hasText(request.getContent()) || request.getPublishTime() == null
+					|| request.getExpirationTime() == null || !StringUtils.hasText(request.getCreator())
+					|| request.getImportance() < 1 || request.getAudienceLevel() < 1;
 		case FIND:
 			return request == null;
 		case REVISE:
 			return request.getNewsId() == 0 || !StringUtils.hasText(request.getCatalog())
 					|| !StringUtils.hasText(request.getSubcatalog()) || !StringUtils.hasText(request.getTitle())
-					|| !StringUtils.hasText(request.getSubtitle()) || !StringUtils.hasText(request.getTags())
-					|| !StringUtils.hasText(request.getContent()) || request.getPublishTime() == null
-					|| request.getExpirationTime() == null || !StringUtils.hasText(request.getEditor())
-					|| request.getImportance() < 1 || request.getAudienceLevel() < 1;
+					|| !StringUtils.hasText(request.getSubtitle()) || !StringUtils.hasText(request.getContent())
+					|| request.getPublishTime() == null || request.getExpirationTime() == null
+					|| !StringUtils.hasText(request.getEditor()) || request.getImportance() < 1
+					|| request.getAudienceLevel() < 1;
 		case PLUS:
 			return request.getNewsId() == 0;
 		case DELETE:
