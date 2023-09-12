@@ -46,4 +46,6 @@ public interface CatalogDao extends JpaRepository<Catalog, Integer> {
 			+ "where catalog_id in :idList and news_amount = 0", nativeQuery = true)
 	public int deleteCatalog(@Param("idList") List<Integer> idList);
 
+	public List<Catalog> findByParentAndDeleteFlag(String parent, boolean deleteFlag);
+	
 }

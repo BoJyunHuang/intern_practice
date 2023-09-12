@@ -57,6 +57,9 @@ public class CatalogCotroller {
 	}
 
 	private String toEditPage(Model model, Object catalog, boolean isNew) {
+		CatalogRequest request = new CatalogRequest();
+		request.setParent("none");
+		model.addAttribute("catalogOptions", catalogService.findCatalogByParent(request).getCatalogList());
 		model.addAttribute("catalog", catalog);
 		model.addAttribute("isNew", isNew);
 		return "catalog-edit";

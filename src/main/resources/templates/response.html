@@ -11,7 +11,7 @@
 		<div class="mt-5 mx-5">
 			<div th:if="${result == 'Success!'}">
 				<p>操作成功!</p>
-				<a th:href="@{/show_catalog_list}" class="btn btn-primary">確認</a>
+				<a th:href="@{/catalog_list}" class="btn btn-primary">確認</a>
 			</div>
 			<div th:unless="${result == 'Success!'}">
 				<p>操作失败!</p>

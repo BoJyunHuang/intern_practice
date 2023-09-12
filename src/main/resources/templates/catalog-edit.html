@@ -9,15 +9,18 @@
 <body>
 	<div class="container d-flex justify-content-center flex-column align-items-center w-75">
 		<div class="mt-5 mx-5">
-			<h1>カタログ</h1>
+			<h1>カタログ 新規追加</h1>
 		</div>
 		<form th:action="${isNew ? '/add_catalog' : '/revise_catalog'}" th:object="${catalog}" method="post" id="Excute">
-			<div class="form-group">
-				<label for="catalogId" class="form-label text-end">カタログID</label>
-				<input type="number" id="catalogId" name="catalogId" th:field="*{catalogId}" class="form-control" readonly="readonly">
+			<div class="form-group my-2">
+				<label for="catalogType" class="form-label text-end">タイプ</label>
 				<br>
+				<input type="radio" id="catalog" name="type" value="catalog" onclick="toggleParentInput()" th:checked="${catalog.parent == 'none'}">
+				<label for="catalog">カタログ</label>
+				<input type="radio" id="subCatalog" name="type" value="subcatalog" onclick="toggleParentInput()" th:checked="${catalog.parent != 'none'}">
+				<label for="subCatalog">サブカタログ</label>
 			</div>
-			<div class="form-group">
+			<div class="form-group my-2">
 				<label for="name" class="form-label text-end">名前</label>
 				<input type="text" id="name" name="name" th:field="*{name}" class="form-control" required>
 				<div th:if="${#fields.hasErrors('name')}" class="invalid-feedback">
@@ -25,18 +28,20 @@
 				</div>
 				<br>
 			</div>
-			<div>
+			<div class="form-group my-2">
 				<label for="parent" class="form-label text-end">親カタログ</label>
-				<input type="text" id="parent" name="parent" th:field="*{parent}" class="form-control" required>
-				<br>
+				<select id="parent" name="parent" th:field="*{parent}" class="form-control" required th:disabled="${catalog.parent == 'none'}">
+					<option value="none">none</option>
+					<option th:each="option : ${catalogOptions}" th:value="${option.name}" th:text="${option.name}"></option>
+				</select>
 			</div>
-			<div class="d-flex justify-content-evenly">
-				<input type="submit" class="btn btn-primary" value="確認" onclick="confirmAndSubmit()">
-				<a th:href="@{/show_catalog_list}" class="btn btn-primary">戻る</a>
+			<div class="d-flex justify-content-evenly my-2">
+				<input type="submit" id="submitButton" class="btn btn-primary" value="確認" onclick="confirmAndSubmit()">
+				<a th:href="@{/catalog_list}" class="btn btn-primary">戻る</a>
 			</div>
 		</form>
 	</div>
 	<script th:src="@{/webjars/bootstrap/5.2.3/js/bootstrap.min.js}" type="text/javascript"></script>
-	<script th:src="@{/js/check.js}" type="text/javascript"></script>
+	<script th:src="@{/js/catalog-edit.js}" type="text/javascript"></script>
 </body>
 </html>

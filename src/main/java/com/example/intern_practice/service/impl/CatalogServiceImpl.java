@@ -57,6 +57,12 @@ public class CatalogServiceImpl implements CatalogService {
 				: result(catalogDao.deleteCatalog(request.getIdList()) == request.getIdList().size());
 	}
 
+	@Override
+	public CatalogResponse findCatalogByParent(CatalogRequest request) {
+		return new CatalogResponse(RtnCode.SUCCESS.getMessage(),
+				catalogDao.findByParentAndDeleteFlag(request.getParent(), false));
+	}
+
 	private boolean checkNull(CatalogRequest request, CatalogAction action) {
 		switch (action) {
 		case ADD:

@@ -22,4 +22,7 @@ public interface CatalogService {
 		
 	// カタログを削除
 	public CatalogResponse deleteCatalog(CatalogRequest request);
+	
+	// カタログを特定検索
+	public CatalogResponse findCatalogByParent(CatalogRequest request);
 }

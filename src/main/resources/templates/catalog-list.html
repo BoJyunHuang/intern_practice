@@ -18,8 +18,12 @@
 		<table class="table table-hover mt-5 mx-5 w-75" style="table-layout: fixed;">
 			<tr>
 				<th class="text-center">カタログID</th>
-				<th class="text-center">名前</th>
-				<th class="text-center">親カタログ</th>
+				<th class="text-center">
+					<a href="#" onclick="sortTable(1)">名前</a>
+				</th>
+				<th class="text-center">
+					<a href="#" onclick="sortTable(2)">親カタログ</a>
+				</th>
 				<th class="text-center">ニュース数</th>
 				<th class="text-center">操作</th>
 				<th class="text-center">選ぶ</th>
@@ -39,6 +43,6 @@
 		</table>
 	</div>
 	<script th:src="@{/webjars/bootstrap/5.2.3/js/bootstrap.min.js}" type="text/javascript"></script>
-	<script th:src="@{/js/check.js}" type="text/javascript"></script>
+	<script th:src="@{/js/catalog-list.js}" type="text/javascript"></script>
 </body>
 </html>

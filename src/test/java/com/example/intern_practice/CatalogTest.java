@@ -50,14 +50,18 @@ public class CatalogTest {
 
 	@Test
 	public void plusNewsAmountTest() {
-		Assert.isTrue(catalogDao.plusNewsAmount(new ArrayList<>(Arrays.asList(0))) == 0, RtnCode.TEST1_ERROR.getMessage());
-		Assert.isTrue(catalogDao.plusNewsAmount(new ArrayList<>(Arrays.asList(4))) == 1, RtnCode.TEST2_ERROR.getMessage());
+		Assert.isTrue(catalogDao.plusNewsAmount(new ArrayList<>(Arrays.asList(0))) == 0,
+				RtnCode.TEST1_ERROR.getMessage());
+		Assert.isTrue(catalogDao.plusNewsAmount(new ArrayList<>(Arrays.asList(4))) == 1,
+				RtnCode.TEST2_ERROR.getMessage());
 	}
 
 	@Test
 	public void minusNewsAmountTest() {
-		Assert.isTrue(catalogDao.minusNewsAmount(new ArrayList<>(Arrays.asList(0))) == 0, RtnCode.TEST1_ERROR.getMessage());
-		Assert.isTrue(catalogDao.minusNewsAmount(new ArrayList<>(Arrays.asList(4))) == 1, RtnCode.TEST2_ERROR.getMessage());
+		Assert.isTrue(catalogDao.minusNewsAmount(new ArrayList<>(Arrays.asList(0))) == 0,
+				RtnCode.TEST1_ERROR.getMessage());
+		Assert.isTrue(catalogDao.minusNewsAmount(new ArrayList<>(Arrays.asList(4))) == 1,
+				RtnCode.TEST2_ERROR.getMessage());
 	}
 
 	@Test
@@ -66,6 +70,14 @@ public class CatalogTest {
 				RtnCode.TEST1_ERROR.getMessage());
 		Assert.isTrue(catalogDao.deleteCatalog(new ArrayList<>(Arrays.asList(1, 2))) == 2,
 				RtnCode.TEST2_ERROR.getMessage());
+	}
+
+	@Test
+	public void findByParentTest() {
+		Assert.isTrue(catalogDao.findByParentAndDeleteFlag(null, false).size() == 0, RtnCode.TEST1_ERROR.getMessage());
+		Assert.isTrue(catalogDao.findByParentAndDeleteFlag("", false).size() == 0, RtnCode.TEST2_ERROR.getMessage());
+		Assert.isTrue(catalogDao.findByParentAndDeleteFlag("トップ", false).size() == 3, RtnCode.TEST3_ERROR.getMessage());
+		Assert.isTrue(catalogDao.findByParentAndDeleteFlag("none", false).size() == 4, RtnCode.TEST4_ERROR.getMessage());
 	}
 
 	@Test
