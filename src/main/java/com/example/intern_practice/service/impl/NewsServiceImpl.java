@@ -42,7 +42,7 @@ public class NewsServiceImpl implements NewsService {
 	
 	@Override
 	public NewsResponse pageNews(NewsRequest request) {
-		Order order = new Sort.Order(Sort.Direction.ASC, "news_id");
+		Order order = new Sort.Order(Sort.Direction.ASC, "newsId");
 		Pageable pageable = PageRequest.of(request.getPageNum(), request.getPageSize(), Sort.by(order));
 		return new NewsResponse(RtnCode.SUCCESS.getMessage(), newsDao.findAll(pageable));
 	}

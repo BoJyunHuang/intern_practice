@@ -53,17 +53,17 @@
 				<li th:if="${newsList.hasPrevious()}">
 					<a th:href="'/news-list?pageNum=' + ${newsList.previousPageable().getPageNumber()} +'&pageSize=' + ${pageSize}">上一頁</a>
 				</li>
-				<li th:each="pageNum:${#numbers.sequence(0,newsList.getTotalPage()-1)}">
+				<li th:each="pageNum:${#numbers.sequence(0,newsList.getTotalPages()-1)}">
 					<a th:href="'/news-list?pageNum=' + ${pageNum} +'&pageSize=' + ${pageSize}" th:text="${pageNum+ 1}"
-						th:if="${pageNum ne newsList.pageable.getRageNumber()}"></a>
+						th:if="${pageNum ne newsList.pageable.getPageNumber()}"></a>
 					<a th:href="'/news-list?pageNum=' + ${pageNum} +'&pageSize=' + ${pageSize}" th:text="${pageNum+ 1}"
-						th:if="${pageNum eq newsList.pageable.getRageNumber()}" th:style="'font-weight:bold; background: #6fae9'"></a>
+						th:if="${pageNum eq newsList.pageable.getPageNumber()}" th:style="'font-weight:bold; background: #6fae9'"></a>
 				</li>
 				<li th:if="${newsList.hasNext()}">
 					<a th:href="'/news-list?pageNum=' + ${newsList.nextPageable().getPageNumber()} +'&pageSize=' + ${pageSize}">下一頁</a>
 				</li>
 				<li>
-					<a th:href="'/news-list?pageNum=' + ${newsList.getTotalPage()-1} + '&pageSize=' + ${pageSize}">尾頁</a>
+					<a th:href="'/news-list?pageNum=' + ${newsList.getTotalPages()-1} + '&pageSize=' + ${pageSize}">尾頁</a>
 				</li>
 			</ul>
 		</div>
