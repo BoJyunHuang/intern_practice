@@ -31,19 +31,11 @@ public class NewsRequest {
 	private int audienceLevel;
 	private boolean deleteFlag;
 	private List<Integer> idList;
-	private int pageNum;
-	private int pageSize;
 		
 	public NewsRequest() {
 		super();
 	}
-	
-	public NewsRequest(int pageNum, int pageSize) {
-		super();
-		this.pageNum = pageNum;
-		this.pageSize = pageSize;
-	}
-	
+		
 	public int getNewsId() {
 		return newsId;
 	}
@@ -176,16 +168,5 @@ public class NewsRequest {
 	public void setIdList(List<Integer> idList) {
 		this.idList = idList;
 	}
-	public int getPageNum() {
-		return pageNum;
-	}
-	public void setPageNum(int pageNum) {
-		this.pageNum = pageNum;
-	}
-	public int getPageSize() {
-		return pageSize;
-	}
-	public void setPageSize(int pageSize) {
-		this.pageSize = pageSize;
-	}
+
 }

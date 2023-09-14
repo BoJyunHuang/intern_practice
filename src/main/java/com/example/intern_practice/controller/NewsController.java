@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.intern_practice.service.ifs.NewsService;
@@ -26,18 +24,9 @@ public class NewsController {
 	@Autowired
 	private CatalogController catalogController;
 
-//	@GetMapping("/news_list")
-//	public String showNewsList(Model model) {
-//		model.addAttribute("newsList", newsService.findNews(null).getNewsList());
-//		return "news-list";
-//	}
-
-	@RequestMapping("/news_list")
-	public String pageNewsList(Model model,
-			@RequestParam(name = "pageNum", required = false, defaultValue = "0") int pageNum,
-			@RequestParam(name = "pageSize", required = false, defaultValue = "1") int pageSize) {
-		model.addAttribute("newsList", newsService.pageNews(new NewsRequest(pageNum, pageSize)).getNewsPage());
-		model.addAttribute("pageSize",pageSize);
+	@GetMapping("/news_list")
+	public String showNewsList(Model model) {
+		model.addAttribute("newsList", newsService.findNews(null).getNewsList());
 		return "news-list";
 	}
 

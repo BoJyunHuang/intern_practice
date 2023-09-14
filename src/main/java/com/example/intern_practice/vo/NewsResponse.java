@@ -2,8 +2,6 @@ package com.example.intern_practice.vo;
 
 import java.util.List;
 
-import org.springframework.data.domain.Page;
-
 import com.example.intern_practice.entity.News;
 
 public class NewsResponse {
@@ -11,7 +9,6 @@ public class NewsResponse {
 	private String message;
 	private News news;
 	private List<News> newsList;
-	private Page<News> newsPage;
 	
 	public NewsResponse() {
 		super();
@@ -32,12 +29,6 @@ public class NewsResponse {
 		super();
 		this.message = message;
 		this.newsList = newsList;
-	}
-
-	public NewsResponse(String message, Page<News> newsPage) {
-		super();
-		this.message = message;
-		this.newsPage = newsPage;
 	}
 
 	public String getMessage() {
@@ -64,12 +55,4 @@ public class NewsResponse {
 		this.newsList = newsList;
 	}
 
-	public Page<News> getNewsPage() {
-		return newsPage;
-	}
-
-	public void setNewsPage(Page<News> newsPage) {
-		this.newsPage = newsPage;
-	}
-	
 }

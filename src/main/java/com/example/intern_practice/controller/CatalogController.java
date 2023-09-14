@@ -20,6 +20,11 @@ public class CatalogController {
 	@Autowired
 	private CatalogService catalogService;
 
+	@GetMapping("/admin")
+	public String adminPage() {
+		return "admin";
+	}
+	
 	@GetMapping("/catalog_list")
 	public String showCatalogList(Model model) {
 		model.addAttribute("catalogList", catalogService.findCatalog(null).getCatalogList());
