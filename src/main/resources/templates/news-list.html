@@ -12,6 +12,7 @@
 			<h1>ニュースリスト</h1>
 		</div>
 		<div class="d-flex justify-content-center">
+			<a th:href="@{/home}" class="btn btn-primary mx-5">ホーム</a>
 			<a th:href="@{/add_news}" class="btn btn-primary mx-5">新規追加</a>
 			<a th:href="@{/catalog_list}" class="btn btn-primary mx-5">カタログリスト</a>
 			<a class="btn btn-primary mx-5" onclick="confirmDelete()">削除</a>
@@ -44,6 +45,28 @@
 				</td>
 			</tr>
 		</table>
+		<div>
+			<ul>
+				<li>
+					<a th:href="'/news-list?pageNum=0&pageSize=' + ${pageSize}">首頁</a>
+				</li>
+				<li th:if="${newsList.hasPrevious()}">
+					<a th:href="'/news-list?pageNum=' + ${newsList.previousPageable().getPageNumber()} +'&pageSize=' + ${pageSize}">上一頁</a>
+				</li>
+				<li th:each="pageNum:${#numbers.sequence(0,newsList.getTotalPage()-1)}">
+					<a th:href="'/news-list?pageNum=' + ${pageNum} +'&pageSize=' + ${pageSize}" th:text="${pageNum+ 1}"
+						th:if="${pageNum ne newsList.pageable.getRageNumber()}"></a>
+					<a th:href="'/news-list?pageNum=' + ${pageNum} +'&pageSize=' + ${pageSize}" th:text="${pageNum+ 1}"
+						th:if="${pageNum eq newsList.pageable.getRageNumber()}" th:style="'font-weight:bold; background: #6fae9'"></a>
+				</li>
+				<li th:if="${newsList.hasNext()}">
+					<a th:href="'/news-list?pageNum=' + ${newsList.nextPageable().getPageNumber()} +'&pageSize=' + ${pageSize}">下一頁</a>
+				</li>
+				<li>
+					<a th:href="'/news-list?pageNum=' + ${newsList.getTotalPage()-1} + '&pageSize=' + ${pageSize}">尾頁</a>
+				</li>
+			</ul>
+		</div>
 	</div>
 	<script th:src="@{/webjars/bootstrap/5.2.3/js/bootstrap.min.js}" type="text/javascript"></script>
 	<script th:src="@{/js/check.js}" type="text/javascript"></script>

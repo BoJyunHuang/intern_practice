@@ -3,6 +3,10 @@ package com.example.intern_practice.service.impl;
 import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -34,6 +38,13 @@ public class NewsServiceImpl implements NewsService {
 	public NewsResponse findNews(NewsRequest request) {
 		return checkNull(request, NewsAction.FIND) ? new NewsResponse(RtnCode.SUCCESS.getMessage(), newsDao.findAll())
 				: new NewsResponse(RtnCode.SUCCESS.getMessage(), newsDao.findById(request.getNewsId()).orElse(null));
+	}
+	
+	@Override
+	public NewsResponse pageNews(NewsRequest request) {
+		Order order = new Sort.Order(Sort.Direction.ASC, "news_id");
+		Pageable pageable = PageRequest.of(request.getPageNum(), request.getPageSize(), Sort.by(order));
+		return new NewsResponse(RtnCode.SUCCESS.getMessage(), newsDao.findAll(pageable));
 	}
 
 	@Override
@@ -124,4 +135,5 @@ public class NewsServiceImpl implements NewsService {
 		return isSuccess ? new NewsResponse(RtnCode.SUCCESS.getMessage())
 				: new NewsResponse(RtnCode.INCORRECT.getMessage());
 	}
+
 }

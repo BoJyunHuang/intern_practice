@@ -10,6 +10,7 @@ public interface NewsService {
 
 	// ニュースを検索
 	public NewsResponse findNews(NewsRequest request);
+	public NewsResponse pageNews(NewsRequest request);
 	
 	// ニュースを編集
 	public NewsResponse reviseNews(NewsRequest request);
