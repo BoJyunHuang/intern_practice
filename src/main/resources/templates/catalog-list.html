@@ -15,17 +15,17 @@
 		<div id="layoutSidenav_content">
 			<main>
 				<div class="container-fluid px-4">
-					<h1 class="mt-4">Tables</h1>
+					<h1 class="mt-4">カタログ</h1>
 					<ol class="breadcrumb mb-4">
 						<li class="breadcrumb-item">
-							<a href="#">Dashboard</a>
+							<a th:href="@{/admin}">管理</a>
 						</li>
-						<li class="breadcrumb-item active">Tables</li>
+						<li class="breadcrumb-item active">カタログ</li>
 					</ol>
 					<div class="card mb-4">
-						<div class="card-body">
-							<a th:href="@{/add_catalog}" class="btn btn-primary mx-5">新規追加</a>
-							<a class="btn btn-primary mx-5" onclick="confirmDelete()">削除</a>
+						<div class="card-body d-flex justify-content-between">
+							<a th:href="@{/add_catalog}" class="btn btn-secondary mx-5">新規追加</a>
+							<a class="btn btn-secondary mx-5" onclick="confirmDelete()">削除</a>
 						</div>
 					</div>
 					<div class="card mb-4">

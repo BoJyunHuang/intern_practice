@@ -80,12 +80,12 @@ public class NewsController {
 	private String showNewsForm(Model model, Object news, boolean isNew) {
 		List<Catalog> res = catalogController.findCatalog(new CatalogRequest()).getCatalogList();
 		model.addAttribute("catalogOptions", res);
+		CatalogRequest request = new CatalogRequest();
 		if (isNew) {
-			CatalogRequest request = new CatalogRequest();
-			request.setParent(res.get(0).getParent());
-			List<Catalog> res2 = catalogController.findCatalog(request).getCatalogList();
-			model.addAttribute("catalogOptions", res2);
+			request.setParent(res.get(0).getName());
 		}
+		List<Catalog> res2 = catalogController.findCatalog(request).getCatalogList();
+		model.addAttribute("subcatalogOptions", res2);
 		model.addAttribute("news", news);
 		model.addAttribute("isNew", isNew);
 		return "news-edit";

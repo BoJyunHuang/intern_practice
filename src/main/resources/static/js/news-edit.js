@@ -1,14 +1,8 @@
-var catalogInput = document.getElementById('catalog');
-var subcatalogInput = document.getElementById('subcatalog');
 var titleInput = document.getElementById('title');
 var subtitleInput = document.getElementById('subtitle');
 var contentInput = document.getElementById('content');
-var publishTimeInput = document.getElementById('publishTime');
-var expirationTimeInput = document.getElementById('expirationTime');
 var creatorInput = document.getElementById('creator');
 var editorInput = document.getElementById('editor');
-var importanceInput = document.getElementById('importance');
-var audienceLevelInput = document.getElementById('audienceLevel');
 var submitButton = document.getElementById("submitButton");
 
 document.getElementById("catalog").addEventListener("change", function() {
@@ -40,5 +34,5 @@ contentInput.addEventListener("input", function() {
 });
 
 function confirmAndSubmit() {
-	validateAllInputs() && confirm("以下の操作を実行してもよろしいでしょうか？") && document.getElementById("Excute").submit();
+	confirm("以下の操作を実行してもよろしいでしょうか？") && document.getElementById("Excute").submit();
 }
