@@ -1,5 +1,7 @@
 package com.example.intern_practice.controller;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +14,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.intern_practice.constants.RtnCode;
 import com.example.intern_practice.entity.Catalog;
+import com.example.intern_practice.service.ifs.CatalogService;
 import com.example.intern_practice.service.ifs.NewsService;
 import com.example.intern_practice.vo.CatalogRequest;
 import com.example.intern_practice.vo.NewsRequest;
@@ -25,8 +29,8 @@ public class NewsController {
 	private NewsService newsService;
 
 	@Autowired
-	private CatalogController catalogController;
-
+	private CatalogService catalogService;
+	
 	@GetMapping("/news_list")
 	public String showNewsList(Model model) {
 		model.addAttribute("newsList", newsService.findNews(null).getNewsList());
@@ -53,6 +57,19 @@ public class NewsController {
 
 	@PostMapping("/add_news")
 	public String addNews(@ModelAttribute("news") NewsRequest request, Model model) {
+		String res = newsService.addNews(request).getMessage();
+		if (res.equals(RtnCode.SUCCESS.getMessage())) {
+			CatalogRequest req = new CatalogRequest();
+			req.setName(request.getCatalog());
+			req.setParent("none");
+			Catalog catalog1 = catalogService.findCatalogByNameAndParent(req).getCatalog();
+			req.setName(request.getSubcatalog());
+			req.setParent(request.getCatalog());
+			Catalog catalog2 = catalogService.findCatalogByNameAndParent(req).getCatalog();
+			List<Integer> idList = new ArrayList<>(Arrays.asList(catalog1.getCatalogId(),catalog2.getCatalogId()));
+			req.setIdList(idList);
+			catalogService.plusNews(req);
+		}
 		model.addAttribute("result", newsService.addNews(request).getMessage());
 		return "response";
 	}
@@ -73,19 +90,20 @@ public class NewsController {
 	public String ReadNews(@PathVariable Integer newsId, Model model) {
 		NewsRequest request = new NewsRequest();
 		request.setNewsId(newsId);
+		newsService.viewNews(request);
 		model.addAttribute("news", newsService.findNews(request).getNews());
 		return "news";
 	}
 
 	private String showNewsForm(Model model, Object news, boolean isNew) {
-		List<Catalog> res = catalogController.findCatalog(new CatalogRequest()).getCatalogList();
+		List<Catalog> res = catalogService.findCatalogByParent(new CatalogRequest()).getCatalogList();
 		model.addAttribute("catalogOptions", res);
 		CatalogRequest request = new CatalogRequest();
 		if (isNew) {
 			request.setParent(res.get(0).getName());
+			List<Catalog> res2 = catalogService.findCatalogByParent(request).getCatalogList();
+			model.addAttribute("subcatalogOptions", res2);
 		}
-		List<Catalog> res2 = catalogController.findCatalog(request).getCatalogList();
-		model.addAttribute("subcatalogOptions", res2);
 		model.addAttribute("news", news);
 		model.addAttribute("isNew", isNew);
 		return "news-edit";

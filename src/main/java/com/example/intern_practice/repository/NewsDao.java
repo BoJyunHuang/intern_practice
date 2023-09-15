@@ -15,6 +15,7 @@ import com.example.intern_practice.entity.News;
 @Repository
 public interface NewsDao extends JpaRepository<News, Integer> {
 
+	// ニュースを挿入する。
 	@Transactional
 	@Modifying
 	@Query(value = "insert into news (catalog, subcatalog, title, subtitle, tags, content, "
@@ -30,6 +31,7 @@ public interface NewsDao extends JpaRepository<News, Integer> {
 			@Param("creator") String creator, @Param("importance") int importance,
 			@Param("audienceLevel") int audienceLevel);
 
+	// ニュースを更新する。
 	@Transactional
 	@Modifying
 	@Query(value = "update news set catalog = :catalog, subcatalog = :subcatalog, title = :title, subtitle = :subtitle, tags = :tags, "
@@ -43,21 +45,25 @@ public interface NewsDao extends JpaRepository<News, Integer> {
 			@Param("expirationTime") LocalDateTime expirationTime, @Param("editor") String editor,
 			@Param("importance") int importance, @Param("audienceLevel") int audienceLevel);
 
+	// ニュースの閲覧数を増やする。
 	@Transactional
 	@Modifying
 	@Query(value = "update news set views = views + 1 where news_id = :newsId", nativeQuery = true)
 	public int plusView(@Param("newsId") Integer newsId);
 
+	// ニュースのいいね数を増やする。
 	@Transactional
 	@Modifying
 	@Query(value = "update news set likes = likes + 1 where news_id = :newsId", nativeQuery = true)
 	public int plusLike(@Param("newsId") Integer newsId);
 
+	// ニュースの「いいえ」数を増やする。
 	@Transactional
 	@Modifying
 	@Query(value = "update news set dislikes = dislikes + 1 where news_id = :newsId", nativeQuery = true)
 	public int plusDislike(@Param("newsId") Integer newsId);
 
+	// ニュースを削除する。
 	@Transactional
 	@Modifying
 	@Query(value = "update news set remove_time = :removeTime, remover = :remover, delete_flag = true "
@@ -65,9 +71,6 @@ public interface NewsDao extends JpaRepository<News, Integer> {
 	public int deleteNews(@Param("idList") List<Integer> idList, @Param("removeTime") LocalDateTime removeTime,
 			@Param("remover") String remover);
 
-
-	@Query(value = "select * from news where title regexp :word or subtitle regexp :word or tags regexp :word or "
-			+ "content regexp :word", nativeQuery = true)
-	public List<News> findByWord(@Param("word") String word);
-
+	// 発行日時の降順ですべてのニュースを取得する。
+	public List<News> findAllByOrderByPublishTimeDesc();
 }
