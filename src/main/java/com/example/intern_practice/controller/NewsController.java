@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,7 +32,7 @@ public class NewsController {
 
 	@Autowired
 	private CatalogService catalogService;
-	
+
 	@GetMapping("/news_list")
 	public String showNewsList(Model model) {
 		model.addAttribute("newsList", newsService.findNews(null).getNewsList());
@@ -55,6 +57,19 @@ public class NewsController {
 		return showNewsForm(model, newsService.findNews(request).getNews(), false);
 	}
 
+	@PostMapping("/preview_news")
+	@ResponseBody
+	public NewsResponse previewNews(@RequestBody NewsRequest request, HttpSession session, Model model) {
+		session.setAttribute("previewNews", request);
+		return new NewsResponse(RtnCode.SUCCESS.getMessage());
+	}
+
+	@GetMapping("/preview_news")
+	public String previewNews(Model model, HttpSession session) {
+		model.addAttribute("news", (NewsRequest) session.getAttribute("previewNews"));
+		return "preview-news";
+	}
+
 	@PostMapping("/add_news")
 	public String addNews(@ModelAttribute("news") NewsRequest request, Model model) {
 		String res = newsService.addNews(request).getMessage();
@@ -66,7 +81,7 @@ public class NewsController {
 			req.setName(request.getSubcatalog());
 			req.setParent(request.getCatalog());
 			Catalog catalog2 = catalogService.findCatalogByNameAndParent(req).getCatalog();
-			List<Integer> idList = new ArrayList<>(Arrays.asList(catalog1.getCatalogId(),catalog2.getCatalogId()));
+			List<Integer> idList = new ArrayList<>(Arrays.asList(catalog1.getCatalogId(), catalog2.getCatalogId()));
 			req.setIdList(idList);
 			catalogService.plusNews(req);
 		}

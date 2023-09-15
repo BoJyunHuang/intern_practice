@@ -35,9 +35,7 @@
 								<div class="form-group">
 									<label for="name" class="form-label text-end">名前</label>
 									<input type="text" id="name" name="name" th:field="*{name}" class="form-control" required>
-									<div th:if="${#fields.hasErrors('name')}" class="invalid-feedback">
-										<span th:errors="*{name}"></span>
-									</div>
+									<div class="invalid-feedback">必須です</div>
 									<br>
 								</div>
 								<div class="form-group">
@@ -49,6 +47,7 @@
 								</div>
 								<div class="d-flex justify-content-evenly my-3">
 									<input type="submit" id="submitButton" class="btn btn-secondary" value="確認" onclick="confirmAndSubmit()">
+									<button class="btn btn-primary" onclick="goBack()">戻る</button>
 								</div>
 							</form>
 						</div>

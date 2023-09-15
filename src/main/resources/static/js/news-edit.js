@@ -36,3 +36,40 @@ contentInput.addEventListener("input", function() {
 function confirmAndSubmit() {
 	confirm("以下の操作を実行してもよろしいでしょうか？") && document.getElementById("Excute").submit();
 }
+
+function goBack() {
+	window.history.back();
+}
+
+function save() {
+	// 禁用save按钮
+    document.getElementById('saveButton').disabled = true;
+	var requestBody = {
+		catalog: $('#catalog').val(),
+		subcatalog: $('#subcatalog').val(),
+		title: $('#title').val(),
+		subtitle: $('#subtitle').val(),
+		tags: $('#tags').val(),
+		content: $('#content').val(),
+		publishTime: $('#publishTime').val(),
+		expirationTime: $('#expirationTime').val(),
+		creator: $('#creator').val(),
+		importance: $('input[name="stack1"]:checked').val(),
+		audienceLevel: $('input[name="stack2"]:checked').val(),
+	};
+	console.log(requestBody);
+	fetch('/preview_news', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(requestBody)
+	}).then(response => response.json())
+		.then(data => {
+			document.getElementById('previewButton').removeAttribute('disabled');
+			alert(data.message);
+		})
+		.catch(error => {
+			console.error('预览数据时出错：', error);
+		});
+}

@@ -27,3 +27,7 @@ window.addEventListener('DOMContentLoaded', () => {
         scrollPos = currentTop;
     });
 })
+
+function goBack() {
+	window.history.back();
+}

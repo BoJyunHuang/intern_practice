@@ -24,8 +24,8 @@
 					</ol>
 					<div class="card mb-4">
 						<div class="card-body d-flex justify-content-between">
-							<a th:href="@{/add_catalog}" class="btn btn-secondary mx-5">新規追加</a>
-							<a class="btn btn-secondary mx-5" onclick="confirmDelete()">削除</a>
+							<a th:href="@{/add_catalog}" class="btn btn-primary mx-5">新規追加</a>
+							<a class="btn btn-danger mx-5" onclick="confirmDelete()">削除</a>
 						</div>
 					</div>
 					<div class="card mb-4">
@@ -73,6 +73,9 @@
 					</div>
 				</div>
 			</main>
+			<div class="d-flex justify-content-center">
+				<button class="btn btn-secondary" onclick="goBack()">戻る</button>
+			</div>
 			<div th:replace="admin::footer"></div>
 		</div>
 	</div>
