@@ -1,6 +1,7 @@
 package com.example.intern_practice.vo;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -16,10 +17,10 @@ public class NewsRequest {
 	private String content;
 	private LocalDateTime createTime;
 	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
-	private LocalDateTime publishTime;
+	private LocalDateTime publishTime = LocalDateTime.now();
 	private LocalDateTime editTime;
 	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
-	private LocalDateTime expirationTime;
+	private LocalDateTime expirationTime = LocalDateTime.now().plus(3, ChronoUnit.DAYS);
 	private LocalDateTime removeTime;
 	private String creator;
 	private String editor;	

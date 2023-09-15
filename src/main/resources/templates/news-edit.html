@@ -19,8 +19,7 @@
 						<div class="feature bg-primary bg-gradient text-white rounded-3 mb-3">
 							<i class="bi bi-envelope"></i>
 						</div>
-						<h1 class="fw-bolder">Get in touch</h1>
-						<p class="lead fw-normal text-muted mb-0">We'd love to hear from you</p>
+						<h1 class="fw-bolder">新規追加</h1>
 					</div>
 					<div class="row gx-5 justify-content-center">
 						<div class="col-lg-8 col-xl-6">
@@ -37,12 +36,14 @@
 										<select id="subcatalog" name="subcatalog" th:field="*{subcatalog}" class="form-control" required>
 											<option th:each="option : ${subcatalogOptions}" th:value="${option.name}" th:text="${option.name}"></option>
 										</select>
+										<div class="invalid-feedback">必須です</div>
 									</div>
 								</div>
 								<div class="row g-3 my-2">
 									<div class="col">
 										<label for="creator" class="form-label">著者</label>
 										<input type="text" id="creator" name="creator" th:field="*{creator}" class="form-control" required th:disabled="${!isNew}">
+										<div class="invalid-feedback">必須です</div>
 									</div>
 									<div class="col">
 										<label for="creator" class="form-label">編者</label>
@@ -54,16 +55,17 @@
 										<label for="importance" class="form-label">重要性</label>
 										<div>
 											<div class="form-check form-check-inline">
-												<input class="form-check-input" type="radio" id="inlineRadio1" value="1" th:field="*{importance}">
-												<label class="form-check-label" for="inlineRadio1">最優先</label>
+												<input class="form-check-input" type="radio" id="i1" value="1" name="stacke1" th:field="*{importance}">
+												<label class="form-check-label" for="i1">最優先</label>
 											</div>
 											<div class="form-check form-check-inline">
-												<input class="form-check-input" type="radio" id="inlineRadio2" value="2" th:field="*{importance}">
-												<label class="form-check-label" for="inlineRadio2">重要</label>
+												<input class="form-check-input" type="radio" id="i2" value="2" name="stacke1" th:field="*{importance}">
+												<label class="form-check-label" for="i2">重要</label>
 											</div>
 											<div class="form-check form-check-inline">
-												<input class="form-check-input" type="radio" id="inlineRadio3" value="3" th:field="*{importance}">
-												<label class="form-check-label" for="inlineRadio3">普通</label>
+												<input class="form-check-input" type="radio" id="i3" value="3" name="stacke1" th:field="*{importance}">
+												<label class="form-check-label" for="i3">普通</label>
+												<div class="invalid-feedback">必須です</div>
 											</div>
 										</div>
 									</div>
@@ -71,12 +73,13 @@
 										<label for="audienceLevel" class="form-label">視聴者のレベル</label>
 										<div>
 											<div class="form-check form-check-inline">
-												<input class="form-check-input" type="radio" id="inlineRadio1" value="1" th:field="*{audienceLevel}">
-												<label class="form-check-label" for="inlineRadio1">全員</label>
+												<input class="form-check-input" type="radio" id="a1" value="1" name="stacke2" th:field="*{audienceLevel}">
+												<label class="form-check-label" for="a1">全員</label>
 											</div>
 											<div class="form-check form-check-inline">
-												<input class="form-check-input" type="radio" id="inlineRadio2" value="2" th:field="*{audienceLevel}">
-												<label class="form-check-label" for="inlineRadio2">メンバー</label>
+												<input class="form-check-input" type="radio" id="a2" value="2" name="stacke2" th:field="*{audienceLevel}">
+												<label class="form-check-label" for="a2">メンバー</label>
+												<div class="invalid-feedback">必須です</div>
 											</div>
 										</div>
 									</div>
@@ -86,46 +89,33 @@
 										<label for="publishTime" class="form-label">公開日時</label>
 										<input type="datetime-local" id="publishTime" name="publishTime" th:field="*{publishTime}" class="form-control"
 											th:value="${#dates.format(publishTime, 'yyyy-MM-ddTHH:mm')}" required>
-										<div th:if="${#fields.hasErrors('publishTime')}" class="invalid-feedback">
-											<span th:errors="*{publishTime}"></span>
-										</div>
 									</div>
 									<div class="col">
 										<label for="expirationTime" class="form-label">取り下げる日時</label>
 										<input type="datetime-local" id="expirationTime" name="expirationTime" th:field="*{expirationTime}" class="form-control"
 											th:value="${#dates.format(expirationTime, 'yyyy-MM-ddTHH:mm')}" required>
-										<div th:if="${#fields.hasErrors('expirationTime')}" class="invalid-feedback">
-											<span th:errors="*{expirationTime}"></span>
-										</div>
 									</div>
 								</div>
 								<div class="form-group">
 									<label for="title" class="form-label">タイトル</label>
 									<input type="text" id="title" name="title" th:field="*{title}" class="form-control" required>
-									<div th:if="${#fields.hasErrors('title')}" class="invalid-feedback">
-										<span th:errors="*{title}"></span>
-									</div>
+									<div class="invalid-feedback">必須です</div>
 									<br>
 								</div>
 								<div class="form-group">
 									<label for="subtitle" class="form-label">サブタイトル</label>
 									<input type="text" id="subtitle" name="subtitle" th:field="*{subtitle}" class="form-control" required>
-									<div th:if="${#fields.hasErrors('subtitle')}" class="invalid-feedback">
-										<span th:errors="*{subtitle}"></span>
-									</div>
+									<div class="invalid-feedback">必須です</div>
 									<br>
 								</div>
 								<div class="form-group">
 									<label for="tags" class="form-label">タグ</label>
 									<input type="text" id="tags" name="tags" th:field="*{tags}" class="form-control" required>
-									<br>
 								</div>
 								<div class="form-group">
 									<label for="content" class="form-label">本文</label>
 									<textarea id="content" name="content" th:field="*{content}" class="form-control" rows="20" style="height: auto;" required></textarea>
-									<div th:if="${#fields.hasErrors('content')}" class="invalid-feedback">
-										<span th:errors="*{content}"></span>
-									</div>
+									<div class="invalid-feedback">必須です</div>
 									<p id="charCount">字符数：0 /1000</p>
 									<br>
 								</div>

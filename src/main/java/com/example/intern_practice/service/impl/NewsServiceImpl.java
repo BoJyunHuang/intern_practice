@@ -35,7 +35,7 @@ public class NewsServiceImpl implements NewsService {
 		return checkNull(request, NewsAction.FIND) ? new NewsResponse(RtnCode.SUCCESS.getMessage(), newsDao.findAll())
 				: new NewsResponse(RtnCode.SUCCESS.getMessage(), newsDao.findById(request.getNewsId()).orElse(null));
 	}
-	
+
 	@Override
 	public NewsResponse reviseNews(NewsRequest request) {
 		return checkNull(request, NewsAction.REVISE) ? new NewsResponse(RtnCode.CANNOT_EMPTY.getMessage())
@@ -103,14 +103,12 @@ public class NewsServiceImpl implements NewsService {
 			return request.getCatalog().length() <= 15 && request.getSubcatalog().length() <= 15
 					&& request.getTitle().length() <= 40 && request.getSubtitle().length() <= 80
 					&& request.getTags().length() <= 120 && request.getContent().length() <= 1000
-					&& request.getPublishTime().isAfter(LocalDateTime.now())
 					&& request.getExpirationTime().isAfter(request.getPublishTime())
 					&& request.getCreator().length() <= 45;
 		case REVISE:
 			return request.getCatalog().length() <= 15 && request.getSubcatalog().length() <= 15
 					&& request.getTitle().length() <= 40 && request.getSubtitle().length() <= 80
 					&& request.getTags().length() <= 120 && request.getContent().length() <= 1000
-					&& request.getPublishTime().isAfter(LocalDateTime.now())
 					&& request.getExpirationTime().isAfter(request.getPublishTime())
 					&& request.getEditor().length() <= 45;
 		case DELETE:

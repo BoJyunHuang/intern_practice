@@ -11,33 +11,6 @@ var importanceInput = document.getElementById('importance');
 var audienceLevelInput = document.getElementById('audienceLevel');
 var submitButton = document.getElementById("submitButton");
 
-function validateAllInputs() {
-    var inputs = [
-        catalogInput,
-        subcatalogInput,
-        titleInput,
-        subtitleInput,
-        contentInput,
-        publishTimeInput,
-        expirationTimeInput,
-        creatorInput,
-        editorInput,
-        importanceInput,
-        audienceLevelInput
-    ];
-
-    var isValid = true;
-    for (var i = 0; i < inputs.length; i++) {
-        if (inputs[i].value.trim() === '') {
-            inputs[i].classList.add('is-invalid');
-            isValid = false;
-        } else {
-            inputs[i].classList.remove('is-invalid');
-        }
-    }
-    return isValid;
-}
-
 document.getElementById("catalog").addEventListener("change", function() {
 	var requestBody = {
 		parent: this.value

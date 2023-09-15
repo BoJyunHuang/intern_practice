@@ -1,5 +1,7 @@
 package com.example.intern_practice.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.intern_practice.entity.Catalog;
 import com.example.intern_practice.service.ifs.NewsService;
 import com.example.intern_practice.vo.CatalogRequest;
 import com.example.intern_practice.vo.NewsRequest;
@@ -75,7 +78,14 @@ public class NewsController {
 	}
 
 	private String showNewsForm(Model model, Object news, boolean isNew) {
-		model.addAttribute("catalogOptions", catalogController.findCatalog(new CatalogRequest()).getCatalogList());
+		List<Catalog> res = catalogController.findCatalog(new CatalogRequest()).getCatalogList();
+		model.addAttribute("catalogOptions", res);
+		if (isNew) {
+			CatalogRequest request = new CatalogRequest();
+			request.setParent(res.get(0).getParent());
+			List<Catalog> res2 = catalogController.findCatalog(request).getCatalogList();
+			model.addAttribute("catalogOptions", res2);
+		}
 		model.addAttribute("news", news);
 		model.addAttribute("isNew", isNew);
 		return "news-edit";
