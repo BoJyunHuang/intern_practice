@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.example.intern_practice.constants.RtnCode;
+import com.example.intern_practice.constants.MSG;
 import com.example.intern_practice.entity.Catalog;
 import com.example.intern_practice.service.ifs.CatalogService;
 import com.example.intern_practice.service.ifs.NewsService;
@@ -33,16 +33,18 @@ public class NewsController {
 	@Autowired
 	private CatalogService catalogService;
 
-	@GetMapping("/news_list")
-	public String showNewsList(Model model) {
-		model.addAttribute("newsList", newsService.findNews(null).getNewsList());
-		return "news-list";
-	}
-
+	// ホームページを表示する
 	@GetMapping("/home")
 	public String Home(Model model) {
 		model.addAttribute("newsList", newsService.findNews(null).getNewsList());
 		return "home";
+	}
+	
+	// ニュースリストを表示する
+	@GetMapping("/news_list")
+	public String showNewsList(Model model) {
+		model.addAttribute("newsList", newsService.findNews(null).getNewsList());
+		return "news-list";
 	}
 
 	@GetMapping("/add_news")
@@ -61,7 +63,7 @@ public class NewsController {
 	@ResponseBody
 	public NewsResponse previewNews(@RequestBody NewsRequest request, HttpSession session, Model model) {
 		session.setAttribute("previewNews", request);
-		return new NewsResponse(RtnCode.SUCCESS.getMessage());
+		return new NewsResponse(MSG.SUCCESS.getMessage());
 	}
 
 	@GetMapping("/preview_news")
@@ -73,7 +75,7 @@ public class NewsController {
 	@PostMapping("/add_news")
 	public String addNews(@ModelAttribute("news") NewsRequest request, Model model) {
 		String res = newsService.addNews(request).getMessage();
-		if (res.equals(RtnCode.SUCCESS.getMessage())) {
+		if (res.equals(MSG.SUCCESS.getMessage())) {
 			CatalogRequest req = new CatalogRequest();
 			req.setName(request.getCatalog());
 			req.setParent("none");

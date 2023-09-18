@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import com.example.intern_practice.constants.CatalogAction;
-import com.example.intern_practice.constants.RtnCode;
+import com.example.intern_practice.constants.Action;
+import com.example.intern_practice.constants.MSG;
 import com.example.intern_practice.repository.CatalogDao;
 import com.example.intern_practice.service.ifs.CatalogService;
 import com.example.intern_practice.vo.CatalogRequest;
@@ -21,23 +21,23 @@ public class CatalogServiceImpl implements CatalogService {
 	@Override
 	public CatalogResponse addCatalog(CatalogRequest request) {
 		// Nullチェックを行う。リクエストがnullの場合はエラーレスポンスを返す。
-		return checkNull(request, CatalogAction.ADD) ? new CatalogResponse(RtnCode.CANNOT_EMPTY.getMessage())
+		return checkNull(request, Action.ADD) ? new CatalogResponse(MSG.CANNOT_EMPTY.getMessage())
 				: result(checkInput(request) && catalogDao.insertCatalog(request.getName(), request.getParent()) == 1);
 	}
 
 	@Override
 	public CatalogResponse findCatalog(CatalogRequest request) {
 		// Nullチェックを行う。リクエストがnullの場合は全てのカタログを返す。
-		return checkNull(request, CatalogAction.FIND)
-				? new CatalogResponse(RtnCode.SUCCESS.getMessage(), catalogDao.findAll())
-				: new CatalogResponse(RtnCode.SUCCESS.getMessage(),
+		return checkNull(request, Action.FIND)
+				? new CatalogResponse(MSG.SUCCESS.getMessage(), catalogDao.findAll())
+				: new CatalogResponse(MSG.SUCCESS.getMessage(),
 						catalogDao.findById(request.getCatalogId()).orElse(null));
 	}
 
 	@Override
 	public CatalogResponse reviseCatalog(CatalogRequest request) {
 		// Nullチェックを行う。リクエストがnull、またはカタログIDが0、または名前が空の場合はエラーレスポンスを返す。
-		return checkNull(request, CatalogAction.REVISE) ? new CatalogResponse(RtnCode.CANNOT_EMPTY.getMessage())
+		return checkNull(request, Action.REVISE) ? new CatalogResponse(MSG.CANNOT_EMPTY.getMessage())
 				: result(checkInput(request) && catalogDao.updateCatalog(request.getCatalogId(), request.getName(),
 						request.getParent()) == 1);
 	}
@@ -45,40 +45,40 @@ public class CatalogServiceImpl implements CatalogService {
 	@Override
 	public CatalogResponse plusNews(CatalogRequest request) {
 		// Nullチェックを行う。リクエストがnull、またはIDリストが空の場合はエラーレスポンスを返す。
-		return checkNull(request, CatalogAction.PLUS) ? new CatalogResponse(RtnCode.CANNOT_EMPTY.getMessage())
+		return checkNull(request, Action.PLUS) ? new CatalogResponse(MSG.CANNOT_EMPTY.getMessage())
 				: result(catalogDao.plusNewsAmount(request.getIdList()) == request.getIdList().size());
 	}
 
 	@Override
 	public CatalogResponse minusNews(CatalogRequest request) {
 		// Nullチェックを行う。リクエストがnull、またはIDリストが空の場合はエラーレスポンスを返す。
-		return checkNull(request, CatalogAction.MINUS) ? new CatalogResponse(RtnCode.CANNOT_EMPTY.getMessage())
+		return checkNull(request, Action.MINUS) ? new CatalogResponse(MSG.CANNOT_EMPTY.getMessage())
 				: result(catalogDao.minusNewsAmount(request.getIdList()) == request.getIdList().size());
 	}
 
 	@Override
 	public CatalogResponse deleteCatalog(CatalogRequest request) {
 		// Nullチェックを行う。リクエストがnull、またはIDリストが空の場合はエラーレスポンスを返す。
-		return checkNull(request, CatalogAction.DELETE) ? new CatalogResponse(RtnCode.CANNOT_EMPTY.getMessage())
+		return checkNull(request, Action.DELETE) ? new CatalogResponse(MSG.CANNOT_EMPTY.getMessage())
 				: result(catalogDao.deleteCatalog(request.getIdList()) == request.getIdList().size());
 	}
 
 	@Override
 	public CatalogResponse findCatalogByParent(CatalogRequest request) {
 		// 指定した親カタログに関連するカタログを取得する。
-		return new CatalogResponse(RtnCode.SUCCESS.getMessage(),
+		return new CatalogResponse(MSG.SUCCESS.getMessage(),
 				catalogDao.findByParentAndDeleteFlag(request.getParent(), false));
 	}
 
 	@Override
 	public CatalogResponse findCatalogByNameAndParent(CatalogRequest request) {
 		// 指定した名前または親カタログに関連するカタログを取得する。
-		return new CatalogResponse(RtnCode.SUCCESS.getMessage(),
+		return new CatalogResponse(MSG.SUCCESS.getMessage(),
 				catalogDao.findByNameAndParent(request.getName(), request.getParent()));
 	}
 
 	// 入力値チェックメソッド
-	private boolean checkNull(CatalogRequest request, CatalogAction action) {
+	private boolean checkNull(CatalogRequest request, Action action) {
 		switch (action) {
 		case ADD:
 			return !StringUtils.hasText(request.getName());
@@ -102,8 +102,8 @@ public class CatalogServiceImpl implements CatalogService {
 
 	// 操作の結果に基づいて適切なレスポンスを返す。
 	private CatalogResponse result(boolean isSuccess) {
-		return isSuccess ? new CatalogResponse(RtnCode.SUCCESS.getMessage())
-				: new CatalogResponse(RtnCode.INCORRECT.getMessage());
+		return isSuccess ? new CatalogResponse(MSG.SUCCESS.getMessage())
+				: new CatalogResponse(MSG.INCORRECT.getMessage());
 	}
 
 }

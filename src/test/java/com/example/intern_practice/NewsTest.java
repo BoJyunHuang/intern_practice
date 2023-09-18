@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
 
-import com.example.intern_practice.constants.RtnCode;
+import com.example.intern_practice.constants.MSG;
 import com.example.intern_practice.entity.News;
 import com.example.intern_practice.repository.NewsDao;
 import com.example.intern_practice.service.ifs.NewsService;
@@ -87,7 +87,7 @@ public class NewsTest {
 						"自民党の麻生太郎副総裁は6日、東京都内で講演し、高水準の賃上げが実現した今年の春闘に関し、岸田政権と...", "政治", news2,
 						LocalDateTime.of(2023, 9, 6, 15, 43), LocalDateTime.of(2023, 9, 6, 19, 19),
 						LocalDateTime.of(2023, 9, 9, 00, 00), "© 一般社団法人共同通信社", 1, 1) == 1,
-				RtnCode.TEST1_ERROR.getMessage());
+				MSG.TEST1_ERROR.getMessage());
 	}
 
 	@Test
@@ -97,46 +97,46 @@ public class NewsTest {
 						"自民党の麻生太郎副総裁は6日、東京都内で講演し、高水準の賃上げが実現した今年の春闘に関し、岸田政権と...", "政治", news2,
 						LocalDateTime.of(2023, 9, 6, 19, 27), LocalDateTime.of(2023, 9, 6, 19, 21),
 						LocalDateTime.of(2023, 9, 9, 00, 00), "© 一般社団法人共同通信社", 1, 1) == 0,
-				RtnCode.TEST1_ERROR.getMessage());
+				MSG.TEST1_ERROR.getMessage());
 		Assert.isTrue(
 				newsDao.updateNews(2, "トップ", "政治", "麻生氏、連合と「共闘」成果強調　国民党との連立論くすぶる",
 						"自民党の麻生太郎副総裁は6日、東京都内で講演し、高水準の賃上げが実現した今年の春闘に関し、岸田政権と...", "政治", news2,
 						LocalDateTime.of(2023, 9, 6, 19, 27), LocalDateTime.of(2023, 9, 6, 19, 21),
 						LocalDateTime.of(2023, 9, 9, 00, 00), "© 一般社団法人共同通信社", 1, 1) == 1,
-				RtnCode.TEST2_ERROR.getMessage());
+				MSG.TEST2_ERROR.getMessage());
 	}
 
 	@Test
 	public void plusViewTest() {
-		Assert.isTrue(newsDao.plusView(0) == 0, RtnCode.TEST1_ERROR.getMessage());
-		Assert.isTrue(newsDao.plusView(1) == 1, RtnCode.TEST2_ERROR.getMessage());
+		Assert.isTrue(newsDao.plusView(0) == 0, MSG.TEST1_ERROR.getMessage());
+		Assert.isTrue(newsDao.plusView(1) == 1, MSG.TEST2_ERROR.getMessage());
 	}
 
 	@Test
 	public void plusLikeTest() {
-		Assert.isTrue(newsDao.plusLike(0) == 0, RtnCode.TEST1_ERROR.getMessage());
-		Assert.isTrue(newsDao.plusLike(1) == 1, RtnCode.TEST2_ERROR.getMessage());
+		Assert.isTrue(newsDao.plusLike(0) == 0, MSG.TEST1_ERROR.getMessage());
+		Assert.isTrue(newsDao.plusLike(1) == 1, MSG.TEST2_ERROR.getMessage());
 	}
 
 	@Test
 	public void plusDislikeTest() {
-		Assert.isTrue(newsDao.plusDislike(0) == 0, RtnCode.TEST1_ERROR.getMessage());
-		Assert.isTrue(newsDao.plusDislike(2) == 1, RtnCode.TEST2_ERROR.getMessage());
+		Assert.isTrue(newsDao.plusDislike(0) == 0, MSG.TEST1_ERROR.getMessage());
+		Assert.isTrue(newsDao.plusDislike(2) == 1, MSG.TEST2_ERROR.getMessage());
 	}
 
 	@Test
 	public void deleteNewsTest() {
 		Assert.isTrue(newsDao.deleteNews(new ArrayList<>(Arrays.asList(0)), LocalDateTime.of(2023, 9, 6, 19, 27),
-				"© 一般社団法人共同通信社") == 0, RtnCode.TEST1_ERROR.getMessage());
+				"© 一般社団法人共同通信社") == 0, MSG.TEST1_ERROR.getMessage());
 		Assert.isTrue(newsDao.deleteNews(new ArrayList<>(Arrays.asList(2)), LocalDateTime.of(2023, 9, 6, 19, 27),
-				"© 一般社団法人共同通信社") == 1, RtnCode.TEST2_ERROR.getMessage());
+				"© 一般社団法人共同通信社") == 1, MSG.TEST2_ERROR.getMessage());
 	}
 
 	@Test
 	public void addNewsTest() {
 		NewsRequest request = new NewsRequest();
-		Assert.isTrue(newsService.addNews(request).getMessage().equals(RtnCode.CANNOT_EMPTY.getMessage()),
-				RtnCode.TEST1_ERROR.getMessage());
+		Assert.isTrue(newsService.addNews(request).getMessage().equals(MSG.CANNOT_EMPTY.getMessage()),
+				MSG.TEST1_ERROR.getMessage());
 		request.setCatalog("社会");
 		request.setSubcatalog("文化");
 		request.setTitle("今日は何の日：9月6日");
@@ -148,27 +148,27 @@ public class NewsTest {
 		request.setCreator("無名");
 		request.setImportance(3);
 		request.setAudienceLevel(3);
-		Assert.isTrue(newsService.addNews(request).getMessage().equals(RtnCode.INCORRECT.getMessage()),
-				RtnCode.TEST2_ERROR.getMessage());
+		Assert.isTrue(newsService.addNews(request).getMessage().equals(MSG.INCORRECT.getMessage()),
+				MSG.TEST2_ERROR.getMessage());
 		request.setContent(news4);
-		Assert.isTrue(newsService.addNews(request).getMessage().equals(RtnCode.SUCCESS.getMessage()),
-				RtnCode.TEST3_ERROR.getMessage());
+		Assert.isTrue(newsService.addNews(request).getMessage().equals(MSG.SUCCESS.getMessage()),
+				MSG.TEST3_ERROR.getMessage());
 	}
 
 	@Test
 	public void findNewsTest() {
 		NewsRequest request = new NewsRequest();
-		Assert.isTrue(newsService.findNews(null).getNewsList().size() == 3, RtnCode.TEST1_ERROR.getMessage());
-		Assert.isTrue(newsService.findNews(request).getNews() == null, RtnCode.TEST2_ERROR.getMessage());
+		Assert.isTrue(newsService.findNews(null).getNewsList().size() == 3, MSG.TEST1_ERROR.getMessage());
+		Assert.isTrue(newsService.findNews(request).getNews() == null, MSG.TEST2_ERROR.getMessage());
 		request.setNewsId(2);
-		Assert.isTrue(newsService.findNews(request).getNews().getDislikes() == 1, RtnCode.TEST3_ERROR.getMessage());
+		Assert.isTrue(newsService.findNews(request).getNews().getDislikes() == 1, MSG.TEST3_ERROR.getMessage());
 	}
 
 	@Test
 	public void reviseNewsTest() {
 		NewsRequest request = new NewsRequest();
-		Assert.isTrue(newsService.reviseNews(request).getMessage().equals(RtnCode.CANNOT_EMPTY.getMessage()),
-				RtnCode.TEST1_ERROR.getMessage());
+		Assert.isTrue(newsService.reviseNews(request).getMessage().equals(MSG.CANNOT_EMPTY.getMessage()),
+				MSG.TEST1_ERROR.getMessage());
 		request.setNewsId(100);
 		request.setCatalog("社会");
 		request.setSubcatalog("文化");
@@ -181,63 +181,63 @@ public class NewsTest {
 		request.setEditor("無名");
 		request.setImportance(3);
 		request.setAudienceLevel(3);
-		Assert.isTrue(newsService.reviseNews(request).getMessage().equals(RtnCode.INCORRECT.getMessage()),
-				RtnCode.TEST2_ERROR.getMessage());
+		Assert.isTrue(newsService.reviseNews(request).getMessage().equals(MSG.INCORRECT.getMessage()),
+				MSG.TEST2_ERROR.getMessage());
 		request.setNewsId(3);
-		Assert.isTrue(newsService.reviseNews(request).getMessage().equals(RtnCode.SUCCESS.getMessage()),
-				RtnCode.TEST3_ERROR.getMessage());
+		Assert.isTrue(newsService.reviseNews(request).getMessage().equals(MSG.SUCCESS.getMessage()),
+				MSG.TEST3_ERROR.getMessage());
 	}
 
 	@Test
 	public void viewNewsTest() {
 		NewsRequest request = new NewsRequest();
-		Assert.isTrue(newsService.viewNews(request).getMessage().equals(RtnCode.CANNOT_EMPTY.getMessage()),
-				RtnCode.TEST1_ERROR.getMessage());
+		Assert.isTrue(newsService.viewNews(request).getMessage().equals(MSG.CANNOT_EMPTY.getMessage()),
+				MSG.TEST1_ERROR.getMessage());
 		request.setNewsId(200);
-		Assert.isTrue(newsService.viewNews(request).getMessage().equals(RtnCode.INCORRECT.getMessage()),
-				RtnCode.TEST2_ERROR.getMessage());
+		Assert.isTrue(newsService.viewNews(request).getMessage().equals(MSG.INCORRECT.getMessage()),
+				MSG.TEST2_ERROR.getMessage());
 		request.setNewsId(2);
-		Assert.isTrue(newsService.viewNews(request).getMessage().equals(RtnCode.SUCCESS.getMessage()),
-				RtnCode.TEST3_ERROR.getMessage());
+		Assert.isTrue(newsService.viewNews(request).getMessage().equals(MSG.SUCCESS.getMessage()),
+				MSG.TEST3_ERROR.getMessage());
 	}
 
 	@Test
 	public void likeNewsTest() {
 		NewsRequest request = new NewsRequest();
-		Assert.isTrue(newsService.likeNews(request).getMessage().equals(RtnCode.CANNOT_EMPTY.getMessage()),
-				RtnCode.TEST1_ERROR.getMessage());
+		Assert.isTrue(newsService.likeNews(request).getMessage().equals(MSG.CANNOT_EMPTY.getMessage()),
+				MSG.TEST1_ERROR.getMessage());
 		request.setNewsId(200);
-		Assert.isTrue(newsService.likeNews(request).getMessage().equals(RtnCode.INCORRECT.getMessage()),
-				RtnCode.TEST2_ERROR.getMessage());
+		Assert.isTrue(newsService.likeNews(request).getMessage().equals(MSG.INCORRECT.getMessage()),
+				MSG.TEST2_ERROR.getMessage());
 		request.setNewsId(2);
-		Assert.isTrue(newsService.likeNews(request).getMessage().equals(RtnCode.SUCCESS.getMessage()),
-				RtnCode.TEST3_ERROR.getMessage());
+		Assert.isTrue(newsService.likeNews(request).getMessage().equals(MSG.SUCCESS.getMessage()),
+				MSG.TEST3_ERROR.getMessage());
 	}
 
 	@Test
 	public void dislikeNewsTest() {
 		NewsRequest request = new NewsRequest();
-		Assert.isTrue(newsService.dislikeNews(request).getMessage().equals(RtnCode.CANNOT_EMPTY.getMessage()),
-				RtnCode.TEST1_ERROR.getMessage());
+		Assert.isTrue(newsService.dislikeNews(request).getMessage().equals(MSG.CANNOT_EMPTY.getMessage()),
+				MSG.TEST1_ERROR.getMessage());
 		request.setNewsId(200);
-		Assert.isTrue(newsService.dislikeNews(request).getMessage().equals(RtnCode.INCORRECT.getMessage()),
-				RtnCode.TEST2_ERROR.getMessage());
+		Assert.isTrue(newsService.dislikeNews(request).getMessage().equals(MSG.INCORRECT.getMessage()),
+				MSG.TEST2_ERROR.getMessage());
 		request.setNewsId(2);
-		Assert.isTrue(newsService.dislikeNews(request).getMessage().equals(RtnCode.SUCCESS.getMessage()),
-				RtnCode.TEST3_ERROR.getMessage());
+		Assert.isTrue(newsService.dislikeNews(request).getMessage().equals(MSG.SUCCESS.getMessage()),
+				MSG.TEST3_ERROR.getMessage());
 	}
 
 	@Test
 	public void deleteNewsImplTest() {
 		NewsRequest request = new NewsRequest();
-		Assert.isTrue(newsService.deleteNews(request).getMessage().equals(RtnCode.CANNOT_EMPTY.getMessage()),
-				RtnCode.TEST1_ERROR.getMessage());
+		Assert.isTrue(newsService.deleteNews(request).getMessage().equals(MSG.CANNOT_EMPTY.getMessage()),
+				MSG.TEST1_ERROR.getMessage());
 		request.setIdList(new ArrayList<>(Arrays.asList(2)));
 		request.setRemover("管理者管理者管理者管理者管理者管理者管理者管理者管理者管理者管理者管理者管理者管理者管理者1");
-		Assert.isTrue(newsService.deleteNews(request).getMessage().equals(RtnCode.INCORRECT.getMessage()),
-				RtnCode.TEST2_ERROR.getMessage());
+		Assert.isTrue(newsService.deleteNews(request).getMessage().equals(MSG.INCORRECT.getMessage()),
+				MSG.TEST2_ERROR.getMessage());
 		request.setRemover("管理者1");
-		Assert.isTrue(newsService.deleteNews(request).getMessage().equals(RtnCode.SUCCESS.getMessage()),
-				RtnCode.TEST3_ERROR.getMessage());
+		Assert.isTrue(newsService.deleteNews(request).getMessage().equals(MSG.SUCCESS.getMessage()),
+				MSG.TEST3_ERROR.getMessage());
 	}
 }

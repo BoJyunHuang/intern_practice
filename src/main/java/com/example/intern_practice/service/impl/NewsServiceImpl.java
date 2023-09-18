@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import com.example.intern_practice.constants.NewsAction;
-import com.example.intern_practice.constants.RtnCode;
+import com.example.intern_practice.constants.Action;
+import com.example.intern_practice.constants.MSG;
 import com.example.intern_practice.repository.NewsDao;
 import com.example.intern_practice.service.ifs.NewsService;
 import com.example.intern_practice.vo.NewsRequest;
@@ -23,8 +23,8 @@ public class NewsServiceImpl implements NewsService {
 	@Override
 	public NewsResponse addNews(NewsRequest request) {
 		// Nullチェックを行う。リクエストがnullの場合はエラーレスポンスを返す。
-		return checkNull(request, NewsAction.ADD) ? new NewsResponse(RtnCode.CANNOT_EMPTY.getMessage())
-				: result(checkInput(request, NewsAction.ADD)
+		return checkNull(request, Action.ADD) ? new NewsResponse(MSG.CANNOT_EMPTY.getMessage())
+				: result(checkInput(request, Action.ADD)
 						&& newsDao.insertNews(request.getCatalog(), request.getSubcatalog(), request.getTitle(),
 								request.getSubtitle(), request.getTags(), request.getContent(), LocalDateTime.now(),
 								request.getPublishTime(), request.getExpirationTime(), request.getCreator(),
@@ -34,16 +34,16 @@ public class NewsServiceImpl implements NewsService {
 	@Override
 	public NewsResponse findNews(NewsRequest request) {
 		// Nullチェックを行う。リクエストがnullの場合、全てのカタログ情報を含む成功レスポンスを返す。
-		return checkNull(request, NewsAction.FIND)
-				? new NewsResponse(RtnCode.SUCCESS.getMessage(), newsDao.findAllByOrderByPublishTimeDesc())
-				: new NewsResponse(RtnCode.SUCCESS.getMessage(), newsDao.findById(request.getNewsId()).orElse(null));
+		return checkNull(request, Action.FIND)
+				? new NewsResponse(MSG.SUCCESS.getMessage(), newsDao.findAllByOrderByPublishTimeDesc())
+				: new NewsResponse(MSG.SUCCESS.getMessage(), newsDao.findById(request.getNewsId()).orElse(null));
 	}
 
 	@Override
 	public NewsResponse reviseNews(NewsRequest request) {
 		// Nullチェックを行う。リクエストがnullの場合はエラーレスポンスを返す。
-		return checkNull(request, NewsAction.REVISE) ? new NewsResponse(RtnCode.CANNOT_EMPTY.getMessage())
-				: result(checkInput(request, NewsAction.REVISE)
+		return checkNull(request, Action.REVISE) ? new NewsResponse(MSG.CANNOT_EMPTY.getMessage())
+				: result(checkInput(request, Action.REVISE)
 						&& newsDao.updateNews(request.getNewsId(), request.getCatalog(), request.getSubcatalog(),
 								request.getTitle(), request.getSubtitle(), request.getTags(), request.getContent(),
 								request.getPublishTime(), LocalDateTime.now(), request.getExpirationTime(),
@@ -53,34 +53,34 @@ public class NewsServiceImpl implements NewsService {
 	@Override
 	public NewsResponse viewNews(NewsRequest request) {
 		 // Nullチェックを行う。リクエストがnullの場合はエラーレスポンスを返す。
-		return checkNull(request, NewsAction.PLUS) ? new NewsResponse(RtnCode.CANNOT_EMPTY.getMessage())
+		return checkNull(request, Action.PLUS) ? new NewsResponse(MSG.CANNOT_EMPTY.getMessage())
 				: result(newsDao.plusView(request.getNewsId()) == 1);
 	}
 
 	@Override
 	public NewsResponse likeNews(NewsRequest request) {
 		// Nullチェックを行う。リクエストがnullの場合はエラーレスポンスを返す。
-		return checkNull(request, NewsAction.PLUS) ? new NewsResponse(RtnCode.CANNOT_EMPTY.getMessage())
+		return checkNull(request, Action.PLUS) ? new NewsResponse(MSG.CANNOT_EMPTY.getMessage())
 				: result(newsDao.plusLike(request.getNewsId()) == 1);
 	}
 
 	@Override
 	public NewsResponse dislikeNews(NewsRequest request) {
 		// Nullチェックを行う。リクエストがnullの場合はエラーレスポンスを返す。
-		return checkNull(request, NewsAction.PLUS) ? new NewsResponse(RtnCode.CANNOT_EMPTY.getMessage())
+		return checkNull(request, Action.PLUS) ? new NewsResponse(MSG.CANNOT_EMPTY.getMessage())
 				: result(newsDao.plusDislike(request.getNewsId()) == 1);
 	}
 
 	@Override
 	public NewsResponse deleteNews(NewsRequest request) {
 		// Nullチェックを行う。リクエストがnullの場合はエラーレスポンスを返す。
-		return checkNull(request, NewsAction.DELETE) ? new NewsResponse(RtnCode.CANNOT_EMPTY.getMessage())
-				: result(checkInput(request, NewsAction.DELETE) && newsDao.deleteNews(request.getIdList(),
+		return checkNull(request, Action.DELETE) ? new NewsResponse(MSG.CANNOT_EMPTY.getMessage())
+				: result(checkInput(request, Action.DELETE) && newsDao.deleteNews(request.getIdList(),
 						LocalDateTime.now(), request.getRemover()) == request.getIdList().size());
 	}
 
 	// Nullチェックメソッド
-	private boolean checkNull(NewsRequest request, NewsAction action) {
+	private boolean checkNull(NewsRequest request, Action action) {
 		switch (action) {
 		case ADD:
 			return !StringUtils.hasText(request.getCatalog()) || !StringUtils.hasText(request.getSubcatalog())
@@ -107,7 +107,7 @@ public class NewsServiceImpl implements NewsService {
 	}
 
 	// 入力値チェックメソッド
-	private boolean checkInput(NewsRequest request, NewsAction action) {
+	private boolean checkInput(NewsRequest request, Action action) {
 		switch (action) {
 		case ADD:
 			return request.getCatalog().length() <= 15 && request.getSubcatalog().length() <= 15
@@ -130,8 +130,8 @@ public class NewsServiceImpl implements NewsService {
 
 	// 操作の結果に基づいて適切なレスポンスを返す。
 	private NewsResponse result(boolean isSuccess) {
-		return isSuccess ? new NewsResponse(RtnCode.SUCCESS.getMessage())
-				: new NewsResponse(RtnCode.INCORRECT.getMessage());
+		return isSuccess ? new NewsResponse(MSG.SUCCESS.getMessage())
+				: new NewsResponse(MSG.INCORRECT.getMessage());
 	}
 
 }

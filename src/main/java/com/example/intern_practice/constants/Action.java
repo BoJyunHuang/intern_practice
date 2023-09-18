@@ -1,6 +1,6 @@
 package com.example.intern_practice.constants;
 
-public enum CatalogAction {
+public enum Action {
 	ADD,
 	FIND,
     REVISE,

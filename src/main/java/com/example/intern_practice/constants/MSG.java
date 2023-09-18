@@ -1,6 +1,6 @@
 package com.example.intern_practice.constants;
 
-public enum RtnCode {
+public enum MSG {
 	
 	SUCCESS("200", "Success!"), 
 	CANNOT_EMPTY("400", "Input is empty!"), 
@@ -17,7 +17,7 @@ public enum RtnCode {
 	private String code;
 	private String message;
 
-	private RtnCode(String code, String message) {
+	private MSG(String code, String message) {
 		this.code = code;
 		this.message = message;
 	}
