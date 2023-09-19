@@ -4,12 +4,15 @@
 <meta charset="UTF-8">
 <title>ニュース</title>
 <!-- Font Awesome icons (free version)-->
-<script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+<script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"></script>
 <!-- Google fonts-->
 <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet"
 	type="text/css" />
+<!-- Bootstrap-->
 <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.3/css/bootstrap.min.css}">
+<script th:src="@{/webjars/bootstrap/5.2.3/js/bootstrap.min.js}" type="text/javascript"></script>
+<!-- CSS -->
 <link rel="stylesheet" th:href="@{/web-style.css}" />
 </head>
 <body>
@@ -54,11 +57,12 @@
 		<div class="row gx-4 gx-lg-5 justify-content-center">
 			<div class="col-md-10 col-lg-8 col-xl-7">
 				<!-- Post preview-->
-				<div th:each="news : ${newsList}" th:object="${news}">
-					<div th:if="${news.publishTime le #temporals.createNow() and news.expirationTime ge #temporals.createNow() and !news.deleteFlag}" class="post-preview">
+				<div th:each="news : ${newsList}" th:object="${news}"
+					th:if="${news.publishTime le #temporals.createNow() and news.expirationTime ge #temporals.createNow() and !news.deleteFlag}" class="post-preview">
+					<div>
 						<a th:href="@{/read_news/{newsId}(newsId=*{newsId})}" class="text-decoration-none">
 							<h2 class="post-title" th:text="*{title}"></h2>
-							<p class="post-subtitle" th:text="*{subtitle}"></p>
+							<h3 class="post-subtitle" th:text="*{subtitle}"></h3>
 						</a>
 						<p class="d-inline" th:text="*{#temporals.format(publishTime, 'yyyy-MM-dd HH:mm')}"></p>
 						<p class="d-inline" th:text="*{creator}"></p>
@@ -106,7 +110,7 @@
 			</div>
 		</div>
 	</footer>
-	<script th:src="@{/webjars/bootstrap/5.2.3/js/bootstrap.min.js}" type="text/javascript"></script>
+	<!-- JS-->
 	<script th:src="@{/js/home.js}" type="text/javascript"></script>
 </body>
 </html>

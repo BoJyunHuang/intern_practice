@@ -69,7 +69,7 @@ public class NewsController {
 	@GetMapping("/preview_news")
 	public String previewNews(Model model, HttpSession session) {
 		model.addAttribute("news", (NewsRequest) session.getAttribute("previewNews"));
-		return "preview-news";
+		return "news";
 	}
 
 	@PostMapping("/add_news")

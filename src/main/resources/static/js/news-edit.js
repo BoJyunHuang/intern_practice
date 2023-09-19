@@ -33,14 +33,6 @@ contentInput.addEventListener("input", function() {
 	document.getElementById("charCount").textContent = "字符数：" + this.value.length + "/ 1000";
 });
 
-function confirmAndSubmit() {
-	confirm("以下の操作を実行してもよろしいでしょうか？") && document.getElementById("Excute").submit();
-}
-
-function goBack() {
-	window.history.back();
-}
-
 function save() {
 	// 禁用save按钮
     document.getElementById('saveButton').disabled = true;
