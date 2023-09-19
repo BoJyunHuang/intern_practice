@@ -39,7 +39,7 @@ public class NewsController {
 		model.addAttribute("newsList", newsService.findNews(null).getNewsList());
 		return "home";
 	}
-	
+
 	// ニュースリストを表示する
 	@GetMapping("/news_list")
 	public String showNewsList(Model model) {

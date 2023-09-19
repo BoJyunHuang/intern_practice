@@ -11,7 +11,7 @@
 <!-- CSS -->
 <link rel="stylesheet" th:href="@{/admin-style.css}" />
 </head>
-<body>
+<body class="bg-light">
 	<!-- mainNav -->
 	<div th:replace="admin::mainNav"></div>
 	<!-- layout -->
@@ -29,10 +29,10 @@
 						<h1 class="fw-bolder">新規追加</h1>
 					</div>
 					<div class="row gx-5 justify-content-center">
-						<div class="col-lg-8 col-xl-6">
-							<form th:action="${isNew ? '/add_catalog' : '/revise_catalog'}" th:object="${catalog}" method="post" id="Excute" class="needs-validation" novalidate>
+						<div class="col-lg-8 col-xl-6 border border-secondary border-3 rounded">
+							<form th:action="${isNew ? '/add_catalog' : '/revise_catalog'}" th:object="${catalog}" method="post" class="needs-validation" novalidate>
 								<div class="form-group my-2">
-									<label for="catalogType" class="form-label text-end">タイプ</label>
+									<label for="catalogType" class="form-label text-end fw-bold">*タイプ</label>
 									<br>
 									<input type="radio" id="catalog" name="type" value="catalog" onclick="toggleParentInput()" th:checked="${catalog.parent == 'none'}">
 									<label for="catalog">カタログ</label>
@@ -40,21 +40,22 @@
 									<label for="subCatalog">サブカタログ</label>
 								</div>
 								<div class="form-group">
-									<label for="name" class="form-label text-end">名前</label>
-									<input type="text" id="name" name="name" th:field="*{name}" class="form-control" required>
+									<label for="name" class="form-label text-end fw-bold">*名前</label>
+									<div id="lengthLimit" class="form-text">15文字以下（15文字を含む）</div>
+									<input type="text" id="name" name="name" th:field="*{name}" class="form-control" aria-describedby="lengthLimit" required>
 									<div class="invalid-feedback">必須です</div>
 									<br>
 								</div>
 								<div class="form-group">
-									<label for="parent" class="form-label text-end">親カタログ</label>
+									<label for="parent" class="form-label text-end fw-bold">*親カタログ</label>
 									<select id="parent" name="parent" th:field="*{parent}" class="form-control" required th:disabled="${catalog.parent == 'none'}">
 										<option value="none">none</option>
 										<option th:each="option : ${catalogOptions}" th:value="${option.name}" th:text="${option.name}"></option>
 									</select>
 								</div>
 								<div class="d-flex justify-content-evenly my-3">
-									<button type="button" class="btn btn-primary" onclick="goBack()">戻る</button>
-									<input type="submit" id="submitButton" class="btn btn-secondary" value="確認">
+									<button type="button" class="btn btn-secondary" onclick="goBack()">戻る</button>
+									<input type="submit" id="submitButton" class="btn btn-primary" value="確認">
 								</div>
 							</form>
 						</div>

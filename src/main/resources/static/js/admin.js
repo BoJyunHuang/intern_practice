@@ -17,13 +17,7 @@ window.addEventListener('DOMContentLoaded', event => {
 });
 
 function confirmDelete() {
-	confirm("确定要删除所选项目吗？") && deleteSelected();
-}
-
-function confirmAndSubmit() {
-  if (confirm("以下の操作を実行してもよろしいでしょうか？")) {
-    document.getElementById("Excute").submit();
-  }
+	confirm("确定要删除所选项目吗？" + "以下の操作を実行してもよろしいでしょうか？") && deleteSelected();
 }
 
 function deleteSelected() {
@@ -51,9 +45,11 @@ function toggleParentInput() {
 	var catalogTypeRadio = document.querySelector('input[name="type"]:checked');
 	var parentSelect = document.getElementById("parent");
 	if (catalogTypeRadio.value === "catalog") {
+		parentSelect.querySelector('option[value="none"]').disabled = false;
 		parentSelect.value = "none";
 		parentSelect.disabled = true;
 	} else {
+		parentSelect.querySelector('option[value="none"]').disabled = true;
 		parentSelect.disabled = false;
 	}
 }
@@ -68,8 +64,6 @@ function toggleParentInput() {
 				if (!form.checkValidity()) {
 					event.preventDefault()
 					event.stopPropagation()
-				} else {
-					confirmAndSubmit();
 				}
 				form.classList.add('was-validated')
 			}, false)
