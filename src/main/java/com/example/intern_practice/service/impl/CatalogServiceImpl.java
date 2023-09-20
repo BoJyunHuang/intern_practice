@@ -20,61 +20,64 @@ public class CatalogServiceImpl implements CatalogService {
 
 	@Override
 	public CatalogResponse addCatalog(CatalogRequest request) {
-		// Nullチェックを行う。リクエストがnullの場合はエラーレスポンスを返す。
+		// 入力値チェックを行う。
 		return checkNull(request, Action.ADD) ? new CatalogResponse(MSG.CANNOT_EMPTY.getMessage())
+				// 入力値の検証が正常であり、カタログの挿入が成功した場合に対応する結果を返す。
 				: result(checkInput(request) && catalogDao.insertCatalog(request.getName(), request.getParent()) == 1);
 	}
 
 	@Override
-	public CatalogResponse findCatalog(CatalogRequest request) {
-		// Nullチェックを行う。リクエストがnullの場合は全てのカタログを返す。
-		return checkNull(request, Action.FIND)
-				? new CatalogResponse(MSG.SUCCESS.getMessage(), catalogDao.findAll())
+	public CatalogResponse getCatalog(CatalogRequest request) {
+		// 入力値チェックを行う。リクエストがnullの場合は全てのカタログを返す。
+		return checkNull(request, Action.GET) ? new CatalogResponse(MSG.SUCCESS.getMessage(), catalogDao.findAll())
+				// カタログIDに対応するカタログを取得する。カタログが存在しない場合、nullを返す。
 				: new CatalogResponse(MSG.SUCCESS.getMessage(),
 						catalogDao.findById(request.getCatalogId()).orElse(null));
 	}
 
 	@Override
 	public CatalogResponse reviseCatalog(CatalogRequest request) {
-		// Nullチェックを行う。リクエストがnull、またはカタログIDが0、または名前が空の場合はエラーレスポンスを返す。
+		// 入力値チェックを行う。
 		return checkNull(request, Action.REVISE) ? new CatalogResponse(MSG.CANNOT_EMPTY.getMessage())
+				// 入力値の検証が正常であり、カタログの更新が成功した場合に対応する結果を返す。
 				: result(checkInput(request) && catalogDao.updateCatalog(request.getCatalogId(), request.getName(),
 						request.getParent()) == 1);
 	}
 
 	@Override
 	public CatalogResponse plusNews(CatalogRequest request) {
-		// Nullチェックを行う。リクエストがnull、またはIDリストが空の場合はエラーレスポンスを返す。
+		// 入力値チェックを行う。
 		return checkNull(request, Action.PLUS) ? new CatalogResponse(MSG.CANNOT_EMPTY.getMessage())
+				// カタログのニュース数を増やし、増加した数が要求された数と一致する場合、対応する結果を返す。
 				: result(catalogDao.plusNewsAmount(request.getIdList()) == request.getIdList().size());
 	}
 
 	@Override
 	public CatalogResponse minusNews(CatalogRequest request) {
-		// Nullチェックを行う。リクエストがnull、またはIDリストが空の場合はエラーレスポンスを返す。
+		// 入力値チェックを行う。
 		return checkNull(request, Action.MINUS) ? new CatalogResponse(MSG.CANNOT_EMPTY.getMessage())
+				// カタログのニュース数を減らし、増加した数が要求された数と一致する場合、対応する結果を返す。
 				: result(catalogDao.minusNewsAmount(request.getIdList()) == request.getIdList().size());
 	}
 
 	@Override
 	public CatalogResponse deleteCatalog(CatalogRequest request) {
-		// Nullチェックを行う。リクエストがnull、またはIDリストが空の場合はエラーレスポンスを返す。
+		// 入力値チェックを行う。
 		return checkNull(request, Action.DELETE) ? new CatalogResponse(MSG.CANNOT_EMPTY.getMessage())
+				// カタログを削除し、削除した数が要求された数と一致する場合、対応する結果を返す。
 				: result(catalogDao.deleteCatalog(request.getIdList()) == request.getIdList().size());
 	}
 
 	@Override
-	public CatalogResponse findCatalogByParent(CatalogRequest request) {
-		// 指定した親カタログに関連するカタログを取得する。
-		return new CatalogResponse(MSG.SUCCESS.getMessage(),
-				catalogDao.findByParentAndDeleteFlag(request.getParent(), false));
-	}
-
-	@Override
-	public CatalogResponse findCatalogByNameAndParent(CatalogRequest request) {
-		// 指定した名前または親カタログに関連するカタログを取得する。
-		return new CatalogResponse(MSG.SUCCESS.getMessage(),
-				catalogDao.findByNameAndParent(request.getName(), request.getParent()));
+	public CatalogResponse findCatalog(CatalogRequest request) {
+		// 入力値チェックを行う。
+		return checkNull(request, Action.FIND)
+				// 名前と親カタログに基づいてカタログを検索し、該当する結果を返す。
+				? new CatalogResponse(MSG.SUCCESS.getMessage(),
+						catalogDao.findByNameAndParent(request.getName(), request.getParent()))
+				// 親カタログと削除フラグに基づいてカタログを検索し、該当する結果を返す。
+				: new CatalogResponse(MSG.SUCCESS.getMessage(),
+						catalogDao.findByParentAndDeleteFlag(request.getParent(), false));
 	}
 
 	// 入力値チェックメソッド
@@ -82,7 +85,7 @@ public class CatalogServiceImpl implements CatalogService {
 		switch (action) {
 		case ADD:
 			return !StringUtils.hasText(request.getName());
-		case FIND:
+		case GET:
 			return request == null;
 		case REVISE:
 			return request.getCatalogId() == 0 || !StringUtils.hasText(request.getName());
@@ -90,12 +93,14 @@ public class CatalogServiceImpl implements CatalogService {
 		case MINUS:
 		case DELETE:
 			return CollectionUtils.isEmpty(request.getIdList());
+		case FIND:
+			return StringUtils.hasText(request.getName());
 		default:
 			return true;
 		}
 	}
 
-	// リクエストの名前長さチェックを行う。名前が15文字以上の場合はfalseを返す。
+	// 入力値の検証メソッド。名前が15文字以上の場合はfalseを返す。
 	private boolean checkInput(CatalogRequest request) {
 		return request.getName().length() <= 15;
 	}

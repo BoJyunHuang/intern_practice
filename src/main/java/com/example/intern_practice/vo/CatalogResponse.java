@@ -6,10 +6,14 @@ import com.example.intern_practice.entity.Catalog;
 
 public class CatalogResponse {
 
+	// メッセージ
 	private String message;
+	// カタログ
 	private Catalog catalog;
+	// カタログリスト
 	private List<Catalog> catalogList;
 	
+	// コンストラクタ
 	public CatalogResponse() {
 		super();
 	}
@@ -31,6 +35,7 @@ public class CatalogResponse {
 		this.catalogList = catalogList;
 	}
 	
+	// ゲッターとセッター
 	public String getMessage() {
 		return message;
 	}

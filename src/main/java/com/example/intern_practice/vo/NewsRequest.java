@@ -8,35 +8,64 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 public class NewsRequest {
 
+	// ニュースID
 	private int newsId;
+	// カタログ
 	private String catalog;
+	// サブカタログ
 	private String subcatalog;
+	// タイトル
 	private String title;
+	// サブタイトル
 	private String subtitle;
+	// タグ
 	private String tags;
+	// 本文
 	private String content;
+	// 作成日時
 	private LocalDateTime createTime;
+	// 公開日時
 	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
 	private LocalDateTime publishTime = LocalDateTime.now();
+	// 編集日時
 	private LocalDateTime editTime;
+	// 取り下げる日時
 	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
 	private LocalDateTime expirationTime = LocalDateTime.now().plus(3, ChronoUnit.DAYS);
+	// 削除日時
 	private LocalDateTime removeTime;
+	// 著者
 	private String creator;
+	// 編者
 	private String editor;	
+	// 削除者
 	private String remover;
+	// 再生回数
 	private int views;
+	// いいね数
 	private int likes;
+	// 嫌い数
 	private int dislikes;
+	// 重要性
 	private int importance;
+	// 視聴者のレベル
 	private int audienceLevel;
+	// 削除フラグ
 	private boolean deleteFlag;
+	// IDリスト
 	private List<Integer> idList;
-		
+	
+	// コンストラクタ
 	public NewsRequest() {
 		super();
 	}
-		
+	
+	public NewsRequest(int newsId) {
+		super();
+		this.newsId = newsId;
+	}
+
+	// ゲッターとセッター
 	public int getNewsId() {
 		return newsId;
 	}

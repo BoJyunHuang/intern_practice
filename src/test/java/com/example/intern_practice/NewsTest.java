@@ -158,10 +158,10 @@ public class NewsTest {
 	@Test
 	public void findNewsTest() {
 		NewsRequest request = new NewsRequest();
-		Assert.isTrue(newsService.findNews(null).getNewsList().size() == 3, MSG.TEST1_ERROR.getMessage());
-		Assert.isTrue(newsService.findNews(request).getNews() == null, MSG.TEST2_ERROR.getMessage());
+		Assert.isTrue(newsService.getNews(null).getNewsList().size() == 3, MSG.TEST1_ERROR.getMessage());
+		Assert.isTrue(newsService.getNews(request).getNews() == null, MSG.TEST2_ERROR.getMessage());
 		request.setNewsId(2);
-		Assert.isTrue(newsService.findNews(request).getNews().getDislikes() == 1, MSG.TEST3_ERROR.getMessage());
+		Assert.isTrue(newsService.getNews(request).getNews().getDislikes() == 1, MSG.TEST3_ERROR.getMessage());
 	}
 
 	@Test

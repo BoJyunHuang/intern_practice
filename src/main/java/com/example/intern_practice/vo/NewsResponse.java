@@ -6,10 +6,14 @@ import com.example.intern_practice.entity.News;
 
 public class NewsResponse {
 
+	// メッセージ
 	private String message;
+	// ニュース
 	private News news;
+	// ニュースリスト
 	private List<News> newsList;
 	
+	// コンストラクタ
 	public NewsResponse() {
 		super();
 	}
@@ -31,6 +35,7 @@ public class NewsResponse {
 		this.newsList = newsList;
 	}
 
+	// ゲッターとセッター
 	public String getMessage() {
 		return message;
 	}

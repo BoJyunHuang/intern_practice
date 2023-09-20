@@ -67,11 +67,11 @@ public class News {
 	@Column(name = "remove_time")
 	private LocalDateTime removeTime;
 
-	// 創造者
+	// 著者
 	@Column(name = "creator")
 	private String creator;
 
-	// 編集者
+	// 編者
 	@Column(name = "editor")
 	private String editor;
 

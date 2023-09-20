@@ -100,10 +100,10 @@ public class CatalogTest {
 	@Test
 	public void findCatalogTest() {
 		CatalogRequest request = new CatalogRequest();
-		Assert.isTrue(catalogService.findCatalog(null).getCatalogList().size() == 6, MSG.TEST1_ERROR.getMessage());
-		Assert.isTrue(catalogService.findCatalog(request).getCatalog() == null, MSG.TEST2_ERROR.getMessage());
+		Assert.isTrue(catalogService.getCatalog(null).getCatalogList().size() == 6, MSG.TEST1_ERROR.getMessage());
+		Assert.isTrue(catalogService.getCatalog(request).getCatalog() == null, MSG.TEST2_ERROR.getMessage());
 		request.setCatalogId(1);
-		Assert.isTrue(catalogService.findCatalog(request).getCatalog().getCatalogId() == 1,
+		Assert.isTrue(catalogService.getCatalog(request).getCatalog().getCatalogId() == 1,
 				MSG.TEST3_ERROR.getMessage());
 	}
 

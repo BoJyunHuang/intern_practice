@@ -22,8 +22,9 @@ public class NewsServiceImpl implements NewsService {
 
 	@Override
 	public NewsResponse addNews(NewsRequest request) {
-		// Nullチェックを行う。リクエストがnullの場合はエラーレスポンスを返す。
+		// 入力値チェックを行う。
 		return checkNull(request, Action.ADD) ? new NewsResponse(MSG.CANNOT_EMPTY.getMessage())
+				// 入力値の検証が正常であり、ニュースの挿入が成功した場合に対応する結果を返す。
 				: result(checkInput(request, Action.ADD)
 						&& newsDao.insertNews(request.getCatalog(), request.getSubcatalog(), request.getTitle(),
 								request.getSubtitle(), request.getTags(), request.getContent(), LocalDateTime.now(),
@@ -32,17 +33,20 @@ public class NewsServiceImpl implements NewsService {
 	}
 
 	@Override
-	public NewsResponse findNews(NewsRequest request) {
-		// Nullチェックを行う。リクエストがnullの場合、全てのカタログ情報を含む成功レスポンスを返す。
-		return checkNull(request, Action.FIND)
+	public NewsResponse getNews(NewsRequest request) {
+		// 入力値チェックを行う。
+		return checkNull(request, Action.GET)
+				// リクエストがnullの場合は全てのニュースを返す。
 				? new NewsResponse(MSG.SUCCESS.getMessage(), newsDao.findAllByOrderByPublishTimeDesc())
+				// ニュースIDに対応するニュースを取得する。ニュースが存在しない場合、nullを返す。
 				: new NewsResponse(MSG.SUCCESS.getMessage(), newsDao.findById(request.getNewsId()).orElse(null));
 	}
 
 	@Override
 	public NewsResponse reviseNews(NewsRequest request) {
-		// Nullチェックを行う。リクエストがnullの場合はエラーレスポンスを返す。
+		// 入力値チェックを行う。
 		return checkNull(request, Action.REVISE) ? new NewsResponse(MSG.CANNOT_EMPTY.getMessage())
+				// 入力値の検証が正常であり、ニュースの更新が成功した場合に対応する結果を返す。
 				: result(checkInput(request, Action.REVISE)
 						&& newsDao.updateNews(request.getNewsId(), request.getCatalog(), request.getSubcatalog(),
 								request.getTitle(), request.getSubtitle(), request.getTags(), request.getContent(),
@@ -52,34 +56,44 @@ public class NewsServiceImpl implements NewsService {
 
 	@Override
 	public NewsResponse viewNews(NewsRequest request) {
-		 // Nullチェックを行う。リクエストがnullの場合はエラーレスポンスを返す。
+		// 入力値チェックを行う。
 		return checkNull(request, Action.PLUS) ? new NewsResponse(MSG.CANNOT_EMPTY.getMessage())
+				// ニュースの閲覧回数を増加し、増加した数が1と一致する場合、対応する結果を返す。
 				: result(newsDao.plusView(request.getNewsId()) == 1);
 	}
 
 	@Override
 	public NewsResponse likeNews(NewsRequest request) {
-		// Nullチェックを行う。リクエストがnullの場合はエラーレスポンスを返す。
+		// 入力値チェックを行う。
 		return checkNull(request, Action.PLUS) ? new NewsResponse(MSG.CANNOT_EMPTY.getMessage())
+				// ニュースのいいね数を増加し、増加した数が1と一致する場合、対応する結果を返す。
 				: result(newsDao.plusLike(request.getNewsId()) == 1);
 	}
 
 	@Override
 	public NewsResponse dislikeNews(NewsRequest request) {
-		// Nullチェックを行う。リクエストがnullの場合はエラーレスポンスを返す。
+		// 入力値チェックを行う。
 		return checkNull(request, Action.PLUS) ? new NewsResponse(MSG.CANNOT_EMPTY.getMessage())
+				// ニュースの嫌い数を増加し、増加した数が1と一致する場合、対応する結果を返す。
 				: result(newsDao.plusDislike(request.getNewsId()) == 1);
 	}
 
 	@Override
 	public NewsResponse deleteNews(NewsRequest request) {
-		// Nullチェックを行う。リクエストがnullの場合はエラーレスポンスを返す。
+		// 入力値チェックを行う。
 		return checkNull(request, Action.DELETE) ? new NewsResponse(MSG.CANNOT_EMPTY.getMessage())
+				// ニュースを削除し、削除した数が要求された数と一致する場合、対応する結果を返す。
 				: result(checkInput(request, Action.DELETE) && newsDao.deleteNews(request.getIdList(),
 						LocalDateTime.now(), request.getRemover()) == request.getIdList().size());
 	}
 
-	// Nullチェックメソッド
+	@Override
+	public NewsResponse findNews(NewsRequest request) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	// 入力値チェックメソッド
 	private boolean checkNull(NewsRequest request, Action action) {
 		switch (action) {
 		case ADD:
@@ -88,7 +102,7 @@ public class NewsServiceImpl implements NewsService {
 					|| !StringUtils.hasText(request.getContent()) || request.getPublishTime() == null
 					|| request.getExpirationTime() == null || !StringUtils.hasText(request.getCreator())
 					|| request.getImportance() < 1 || request.getAudienceLevel() < 1;
-		case FIND:
+		case GET:
 			return request == null;
 		case REVISE:
 			return request.getNewsId() == 0 || !StringUtils.hasText(request.getCatalog())
@@ -106,7 +120,7 @@ public class NewsServiceImpl implements NewsService {
 		}
 	}
 
-	// 入力値チェックメソッド
+	// 入力値の検証メソッド。
 	private boolean checkInput(NewsRequest request, Action action) {
 		switch (action) {
 		case ADD:
@@ -130,8 +144,7 @@ public class NewsServiceImpl implements NewsService {
 
 	// 操作の結果に基づいて適切なレスポンスを返す。
 	private NewsResponse result(boolean isSuccess) {
-		return isSuccess ? new NewsResponse(MSG.SUCCESS.getMessage())
-				: new NewsResponse(MSG.INCORRECT.getMessage());
+		return isSuccess ? new NewsResponse(MSG.SUCCESS.getMessage()) : new NewsResponse(MSG.INCORRECT.getMessage());
 	}
 
 }

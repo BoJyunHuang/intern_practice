@@ -45,19 +45,19 @@ public interface NewsDao extends JpaRepository<News, Integer> {
 			@Param("expirationTime") LocalDateTime expirationTime, @Param("editor") String editor,
 			@Param("importance") int importance, @Param("audienceLevel") int audienceLevel);
 
-	// ニュースの閲覧数を増やする。
+	// ニュースの閲覧数を増やす。
 	@Transactional
 	@Modifying
 	@Query(value = "update news set views = views + 1 where news_id = :newsId", nativeQuery = true)
 	public int plusView(@Param("newsId") Integer newsId);
 
-	// ニュースのいいね数を増やする。
+	// ニュースのいいね数を増やす。
 	@Transactional
 	@Modifying
 	@Query(value = "update news set likes = likes + 1 where news_id = :newsId", nativeQuery = true)
 	public int plusLike(@Param("newsId") Integer newsId);
 
-	// ニュースの「いいえ」数を増やする。
+	// ニュースの「いいえ」数を増やす。
 	@Transactional
 	@Modifying
 	@Query(value = "update news set dislikes = dislikes + 1 where news_id = :newsId", nativeQuery = true)
@@ -73,4 +73,14 @@ public interface NewsDao extends JpaRepository<News, Integer> {
 
 	// 発行日時の降順ですべてのニュースを取得する。
 	public List<News> findAllByOrderByPublishTimeDesc();
+
+	// 指定した開始時間以降のニュースを、発行日時の降順で検索する。
+	public List<News> findByPublishTimeAfterOrderByPublishTimeDesc(LocalDateTime startTime);
+
+	// 指定した終了時間以前のニュースを、発行日時の降順で検索する。
+	public List<News> findByExpirationTimeBeforeOrderByPublishTimeDesc(LocalDateTime endTime);
+
+	// 指定した開始時間と終了時間の間にあるニュースを、発行日時の降順で検索する。
+	public List<News> findByPublishTimeAfterAndExpirationTimeBeforeOrderByPublishTimeDesc(LocalDateTime startTime,
+			LocalDateTime endTime);
 }

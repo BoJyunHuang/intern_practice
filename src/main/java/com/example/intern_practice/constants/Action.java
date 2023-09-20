@@ -2,9 +2,10 @@ package com.example.intern_practice.constants;
 
 public enum Action {
 	ADD,
-	FIND,
+	GET,
     REVISE,
     PLUS,
     MINUS,
-    DELETE
+    DELETE,
+    FIND
 }
