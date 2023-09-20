@@ -11,9 +11,9 @@ public class NewsRequest {
 	// ニュースID
 	private int newsId;
 	// カタログ
-	private String catalog;
+	private Integer catalog;
 	// サブカタログ
-	private String subcatalog;
+	private Integer subcatalog;
 	// タイトル
 	private String title;
 	// サブタイトル
@@ -37,7 +37,7 @@ public class NewsRequest {
 	// 著者
 	private String creator;
 	// 編者
-	private String editor;	
+	private String editor;
 	// 削除者
 	private String remover;
 	// 再生回数
@@ -54,12 +54,16 @@ public class NewsRequest {
 	private boolean deleteFlag;
 	// IDリスト
 	private List<Integer> idList;
-	
+	// 開始日時
+	private LocalDateTime startTime;
+	// 終了日時
+	private LocalDateTime endTime;
+
 	// コンストラクタ
 	public NewsRequest() {
 		super();
 	}
-	
+
 	public NewsRequest(int newsId) {
 		super();
 		this.newsId = newsId;
@@ -72,16 +76,16 @@ public class NewsRequest {
 	public void setNewsId(int newsId) {
 		this.newsId = newsId;
 	}
-	public String getCatalog() {
+	public Integer getCatalog() {
 		return catalog;
 	}
-	public void setCatalog(String catalog) {
+	public void setCatalog(Integer catalog) {
 		this.catalog = catalog;
 	}
-	public String getSubcatalog() {
+	public Integer getSubcatalog() {
 		return subcatalog;
 	}
-	public void setSubcatalog(String subcatalog) {
+	public void setSubcatalog(Integer subcatalog) {
 		this.subcatalog = subcatalog;
 	}
 	public String getTitle() {
@@ -197,6 +201,18 @@ public class NewsRequest {
 	}
 	public void setIdList(List<Integer> idList) {
 		this.idList = idList;
+	}
+	public LocalDateTime getStartTime() {
+		return startTime;
+	}
+	public void setStartTime(LocalDateTime startTime) {
+		this.startTime = startTime;
+	}
+	public LocalDateTime getEndTime() {
+		return endTime;
+	}
+	public void setEndTime(LocalDateTime endTime) {
+		this.endTime = endTime;
 	}
 
 }

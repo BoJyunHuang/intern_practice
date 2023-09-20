@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS `intern_practice`.`news` (
   `news_id` INT NOT NULL AUTO_INCREMENT,
-  `catalog` VARCHAR(20) NOT NULL,
-  `subcatalog` VARCHAR(20) NOT NULL,
+  `catalog` INT NOT NULL,
+  `subcatalog` INT NOT NULL,
   `title` VARCHAR(45) NOT NULL,
   `subtitle` VARCHAR(90) NOT NULL,
   `tags` VARCHAR(150) NULL DEFAULT 'null',

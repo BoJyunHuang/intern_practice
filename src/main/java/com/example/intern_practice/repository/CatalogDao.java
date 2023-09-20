@@ -54,7 +54,7 @@ public interface CatalogDao extends JpaRepository<Catalog, Integer> {
 	// 親と削除フラグに基づいてカタログを検索する。
 	public List<Catalog> findByParentAndDeleteFlag(String parent, boolean deleteFlag);
 
-	// 指定された名前と親カタログに一致するカタログを検索する。
-	public List<Catalog> findByNameAndParent(String name, String parent);
+	// 指定された名前,親カタログ,削除フラグに一致するカタログを検索する。
+	public List<Catalog> findByNameAndParentAndDeleteFlag(String name, String parent, boolean deleteFlag);
 
 }

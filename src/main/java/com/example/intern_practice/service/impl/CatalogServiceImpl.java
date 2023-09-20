@@ -2,6 +2,7 @@ package com.example.intern_practice.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -12,6 +13,7 @@ import com.example.intern_practice.service.ifs.CatalogService;
 import com.example.intern_practice.vo.CatalogRequest;
 import com.example.intern_practice.vo.CatalogResponse;
 
+@Transactional
 @Service
 public class CatalogServiceImpl implements CatalogService {
 
@@ -19,6 +21,7 @@ public class CatalogServiceImpl implements CatalogService {
 	private CatalogDao catalogDao;
 
 	@Override
+	@Transactional
 	public CatalogResponse addCatalog(CatalogRequest request) {
 		// 入力値チェックを行う。
 		return checkNull(request, Action.ADD) ? new CatalogResponse(MSG.CANNOT_EMPTY.getMessage())
@@ -36,6 +39,7 @@ public class CatalogServiceImpl implements CatalogService {
 	}
 
 	@Override
+	@Transactional
 	public CatalogResponse reviseCatalog(CatalogRequest request) {
 		// 入力値チェックを行う。
 		return checkNull(request, Action.REVISE) ? new CatalogResponse(MSG.CANNOT_EMPTY.getMessage())
@@ -45,6 +49,7 @@ public class CatalogServiceImpl implements CatalogService {
 	}
 
 	@Override
+	@Transactional
 	public CatalogResponse plusNews(CatalogRequest request) {
 		// 入力値チェックを行う。
 		return checkNull(request, Action.PLUS) ? new CatalogResponse(MSG.CANNOT_EMPTY.getMessage())
@@ -53,6 +58,7 @@ public class CatalogServiceImpl implements CatalogService {
 	}
 
 	@Override
+	@Transactional
 	public CatalogResponse minusNews(CatalogRequest request) {
 		// 入力値チェックを行う。
 		return checkNull(request, Action.MINUS) ? new CatalogResponse(MSG.CANNOT_EMPTY.getMessage())
@@ -61,6 +67,7 @@ public class CatalogServiceImpl implements CatalogService {
 	}
 
 	@Override
+	@Transactional
 	public CatalogResponse deleteCatalog(CatalogRequest request) {
 		// 入力値チェックを行う。
 		return checkNull(request, Action.DELETE) ? new CatalogResponse(MSG.CANNOT_EMPTY.getMessage())
@@ -74,7 +81,7 @@ public class CatalogServiceImpl implements CatalogService {
 		return checkNull(request, Action.FIND)
 				// 名前と親カタログに基づいてカタログを検索し、該当する結果を返す。
 				? new CatalogResponse(MSG.SUCCESS.getMessage(),
-						catalogDao.findByNameAndParent(request.getName(), request.getParent()))
+						catalogDao.findByNameAndParentAndDeleteFlag(request.getName(), request.getParent(), false))
 				// 親カタログと削除フラグに基づいてカタログを検索し、該当する結果を返す。
 				: new CatalogResponse(MSG.SUCCESS.getMessage(),
 						catalogDao.findByParentAndDeleteFlag(request.getParent(), false));

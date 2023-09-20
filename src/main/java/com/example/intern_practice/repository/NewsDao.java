@@ -24,7 +24,7 @@ public interface NewsDao extends JpaRepository<News, Integer> {
 			+ "values (:catalog, :subcatalog, :title, :subtitle, :tags, :content, "
 			+ ":createTime, :publishTime, null, :expirationTime, null, "
 			+ ":creator, null, null, 0, 0, 0, :importance, :audienceLevel, false)", nativeQuery = true)
-	public int insertNews(@Param("catalog") String catalog, @Param("subcatalog") String subcatalog,
+	public int insertNews(@Param("catalog") Integer catalog, @Param("subcatalog") Integer subcatalog,
 			@Param("title") String title, @Param("subtitle") String subtitle, @Param("tags") String tags,
 			@Param("content") String content, @Param("createTime") LocalDateTime createTime,
 			@Param("publishTime") LocalDateTime publishTime, @Param("expirationTime") LocalDateTime expirationTime,
@@ -38,8 +38,8 @@ public interface NewsDao extends JpaRepository<News, Integer> {
 			+ "content = :content, publish_time = :publishTime, edit_time = :editTime, expiration_time = :expirationTime, "
 			+ "editor = :editor, importance = :importance, audience_level = :audienceLevel "
 			+ "where news_id = :newsId", nativeQuery = true)
-	public int updateNews(@Param("newsId") Integer newsId, @Param("catalog") String catalog,
-			@Param("subcatalog") String subcatalog, @Param("title") String title, @Param("subtitle") String subtitle,
+	public int updateNews(@Param("newsId") Integer newsId, @Param("catalog") Integer catalog,
+			@Param("subcatalog") Integer subcatalog, @Param("title") String title, @Param("subtitle") String subtitle,
 			@Param("tags") String tags, @Param("content") String content,
 			@Param("publishTime") LocalDateTime publishTime, @Param("editTime") LocalDateTime editTime,
 			@Param("expirationTime") LocalDateTime expirationTime, @Param("editor") String editor,

@@ -27,6 +27,11 @@ public class CatalogRequest {
 		this.catalogId = catalogId;
 	}
 
+	public CatalogRequest(List<Integer> idList) {
+		super();
+		this.idList = idList;
+	}
+
 	// ゲッターとセッター
 	public int getCatalogId() {
 		return catalogId;

@@ -23,11 +23,11 @@ public class News {
 
 	// カタログ
 	@Column(name = "catalog")
-	private String catalog;
+	private Integer catalog;
 
 	// サブカタログ
 	@Column(name = "subcatalog")
-	private String subcatalog;
+	private Integer subcatalog;
 
 	// タイトル
 	@Column(name = "title")
@@ -108,7 +108,7 @@ public class News {
 		super();
 	}
 
-	public News(Integer newsId, String catalog, String subcatalog, String title, String subtitle, String tags,
+	public News(Integer newsId, Integer catalog, Integer subcatalog, String title, String subtitle, String tags,
 			String content, LocalDateTime createTime, LocalDateTime publishTime, LocalDateTime editTime,
 			LocalDateTime expirationTime, LocalDateTime removeTime, String creator, String editor, String remover,
 			int views, int likes, int dislikes, int importance, int audienceLevel, boolean deleteFlag) {
@@ -145,19 +145,19 @@ public class News {
 		this.newsId = newsId;
 	}
 
-	public String getCatalog() {
+	public Integer getCatalog() {
 		return catalog;
 	}
 
-	public void setCatalog(String catalog) {
+	public void setCatalog(Integer catalog) {
 		this.catalog = catalog;
 	}
 
-	public String getSubcatalog() {
+	public Integer getSubcatalog() {
 		return subcatalog;
 	}
 
-	public void setSubcatalog(String subcatalog) {
+	public void setSubcatalog(Integer subcatalog) {
 		this.subcatalog = subcatalog;
 	}
 
