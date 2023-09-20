@@ -106,14 +106,14 @@ function toggleParentInput() {
 
 function save() {
 	var requestBody = {
-		catalog: $('#catalog').val(),
-		subcatalog: $('#subcatalog').val(),
-		title: $('#title').val(),
-		subtitle: $('#subtitle').val(),
-		tags: $('#tags').val(),
-		content: $('#content').val(),
-		publishTime: $('#publishTime').val(),
-		creator: $('#creator').val(),
+		catalog: document.getElementById('catalog').value,
+		subcatalog: document.getElementById('subcatalog').value,
+		title: document.getElementById('title').value,
+		subtitle: document.getElementById('subtitle').value,
+		tags: document.getElementById('tags').value,
+		content: document.getElementById('content').value,
+		publishTime: document.getElementById('publishTime').value,
+		creator: document.getElementById('creator').value,
 	};
 	fetch('/preview_news', {
 		method: 'POST',

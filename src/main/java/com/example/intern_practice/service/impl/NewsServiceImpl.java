@@ -41,7 +41,7 @@ public class NewsServiceImpl implements NewsService {
 				// リクエストがnullの場合は全てのニュースを返す。
 				? new NewsResponse(MSG.SUCCESS.getMessage(), newsDao.findAllByOrderByPublishTimeDesc())
 				// ニュースIDに対応するニュースを取得する。ニュースが存在しない場合、nullを返す。
-				: new NewsResponse(MSG.SUCCESS.getMessage(), newsDao.findById(request.getNewsId()).orElse(null));
+				: new NewsResponse(MSG.SUCCESS.getMessage(), newsDao.findById(request.getNewsId()).get());
 	}
 
 	@Override

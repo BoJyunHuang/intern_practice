@@ -240,4 +240,9 @@ public class NewsTest {
 		Assert.isTrue(newsService.deleteNews(request).getMessage().equals(MSG.SUCCESS.getMessage()),
 				MSG.TEST3_ERROR.getMessage());
 	}
+	
+	@Test
+	public void Test() {
+		System.out.println(newsDao.findById(1).get().getCatalog());
+	}
 }

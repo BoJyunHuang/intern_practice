@@ -35,7 +35,7 @@ public class CatalogServiceImpl implements CatalogService {
 		return checkNull(request, Action.GET) ? new CatalogResponse(MSG.SUCCESS.getMessage(), catalogDao.findAll())
 				// カタログIDに対応するカタログを取得する。カタログが存在しない場合、nullを返す。
 				: new CatalogResponse(MSG.SUCCESS.getMessage(),
-						catalogDao.findById(request.getCatalogId()).orElse(null));
+						catalogDao.findById(request.getCatalogId()).get());
 	}
 
 	@Override

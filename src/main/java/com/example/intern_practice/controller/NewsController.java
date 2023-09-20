@@ -77,7 +77,7 @@ public class NewsController {
 	// ニュースを修正し、結果メッセージを返す。
 	@PostMapping("/revise_news")
 	public String reviseNews(@ModelAttribute("news") NewsRequest request, Model model) {
-		News oldNews = newsService.getNews(new NewsRequest(request.getNewsId())).getNews();
+		News oldNews = newsService.getNews(request).getNews();
 		// カタログからニュースを削除し、結果メッセージを取得する。
 		CatalogResponse minusNewsResponse = catalogService.minusNews(
 				new CatalogRequest(new ArrayList<>(Arrays.asList(oldNews.getCatalog(), oldNews.getSubcatalog()))));
