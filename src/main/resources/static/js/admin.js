@@ -41,7 +41,7 @@ if (catalogElement) {
 				subcatalogSelect.innerHTML = '';
 				result.catalogList.forEach(option => {
 					var optionElement = document.createElement("option");
-					optionElement.value = option.name;
+					optionElement.value = option.catalogId;
 					optionElement.text = option.name;
 					subcatalogSelect.appendChild(optionElement);
 				});
@@ -91,7 +91,6 @@ function toggleParentInput() {
 (function() {
 	'use strict'
 	var forms = document.querySelectorAll('.needs-validation')
-	// Loop over them and prevent submission
 	Array.prototype.slice.call(forms)
 		.forEach(function(form) {
 			form.addEventListener('submit', function(event) {
@@ -105,9 +104,10 @@ function toggleParentInput() {
 })()
 
 function save() {
+	var subcatalog = document.getElementById('subcatalog');
 	var requestBody = {
-		catalog: document.getElementById('catalog').value,
-		subcatalog: document.getElementById('subcatalog').value,
+		catalog: catalogElement.options[catalogElement.selectedIndex].innerText,
+		subcatalog: subcatalog.options[subcatalog.selectedIndex].innerText,
 		title: document.getElementById('title').value,
 		subtitle: document.getElementById('subtitle').value,
 		tags: document.getElementById('tags').value,
@@ -122,7 +122,7 @@ function save() {
 		},
 		body: JSON.stringify(requestBody)
 	}).then(response => response.json())
-		.then(data => alert(data.message))
+		.then(data => alert(data.msg))
 }
 
 function goBack() {
