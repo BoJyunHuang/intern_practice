@@ -2,12 +2,13 @@ package com.example.intern_practice.vo;
 
 import java.util.List;
 
+import com.example.intern_practice.constants.MSG;
 import com.example.intern_practice.entity.News;
 
 public class NewsResponse {
 
 	// メッセージ
-	private String message;
+	private MSG msg;
 	// ニュース
 	private News news;
 	// ニュースリスト
@@ -18,32 +19,32 @@ public class NewsResponse {
 		super();
 	}
 	
-	public NewsResponse(String message) {
+	public NewsResponse(MSG msg) {
 		super();
-		this.message = message;
+		this.msg = msg;
 	}
-	
-	public NewsResponse(String message, News news) {
+
+	public NewsResponse(MSG msg, News news) {
 		super();
-		this.message = message;
+		this.msg = msg;
 		this.news = news;
 	}
-	
-	public NewsResponse(String message, List<News> newsList) {
+
+	public NewsResponse(MSG msg, List<News> newsList) {
 		super();
-		this.message = message;
+		this.msg = msg;
 		this.newsList = newsList;
 	}
 
 	// ゲッターとセッター
-	public String getMessage() {
-		return message;
+	public MSG getMsg() {
+		return msg;
 	}
 
-	public void setMessage(String message) {
-		this.message = message;
+	public void setMsg(MSG msg) {
+		this.msg = msg;
 	}
-	
+
 	public News getNews() {
 		return news;
 	}

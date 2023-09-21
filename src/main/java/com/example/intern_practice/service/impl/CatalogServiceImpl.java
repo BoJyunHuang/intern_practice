@@ -24,7 +24,7 @@ public class CatalogServiceImpl implements CatalogService {
 	@Transactional
 	public CatalogResponse addCatalog(CatalogRequest request) {
 		// 入力値チェックを行う。
-		return checkNull(request, Action.ADD) ? new CatalogResponse(MSG.CANNOT_EMPTY.getMessage())
+		return checkNull(request, Action.ADD) ? new CatalogResponse(MSG.CANNOT_EMPTY)
 				// 入力値の検証が正常であり、カタログの挿入が成功した場合に対応する結果を返す。
 				: result(checkInput(request) && catalogDao.insertCatalog(request.getName(), request.getParent()) == 1);
 	}
@@ -32,17 +32,16 @@ public class CatalogServiceImpl implements CatalogService {
 	@Override
 	public CatalogResponse getCatalog(CatalogRequest request) {
 		// 入力値チェックを行う。リクエストがnullの場合は全てのカタログを返す。
-		return checkNull(request, Action.GET) ? new CatalogResponse(MSG.SUCCESS.getMessage(), catalogDao.findAll())
+		return checkNull(request, Action.GET) ? new CatalogResponse(MSG.SUCCESS, catalogDao.findAll())
 				// カタログIDに対応するカタログを取得する。カタログが存在しない場合、nullを返す。
-				: new CatalogResponse(MSG.SUCCESS.getMessage(),
-						catalogDao.findById(request.getCatalogId()).get());
+				: new CatalogResponse(MSG.SUCCESS, catalogDao.findById(request.getCatalogId()).orElse(null));
 	}
 
 	@Override
 	@Transactional
 	public CatalogResponse reviseCatalog(CatalogRequest request) {
 		// 入力値チェックを行う。
-		return checkNull(request, Action.REVISE) ? new CatalogResponse(MSG.CANNOT_EMPTY.getMessage())
+		return checkNull(request, Action.REVISE) ? new CatalogResponse(MSG.CANNOT_EMPTY)
 				// 入力値の検証が正常であり、カタログの更新が成功した場合に対応する結果を返す。
 				: result(checkInput(request) && catalogDao.updateCatalog(request.getCatalogId(), request.getName(),
 						request.getParent()) == 1);
@@ -52,7 +51,7 @@ public class CatalogServiceImpl implements CatalogService {
 	@Transactional
 	public CatalogResponse plusNews(CatalogRequest request) {
 		// 入力値チェックを行う。
-		return checkNull(request, Action.PLUS) ? new CatalogResponse(MSG.CANNOT_EMPTY.getMessage())
+		return checkNull(request, Action.PLUS) ? new CatalogResponse(MSG.CANNOT_EMPTY)
 				// カタログのニュース数を増やし、増加した数が要求された数と一致する場合、対応する結果を返す。
 				: result(catalogDao.plusNewsAmount(request.getIdList()) == request.getIdList().size());
 	}
@@ -61,7 +60,7 @@ public class CatalogServiceImpl implements CatalogService {
 	@Transactional
 	public CatalogResponse minusNews(CatalogRequest request) {
 		// 入力値チェックを行う。
-		return checkNull(request, Action.MINUS) ? new CatalogResponse(MSG.CANNOT_EMPTY.getMessage())
+		return checkNull(request, Action.MINUS) ? new CatalogResponse(MSG.CANNOT_EMPTY)
 				// カタログのニュース数を減らし、増加した数が要求された数と一致する場合、対応する結果を返す。
 				: result(catalogDao.minusNewsAmount(request.getIdList()) == request.getIdList().size());
 	}
@@ -70,7 +69,7 @@ public class CatalogServiceImpl implements CatalogService {
 	@Transactional
 	public CatalogResponse deleteCatalog(CatalogRequest request) {
 		// 入力値チェックを行う。
-		return checkNull(request, Action.DELETE) ? new CatalogResponse(MSG.CANNOT_EMPTY.getMessage())
+		return checkNull(request, Action.DELETE) ? new CatalogResponse(MSG.CANNOT_EMPTY)
 				// カタログを削除し、削除した数が要求された数と一致する場合、対応する結果を返す。
 				: result(catalogDao.deleteCatalog(request.getIdList()) == request.getIdList().size());
 	}
@@ -80,11 +79,10 @@ public class CatalogServiceImpl implements CatalogService {
 		// 入力値チェックを行う。
 		return checkNull(request, Action.FIND)
 				// 名前と親カタログに基づいてカタログを検索し、該当する結果を返す。
-				? new CatalogResponse(MSG.SUCCESS.getMessage(),
+				? new CatalogResponse(MSG.SUCCESS,
 						catalogDao.findByNameAndParentAndDeleteFlag(request.getName(), request.getParent(), false))
 				// 親カタログと削除フラグに基づいてカタログを検索し、該当する結果を返す。
-				: new CatalogResponse(MSG.SUCCESS.getMessage(),
-						catalogDao.findByParentAndDeleteFlag(request.getParent(), false));
+				: new CatalogResponse(MSG.SUCCESS, catalogDao.findByParentAndDeleteFlag(request.getParent(), false));
 	}
 
 	// 入力値チェックメソッド
@@ -114,8 +112,7 @@ public class CatalogServiceImpl implements CatalogService {
 
 	// 操作の結果に基づいて適切なレスポンスを返す。
 	private CatalogResponse result(boolean isSuccess) {
-		return isSuccess ? new CatalogResponse(MSG.SUCCESS.getMessage())
-				: new CatalogResponse(MSG.INCORRECT.getMessage());
+		return isSuccess ? new CatalogResponse(MSG.SUCCESS) : new CatalogResponse(MSG.INCORRECT);
 	}
 
 }

@@ -122,11 +122,12 @@
 								<div class="form-group mt-4">
 									<label for="content" class="form-label fw-bold">*本文</label>
 									<div id="contentLengthLimit" class="form-text">1000文字以下（1000文字を含む）</div>
-									<textarea id="content" name="content" th:field="*{content}" class="form-control" aria-describedby="contentLengthLimit" rows="20" style="height: auto;" required></textarea>
+									<textarea id="content" name="content" th:field="*{content}" class="form-control" aria-describedby="contentLengthLimit" rows="20"
+										style="height: auto;" required></textarea>
 									<p id="charCount">字符数：0 /1000</p>
 									<div class="invalid-feedback">必須です</div>
-									<br>
 								</div>
+								<input type="number" id="newsId" th:field="*{newsId}" class="form-control d-none"></input>
 								<div class="d-flex justify-content-evenly mb-4">
 									<button type="button" class="btn btn-light" onclick="goBack()">戻る</button>
 									<button type="button" id="saveButton" class="btn btn-warning" onclick="save()">一時保存</button>

@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.intern_practice.constants.Action;
+import com.example.intern_practice.constants.HTML;
+import com.example.intern_practice.constants.MSG;
 import com.example.intern_practice.service.ifs.CatalogService;
 import com.example.intern_practice.vo.CatalogRequest;
 import com.example.intern_practice.vo.CatalogResponse;
@@ -23,14 +26,14 @@ public class CatalogController {
 	// 管理者ページへのアクセスを提供する。
 	@GetMapping("/admin")
 	public String admin() {
-		return "admin";
+		return HTML.ADMIN_PAGE.getPage();
 	}
 
 	// カタログリストを表示し、モデルにカタログリストを追加する。
-	@GetMapping("/catalog_list")
+	@GetMapping("/catalog_manage")
 	public String catalogList(Model model) {
 		model.addAttribute("catalogList", catalogService.getCatalog(null).getCatalogList());
-		return "catalog-list";
+		return HTML.CATALOG_MANAGEMENT_PAGE.getPage();
 	}
 
 	// カタログを追加するためのページに導入する。
@@ -39,26 +42,24 @@ public class CatalogController {
 		return toEditPage(model, new CatalogRequest(), true);
 	}
 
-	// カタログを修正するためのページに導入する。修正するカタログのIDを指定する。
+	// カタログを修正するためのページに導入する。
 	@GetMapping("/revise_catalog/{catalogId}")
 	public String reviseCatalog(@PathVariable Integer catalogId, Model model) {
 		return toEditPage(model, catalogService.getCatalog(new CatalogRequest(catalogId)).getCatalog(), false);
 	}
 
-	// カタログを追加し、結果メッセージをモデルに追加する。
+	// カタログを追加し、レスポンスページに遷移する。
 	@PostMapping("/add_catalog")
 	public String addCatalog(@ModelAttribute("catalog") CatalogRequest request, Model model) {
-		model.addAttribute("result", catalogService.addCatalog(request).getMessage());
-		// レスポンスページに遷移する。
-		return "response";
+		MSG msg = catalogService.addCatalog(request).getMsg();
+		return toResponsePage(model, msg.getCode(), msg.getMessage());
 	}
 
-	// カタログを修正し、結果メッセージをモデルに追加する。
+	// カタログを修正し、レスポンスページに遷移する。
 	@PostMapping("/revise_catalog")
 	public String reviseCatalog(@ModelAttribute("catalog") CatalogRequest request, Model model) {
-		model.addAttribute("result", catalogService.reviseCatalog(request).getMessage());
-		// レスポンスページに遷移する。
-		return "response";
+		MSG msg = catalogService.reviseCatalog(request).getMsg();
+		return toResponsePage(model, msg.getCode(), msg.getMessage());
 	}
 
 	// カタログを削除し、削除結果を返す。
@@ -82,7 +83,15 @@ public class CatalogController {
 		// カタログと新規カタログの狀態をモデルに追加する。
 		model.addAttribute("catalog", catalog);
 		model.addAttribute("isNew", isNew);
-		return "catalog-edit";
+		return HTML.CATALOG_EDIT_PAGE.getPage();
+	}
+
+	// レスポンスページに導入する。
+	private String toResponsePage(Model model, String code, String message) {
+		model.addAttribute("type", Action.TYPE_CATALOG.getType());
+		model.addAttribute("code", code);
+		model.addAttribute("message", message);
+		return HTML.RESPONSE_PAGE.getPage();
 	}
 
 }

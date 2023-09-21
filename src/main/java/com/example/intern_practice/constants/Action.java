@@ -1,11 +1,29 @@
 package com.example.intern_practice.constants;
 
 public enum Action {
-	ADD,
-	GET,
-    REVISE,
-    PLUS,
-    MINUS,
-    DELETE,
-    FIND
+	ADD("add"),
+	GET("get"),
+    REVISE("revise"),
+    PLUS("plus"),
+    MINUS("minus"),
+    DELETE("delete"),
+    FIND("find"),	
+    TYPE_NEWS("news"),
+	TYPE_CATALOG("catalog");
+	
+	private String type;
+
+	private Action(String type) {
+		this.type = type;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+	
+	
 }

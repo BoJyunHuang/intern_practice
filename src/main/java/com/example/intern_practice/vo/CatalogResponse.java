@@ -2,12 +2,13 @@ package com.example.intern_practice.vo;
 
 import java.util.List;
 
+import com.example.intern_practice.constants.MSG;
 import com.example.intern_practice.entity.Catalog;
 
 public class CatalogResponse {
 
 	// メッセージ
-	private String message;
+	private MSG msg;
 	// カタログ
 	private Catalog catalog;
 	// カタログリスト
@@ -17,33 +18,33 @@ public class CatalogResponse {
 	public CatalogResponse() {
 		super();
 	}
-	
-	public CatalogResponse(String message) {
+		
+	public CatalogResponse(MSG msg) {
 		super();
-		this.message = message;
+		this.msg = msg;
 	}
-	
-	public CatalogResponse(String message, Catalog catalog) {
+
+	public CatalogResponse(MSG msg, Catalog catalog) {
 		super();
-		this.message = message;
+		this.msg = msg;
 		this.catalog = catalog;
 	}
-	
-	public CatalogResponse(String message, List<Catalog> catalogList) {
+
+	public CatalogResponse(MSG msg, List<Catalog> catalogList) {
 		super();
-		this.message = message;
+		this.msg = msg;
 		this.catalogList = catalogList;
 	}
-	
+
 	// ゲッターとセッター
-	public String getMessage() {
-		return message;
+	public MSG getMsg() {
+		return msg;
 	}
 	
-	public void setMessage(String message) {
-		this.message = message;
+	public void setMsg(MSG msg) {
+		this.msg = msg;
 	}
-	
+
 	public Catalog getCatalog() {
 		return catalog;
 	}

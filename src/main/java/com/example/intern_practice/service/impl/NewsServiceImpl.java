@@ -25,7 +25,7 @@ public class NewsServiceImpl implements NewsService {
 	@Transactional
 	public NewsResponse addNews(NewsRequest request) {
 		// 入力値チェックを行う。
-		return checkNull(request, Action.ADD) ? new NewsResponse(MSG.CANNOT_EMPTY.getMessage())
+		return checkNull(request, Action.ADD) ? new NewsResponse(MSG.CANNOT_EMPTY)
 				// 入力値の検証が正常であり、ニュースの挿入が成功した場合に対応する結果を返す。
 				: result(checkInput(request, Action.ADD)
 						&& newsDao.insertNews(request.getCatalog(), request.getSubcatalog(), request.getTitle(),
@@ -39,16 +39,16 @@ public class NewsServiceImpl implements NewsService {
 		// 入力値チェックを行う。
 		return checkNull(request, Action.GET)
 				// リクエストがnullの場合は全てのニュースを返す。
-				? new NewsResponse(MSG.SUCCESS.getMessage(), newsDao.findAllByOrderByPublishTimeDesc())
+				? new NewsResponse(MSG.SUCCESS, newsDao.findAllByOrderByPublishTimeDesc())
 				// ニュースIDに対応するニュースを取得する。ニュースが存在しない場合、nullを返す。
-				: new NewsResponse(MSG.SUCCESS.getMessage(), newsDao.findById(request.getNewsId()).get());
+				: new NewsResponse(MSG.SUCCESS, newsDao.findById(request.getNewsId()).orElse(null));
 	}
 
 	@Override
 	@Transactional
 	public NewsResponse reviseNews(NewsRequest request) {
 		// 入力値チェックを行う。
-		return checkNull(request, Action.REVISE) ? new NewsResponse(MSG.CANNOT_EMPTY.getMessage())
+		return checkNull(request, Action.REVISE) ? new NewsResponse(MSG.CANNOT_EMPTY)
 				// 入力値の検証が正常であり、ニュースの更新が成功した場合に対応する結果を返す。
 				: result(checkInput(request, Action.REVISE)
 						&& newsDao.updateNews(request.getNewsId(), request.getCatalog(), request.getSubcatalog(),
@@ -60,7 +60,7 @@ public class NewsServiceImpl implements NewsService {
 	@Override
 	public NewsResponse viewNews(NewsRequest request) {
 		// 入力値チェックを行う。
-		return checkNull(request, Action.PLUS) ? new NewsResponse(MSG.CANNOT_EMPTY.getMessage())
+		return checkNull(request, Action.PLUS) ? new NewsResponse(MSG.CANNOT_EMPTY)
 				// ニュースの閲覧回数を増加し、増加した数が1と一致する場合、対応する結果を返す。
 				: result(newsDao.plusView(request.getNewsId()) == 1);
 	}
@@ -68,7 +68,7 @@ public class NewsServiceImpl implements NewsService {
 	@Override
 	public NewsResponse likeNews(NewsRequest request) {
 		// 入力値チェックを行う。
-		return checkNull(request, Action.PLUS) ? new NewsResponse(MSG.CANNOT_EMPTY.getMessage())
+		return checkNull(request, Action.PLUS) ? new NewsResponse(MSG.CANNOT_EMPTY)
 				// ニュースのいいね数を増加し、増加した数が1と一致する場合、対応する結果を返す。
 				: result(newsDao.plusLike(request.getNewsId()) == 1);
 	}
@@ -76,7 +76,7 @@ public class NewsServiceImpl implements NewsService {
 	@Override
 	public NewsResponse dislikeNews(NewsRequest request) {
 		// 入力値チェックを行う。
-		return checkNull(request, Action.PLUS) ? new NewsResponse(MSG.CANNOT_EMPTY.getMessage())
+		return checkNull(request, Action.PLUS) ? new NewsResponse(MSG.CANNOT_EMPTY)
 				// ニュースの嫌い数を増加し、増加した数が1と一致する場合、対応する結果を返す。
 				: result(newsDao.plusDislike(request.getNewsId()) == 1);
 	}
@@ -85,7 +85,7 @@ public class NewsServiceImpl implements NewsService {
 	@Transactional
 	public NewsResponse deleteNews(NewsRequest request) {
 		// 入力値チェックを行う。
-		return checkNull(request, Action.DELETE) ? new NewsResponse(MSG.CANNOT_EMPTY.getMessage())
+		return checkNull(request, Action.DELETE) ? new NewsResponse(MSG.CANNOT_EMPTY)
 				// ニュースを削除し、削除した数が要求された数と一致する場合、対応する結果を返す。
 				: result(checkInput(request, Action.DELETE) && newsDao.deleteNews(request.getIdList(),
 						LocalDateTime.now(), request.getRemover()) == request.getIdList().size());
@@ -94,9 +94,9 @@ public class NewsServiceImpl implements NewsService {
 	@Override
 	public NewsResponse findNews(NewsRequest request) {
 		// 入力値チェックを行う。
-		return checkNull(request, Action.FIND) ? new NewsResponse(MSG.CANNOT_EMPTY.getMessage())
-				: new NewsResponse(MSG.SUCCESS.getMessage(), (request.getStartTime() != null
-						&& request.getEndTime() != null && checkInput(request, Action.FIND))
+		return checkNull(request, Action.FIND) ? new NewsResponse(MSG.CANNOT_EMPTY)
+				: new NewsResponse(MSG.SUCCESS, (request.getStartTime() != null && request.getEndTime() != null
+						&& checkInput(request, Action.FIND))
 								// 指定した開始時間と終了時間の間にあるニュース検索メソッド。
 								? newsDao.findByPublishTimeAfterAndExpirationTimeBeforeOrderByPublishTimeDesc(
 										request.getStartTime(), request.getEndTime())
@@ -104,7 +104,8 @@ public class NewsServiceImpl implements NewsService {
 										// 指定した終了時間以前のニュース検索メソッド。
 										? newsDao.findByExpirationTimeBeforeOrderByPublishTimeDesc(request.getEndTime())
 										// 指定した開始時間以降のニュース検索メソッド。
-										: newsDao.findByPublishTimeAfterOrderByPublishTimeDesc(request.getStartTime())));
+										: newsDao
+												.findByPublishTimeAfterOrderByPublishTimeDesc(request.getStartTime())));
 	}
 
 	// 入力値チェックメソッド
@@ -161,7 +162,7 @@ public class NewsServiceImpl implements NewsService {
 
 	// 操作の結果に基づいて適切なレスポンスを返す。
 	private NewsResponse result(boolean isSuccess) {
-		return isSuccess ? new NewsResponse(MSG.SUCCESS.getMessage()) : new NewsResponse(MSG.INCORRECT.getMessage());
+		return isSuccess ? new NewsResponse(MSG.SUCCESS) : new NewsResponse(MSG.INCORRECT);
 	}
 
 }

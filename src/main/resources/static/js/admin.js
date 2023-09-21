@@ -27,7 +27,7 @@ if (contentElement) {
 if (catalogElement) {
 	catalogElement.addEventListener("change", function() {
 		var requestBody = {
-			parent: this.value
+			parent: this.options[this.selectedIndex].innerText
 		};
 		fetch('/find_catalog', {
 			method: 'POST',

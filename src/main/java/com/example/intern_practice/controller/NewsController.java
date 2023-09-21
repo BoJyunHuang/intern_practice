@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.intern_practice.constants.Action;
+import com.example.intern_practice.constants.HTML;
 import com.example.intern_practice.constants.MSG;
 import com.example.intern_practice.entity.Catalog;
 import com.example.intern_practice.entity.News;
@@ -39,14 +41,14 @@ public class NewsController {
 	@GetMapping("/home")
 	public String home(Model model) {
 		model.addAttribute("newsList", newsService.getNews(null).getNewsList());
-		return "home";
+		return HTML.HOME_PAGE.getPage();
 	}
 
 	// ニュースリストを表示し、モデルにニュースリストを追加する。
-	@GetMapping("/news_list")
-	public String newsList(Model model) {
+	@GetMapping("/news_manage")
+	public String newsManagement(Model model) {
 		model.addAttribute("newsList", newsService.getNews(null).getNewsList());
-		return "news-list";
+		return HTML.NEWS_MANAGEMENT_PAGE.getPage();
 	}
 
 	// ニュースを追加するためのページに導入する。
@@ -71,7 +73,7 @@ public class NewsController {
 				new CatalogRequest(new ArrayList<>(Arrays.asList(request.getCatalog(), request.getSubcatalog()))));
 		// ニュースを追加し、結果メッセージを取得する。
 		NewsResponse newsResponse = newsService.addNews(request);
-		return toResponsePage(model, catalogResponse.getMessage(), newsResponse.getMessage());
+		return toResponsePage(model, catalogResponse.getMsg(), newsResponse.getMsg());
 	}
 
 	// ニュースを修正し、結果メッセージを返す。
@@ -86,8 +88,7 @@ public class NewsController {
 				new CatalogRequest(new ArrayList<>(Arrays.asList(request.getCatalog(), request.getSubcatalog()))));
 		// ニュースを修正し、結果メッセージを取得する。
 		NewsResponse newsResponse = newsService.reviseNews(request);
-		return toResponsePage(model, minusNewsResponse.getMessage(), plusNewsResponse.getMessage(),
-				newsResponse.getMessage());
+		return toResponsePage(model, minusNewsResponse.getMsg(), plusNewsResponse.getMsg(), newsResponse.getMsg());
 	}
 
 	// ニュースを削除し、削除結果を返す。
@@ -109,7 +110,7 @@ public class NewsController {
 	@ResponseBody
 	public NewsResponse previewNews(@RequestBody NewsRequest request, HttpSession session, Model model) {
 		session.setAttribute("previewNews", request);
-		return new NewsResponse(MSG.SUCCESS.getMessage());
+		return new NewsResponse(MSG.SUCCESS);
 	}
 
 	// ニュースのプレビュー情報を表示するためのページに移動する。
@@ -129,23 +130,23 @@ public class NewsController {
 		// ニュースと新規ニュースの狀態をモデルに追加する。
 		model.addAttribute("news", news);
 		model.addAttribute("isNew", isNew);
-		return "news-edit";
+		return HTML.NEWS_EDIT_PAGE.getPage();
 	}
 
 	// レスポンスページに導入する。
-	private String toResponsePage(Model model, String... messages) {
-		model.addAttribute("result",
-				// レスポンスをチェックする。
-				Arrays.stream(messages).allMatch(message -> message.equals(MSG.SUCCESS.getMessage()))
-						? MSG.SUCCESS.getMessage()
-						: MSG.INCORRECT.getMessage());
-		return "response";
+	private String toResponsePage(Model model, MSG... msgs) {
+		model.addAttribute("type", Action.TYPE_NEWS.getType());
+		// レスポンスをチェックする。
+		MSG totalMsg = Arrays.stream(msgs).allMatch(msg -> msg.equals(MSG.SUCCESS)) ? MSG.SUCCESS : MSG.INCORRECT;
+		model.addAttribute("code", totalMsg.getCode());
+		model.addAttribute("message", totalMsg.getMessage());
+		return HTML.RESPONSE_PAGE.getPage();
 	}
 
 	// ニュースページに導入する。
 	private String toNewsPage(Model model, Object news) {
 		model.addAttribute("news", news);
-		return "news";
+		return HTML.NEWS_PAGE.getPage();
 	}
 
 }

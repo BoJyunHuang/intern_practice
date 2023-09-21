@@ -89,7 +89,7 @@
 								<div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
 									<nav class="sb-sidenav-menu-nested nav">
 										<a class="nav-link" th:href="@{/add_news}">新規追加</a>
-										<a class="nav-link" th:href="@{/news_list}">リスト</a>
+										<a class="nav-link" th:href="@{/news_manage}">リスト</a>
 									</nav>
 								</div>
 								<a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseError" aria-expanded="false"
@@ -102,7 +102,7 @@
 								<div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
 									<nav class="sb-sidenav-menu-nested nav">
 										<a class="nav-link" th:href="@{/add_catalog}">新規追加</a>
-										<a class="nav-link" th:href="@{/catalog_list}">リスト</a>
+										<a class="nav-link" th:href="@{/catalog_manage}">リスト</a>
 									</nav>
 								</div>
 							</nav>
@@ -125,24 +125,24 @@
 					</ol>
 					<div class="row">
 						<div class="col-xl-3 col-md-6">
-							<div class="card bg-light text-white mb-4">
-								<div class="card-body">ニュース</div>
-								<div class="card-footer d-flex align-items-center justify-content-between">
-									<a class="small text-white stretched-link" th:href="@{/news_list}">リスト</a>
-									<div class="small text-white">
-										<i class="fas fa-angle-right"></i>
-									</div>
+							<div class="card">
+								<div class="card-header">ニュース</div>
+								<div class="card-body">
+									<p>メッセージの一覧、新規追加、編集、削除、およびプレビューの機能を含みます。</p>
+									<blockquote class="blockquote mb-0">
+										<a class="small text-white stretched-link" th:href="@{/news_manage}"></a>
+									</blockquote>
 								</div>
 							</div>
 						</div>
 						<div class="col-xl-3 col-md-6">
-							<div class="card bg-light text-white mb-4">
-								<div class="card-body">カタログ</div>
-								<div class="card-footer d-flex align-items-center justify-content-between">
-									<a class="small text-white stretched-link" th:href="@{/catalog_list}">リスト</a>
-									<div class="small text-white">
-										<i class="fas fa-angle-right"></i>
-									</div>
+							<div class="card">
+								<div class="card-header">カタログ</div>
+								<div class="card-body">
+									<p>カタログの一覧、新規追加、編集、および削除の機能を含みます。</p>
+									<blockquote class="blockquote mb-0">
+										<a class="small text-white stretched-link" th:href="@{/catalog_manage}"></a>
+									</blockquote>
 								</div>
 							</div>
 						</div>
