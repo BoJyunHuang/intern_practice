@@ -33,14 +33,14 @@
 							<form th:action="${isNew ? '/add_news' : '/revise_news'}" th:object="${news}" method="post" class="w-100 needs-validation" novalidate>
 								<div class="row g-3 my-2">
 									<div class="col">
-										<label for="catalog" class="form-label fw-bold">*カタログ</label>
-										<select id="catalog" name="catalog" th:field="${news.catalog}" class="form-control" required>
+										<label for="catalog-main" class="form-label fw-bold">*カタログ</label>
+										<select id="catalog-main" name="catalog-main" class="form-control" required>
 											<option th:each="option : ${catalogOptions}" th:value="${option.catalogId}" th:text="${option.name}"></option>
 										</select>
 									</div>
 									<div class="col">
-										<label for="subcatalog" class="form-label fw-bold">*サブカタログ</label>
-										<select id="subcatalog" name="subcatalog" th:field="${news.subcatalog}" class="form-control" required>
+										<label for="catalog" class="form-label fw-bold">*サブカタログ</label>
+										<select id="catalog" name="catalog" th:field="${news.catalog}" class="form-control" required>
 											<option th:each="option : ${subcatalogOptions}" th:value="${option.catalogId}" th:text="${option.name}"></option>
 										</select>
 									</div>

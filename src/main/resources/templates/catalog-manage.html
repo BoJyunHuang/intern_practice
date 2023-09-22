@@ -69,7 +69,7 @@
 										<td th:text="*{catalogId}"></td>
 										<td th:text="*{name}"></td>
 										<td th:text="*{parent}"></td>
-										<td th:text="*{newsAmount}"></td>
+										<td th:text="*{parent != 'none' ? #sets.size(news) : '--'}"></td>
 										<td>
 											<a th:href="@{/revise_catalog/{catalogId}(catalogId=*{catalogId})}">編集</a>
 										</td>

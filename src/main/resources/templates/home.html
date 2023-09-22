@@ -59,9 +59,10 @@
 				<!-- Post preview-->
 				<div th:each="news : ${newsList}" th:object="${news}" th:if="${!news.deleteFlag}" class="post-preview">
 					<div>
+						<p th:text="*{catalog.parent} + '/' + *{catalog.name}"></p>
 						<a th:href="@{/read_news/{newsId}(newsId=*{newsId})}" class="text-decoration-none">
 							<h2 class="post-title" th:text="*{title}"></h2>
-							<h3 class="post-subtitle" th:text="*{subtitle}"></h3>
+							<p class="post-subtitle" th:text="*{subtitle}"></p>
 						</a>
 						<p class="d-inline" th:text="*{#temporals.format(publishTime, 'yyyy-MM-dd HH:mm')}"></p>
 						<p class="d-inline" th:text="*{creator}"></p>

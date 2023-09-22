@@ -17,7 +17,7 @@ window.addEventListener('DOMContentLoaded', event => {
 });
 
 var contentElement = document.getElementById('content');
-var catalogElement = document.getElementById("catalog");
+var catalogElement = document.getElementById("catalog-main");
 
 if (contentElement) {
 	contentElement.addEventListener("input", function() {
@@ -37,7 +37,7 @@ if (catalogElement) {
 			body: JSON.stringify(requestBody)
 		}).then(response => response.json())
 			.then(result => {
-				var subcatalogSelect = document.getElementById("subcatalog");
+				var subcatalogSelect = document.getElementById("catalog");
 				subcatalogSelect.innerHTML = '';
 				result.catalogList.forEach(option => {
 					var optionElement = document.createElement("option");
@@ -104,7 +104,7 @@ function toggleParentInput() {
 })()
 
 function save() {
-	var subcatalog = document.getElementById('subcatalog');
+	var subcatalog = document.getElementById('catalog');
 	var requestBody = {
 		catalog: catalogElement.options[catalogElement.selectedIndex].innerText,
 		subcatalog: subcatalog.options[subcatalog.selectedIndex].innerText,

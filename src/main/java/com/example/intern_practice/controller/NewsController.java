@@ -1,7 +1,6 @@
 package com.example.intern_practice.controller;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -124,12 +123,10 @@ public class NewsController {
 	}
 
 	// レスポンスページに導入する。
-	private String toResponsePage(Model model, MSG... msgs) {
+	private String toResponsePage(Model model, MSG msg) {
 		model.addAttribute("type", Action.TYPE_NEWS.getType());
-		// レスポンスをチェックする。
-		MSG totalMsg = Arrays.stream(msgs).allMatch(msg -> msg.equals(MSG.SUCCESS)) ? MSG.SUCCESS : MSG.INCORRECT;
-		model.addAttribute("code", totalMsg.getCode());
-		model.addAttribute("message", totalMsg.getMessage());
+		model.addAttribute("code", msg.getCode());
+		model.addAttribute("message", msg.getMessage());
 		return HTML.RESPONSE_PAGE.getPage();
 	}
 

@@ -17,7 +17,8 @@
 					<span class="display-1 d-block" th:text="${code}"></span>
 					<div class="mb-4 lead" th:text="${message}"></div>
 					<div th:if="${code == '200'}">
-						<a class="btn btn-primary mx-5" th:href="@{type == 'news' ? '/news_manage' : '/catalog_manage'}">確認</a>
+						<a class="btn btn-primary mx-5" th:if="${type == 'news'}" th:href="@{/news_manage}">確認</a>
+						<a class="btn btn-primary mx-5" th:unless="${type == 'news'}" th:href="@{/catalog_manage}">確認</a>
 					</div>
 					<div th:unless="${code == '200'}">
 						<button class="btn btn-primary" onclick="goBack()">戻る</button>

@@ -73,8 +73,8 @@
 								<tbody>
 									<tr th:each="news : ${newsList}" th:object="${news}" th:if="${!news.deleteFlag}">
 										<td th:text="*{newsId}"></td>
+										<td th:text="*{catalog.parent}"></td>
 										<td th:text="*{catalog.name}"></td>
-										<td th:text="*{subcatalog.name}"></td>
 										<td th:text="*{title}"></td>
 										<td th:text="*{#temporals.format(createTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
 										<td th:text="*{creator}"></td>
