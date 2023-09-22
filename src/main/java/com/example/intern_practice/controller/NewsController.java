@@ -1,7 +1,6 @@
 package com.example.intern_practice.controller;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,7 +25,6 @@ import com.example.intern_practice.entity.News;
 import com.example.intern_practice.service.ifs.CatalogService;
 import com.example.intern_practice.service.ifs.NewsService;
 import com.example.intern_practice.vo.CatalogRequest;
-import com.example.intern_practice.vo.CatalogResponse;
 import com.example.intern_practice.vo.NewsRequest;
 import com.example.intern_practice.vo.NewsResponse;
 import com.example.intern_practice.vo.NewsVO;
@@ -74,27 +72,13 @@ public class NewsController {
 	// ニュースを追加し、結果メッセージを返す。
 	@PostMapping("/add_news")
 	public String addNews(@ModelAttribute("news") NewsRequest request, Model model) {
-		// カタログにニュースを追加し、結果メッセージを取得する。
-		CatalogResponse catalogResponse = catalogService.plusNews(new CatalogRequest(new ArrayList<>(
-				Arrays.asList(request.getCatalog().getCatalogId(), request.getSubcatalog().getCatalogId()))));
-		// ニュースを追加し、結果メッセージを取得する。
-		NewsResponse newsResponse = newsService.addNews(request);
-		return toResponsePage(model, catalogResponse.getMsg(), newsResponse.getMsg());
+		return toResponsePage(model, newsService.addNews(request).getMsg());
 	}
 
 	// ニュースを修正し、結果メッセージを返す。
 	@PostMapping("/revise_news")
 	public String reviseNews(@ModelAttribute("news") NewsRequest request, Model model) {
-		News oldNews = newsService.getNews(request).getNews();
-		// カタログからニュースを削除し、結果メッセージを取得する。
-		CatalogResponse minusNewsResponse = catalogService.minusNews(new CatalogRequest(new ArrayList<>(
-				Arrays.asList(oldNews.getCatalog().getCatalogId(), oldNews.getSubcatalog().getCatalogId()))));
-		// カタログにニュースを追加し、結果メッセージを取得する。
-		CatalogResponse plusNewsResponse = catalogService.plusNews(new CatalogRequest(new ArrayList<>(
-				Arrays.asList(request.getCatalog().getCatalogId(), request.getSubcatalog().getCatalogId()))));
-		// ニュースを修正し、結果メッセージを取得する。
-		NewsResponse newsResponse = newsService.reviseNews(request);
-		return toResponsePage(model, minusNewsResponse.getMsg(), plusNewsResponse.getMsg(), newsResponse.getMsg());
+		return toResponsePage(model, newsService.reviseNews(request).getMsg());
 	}
 
 	// ニュースを削除し、削除結果を返す。

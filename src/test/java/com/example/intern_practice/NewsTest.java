@@ -75,8 +75,8 @@ public class NewsTest {
 
 	@BeforeAll
 	private void BeforeAll() {
-		newsDao.save(new News(1, new Catalog(1, "トップ", "none", 0, false), new Catalog(2, "政治", "トップ", 0, false),
-				"首相、処理水の安全性説明へ　中国に科学的対応要求", "【ジャカルタ共同】岸田文雄首相は6日、インドネシアで開かれた東南アジア諸国連合（ASEAN）プラス3", "主要,政治", news1,
+		newsDao.save(new News(1, new Catalog(2, "政治", "トップ", false), "首相、処理水の安全性説明へ　中国に科学的対応要求",
+				"【ジャカルタ共同】岸田文雄首相は6日、インドネシアで開かれた東南アジア諸国連合（ASEAN）プラス3", "主要,政治", news1,
 				LocalDateTime.of(2023, 9, 6, 11, 28), LocalDateTime.of(2023, 9, 6, 17, 11), null,
 				LocalDateTime.of(2023, 9, 9, 00, 00), null, "© 一般社団法人共同通信社", null, null, 0, 0, 0, 1, 1, false));
 	}
@@ -84,7 +84,7 @@ public class NewsTest {
 	@Test
 	public void insertNewsTest() {
 		Assert.isTrue(
-				newsDao.insertNews(1, 2, "麻生氏、連合と「共闘」成果強調　国民党との連立論くすぶる",
+				newsDao.insertNews(2, "麻生氏、連合と「共闘」成果強調　国民党との連立論くすぶる",
 						"自民党の麻生太郎副総裁は6日、東京都内で講演し、高水準の賃上げが実現した今年の春闘に関し、岸田政権と...", "政治", news2,
 						LocalDateTime.of(2023, 9, 6, 15, 43), LocalDateTime.of(2023, 9, 6, 19, 19),
 						LocalDateTime.of(2023, 9, 9, 00, 00), "© 一般社団法人共同通信社", 1, 1) == 1,
@@ -94,13 +94,13 @@ public class NewsTest {
 	@Test
 	public void updateNewsTest() {
 		Assert.isTrue(
-				newsDao.updateNews(0, 1, 2, "麻生氏、連合と「共闘」成果強調　国民党との連立論くすぶる",
+				newsDao.updateNews(0, 2, "麻生氏、連合と「共闘」成果強調　国民党との連立論くすぶる",
 						"自民党の麻生太郎副総裁は6日、東京都内で講演し、高水準の賃上げが実現した今年の春闘に関し、岸田政権と...", "政治", news2,
 						LocalDateTime.of(2023, 9, 6, 19, 27), LocalDateTime.of(2023, 9, 6, 19, 21),
 						LocalDateTime.of(2023, 9, 9, 00, 00), "© 一般社団法人共同通信社", 1, 1) == 0,
 				MSG.TEST1_ERROR.getMessage());
 		Assert.isTrue(
-				newsDao.updateNews(2, 1, 2, "麻生氏、連合と「共闘」成果強調　国民党との連立論くすぶる",
+				newsDao.updateNews(2, 2, "麻生氏、連合と「共闘」成果強調　国民党との連立論くすぶる",
 						"自民党の麻生太郎副総裁は6日、東京都内で講演し、高水準の賃上げが実現した今年の春闘に関し、岸田政権と...", "政治", news2,
 						LocalDateTime.of(2023, 9, 6, 19, 27), LocalDateTime.of(2023, 9, 6, 19, 21),
 						LocalDateTime.of(2023, 9, 9, 00, 00), "© 一般社団法人共同通信社", 1, 1) == 1,
@@ -137,8 +137,7 @@ public class NewsTest {
 	public void addNewsTest() {
 		NewsRequest request = new NewsRequest();
 		Assert.isTrue(newsService.addNews(request).getMsg().equals(MSG.CANNOT_EMPTY), MSG.TEST1_ERROR.getMessage());
-		request.setCatalog(new Catalog(14, "社会", "none", 0, false));
-		request.setSubcatalog(new Catalog(13, "文化", "社会", 0, false));
+		request.setCatalog(new Catalog(13, "文化", "社会", false));
 		request.setTitle("今日は何の日：9月6日");
 		request.setSubtitle("秋篠宮悠仁さま誕生");
 		request.setTags("皇室,映画,秋篠宮家,黒澤明,北野武／ビートたけし");
@@ -167,8 +166,7 @@ public class NewsTest {
 		NewsRequest request = new NewsRequest();
 		Assert.isTrue(newsService.reviseNews(request).getMsg().equals(MSG.CANNOT_EMPTY), MSG.TEST1_ERROR.getMessage());
 		request.setNewsId(100);
-		request.setCatalog(new Catalog(14, "社会", "none", 0, false));
-		request.setSubcatalog(new Catalog(13, "文化", "社会", 0, false));
+		request.setCatalog(new Catalog(13, "文化", "社会", false));
 		request.setTitle("今日は何の日：9月6日");
 		request.setSubtitle("秋篠宮悠仁さま誕生");
 		request.setTags("映画,秋篠宮家,黒澤明,北野武／ビートたけし");

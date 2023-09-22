@@ -49,24 +49,6 @@ public class CatalogServiceImpl implements CatalogService {
 
 	@Override
 	@Transactional
-	public CatalogResponse plusNews(CatalogRequest request) {
-		// 入力値チェックを行う。
-		return checkNull(request, Action.PLUS) ? new CatalogResponse(MSG.CANNOT_EMPTY)
-				// カタログのニュース数を増やし、増加した数が要求された数と一致する場合、対応する結果を返す。
-				: result(catalogDao.plusNewsAmount(request.getIdList()) == request.getIdList().size());
-	}
-
-	@Override
-	@Transactional
-	public CatalogResponse minusNews(CatalogRequest request) {
-		// 入力値チェックを行う。
-		return checkNull(request, Action.MINUS) ? new CatalogResponse(MSG.CANNOT_EMPTY)
-				// カタログのニュース数を減らし、増加した数が要求された数と一致する場合、対応する結果を返す。
-				: result(catalogDao.minusNewsAmount(request.getIdList()) == request.getIdList().size());
-	}
-
-	@Override
-	@Transactional
 	public CatalogResponse deleteCatalog(CatalogRequest request) {
 		// 入力値チェックを行う。
 		return checkNull(request, Action.DELETE) ? new CatalogResponse(MSG.CANNOT_EMPTY)
@@ -94,8 +76,6 @@ public class CatalogServiceImpl implements CatalogService {
 			return request == null;
 		case REVISE:
 			return request.getCatalogId() == 0 || !StringUtils.hasText(request.getName());
-		case PLUS:
-		case MINUS:
 		case DELETE:
 			return CollectionUtils.isEmpty(request.getIdList());
 		case FIND:

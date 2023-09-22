@@ -10,8 +10,6 @@ public class CatalogRequest {
 	private String name;
 	// 親カタログ
 	private String parent = "none";
-	// ニュース数
-	private int newsAmount;
 	// 削除フラグ
 	private boolean deleteFlag;
 	// IDリスト
@@ -50,12 +48,6 @@ public class CatalogRequest {
 	}
 	public void setName(String name) {
 		this.name = name;
-	}
-	public int getNewsAmount() {
-		return newsAmount;
-	}
-	public void setNewsAmount(int newsAmount) {
-		this.newsAmount = newsAmount;
 	}
 	public boolean isDeleteFlag() {
 		return deleteFlag;

@@ -2,7 +2,6 @@ package com.example.intern_practice.entity;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,15 +27,9 @@ public class News {
 
 	// カタログ
 	@JsonBackReference
-    @ManyToOne(cascade = CascadeType.REFRESH)
+    @ManyToOne
     @JoinColumn(name="catalog_id")
 	private Catalog catalog;
-
-	// サブカタログ
-	@JsonBackReference
-    @ManyToOne(cascade = CascadeType.REFRESH)
-    @JoinColumn(name="subcatalog_id")
-	private Catalog subcatalog;
 
 	// タイトル
 	@Column(name = "title")
@@ -117,14 +110,13 @@ public class News {
 		super();
 	}
 
-	public News(Integer newsId, Catalog catalog, Catalog subcatalog, String title, String subtitle, String tags,
+	public News(Integer newsId, Catalog catalog, String title, String subtitle, String tags,
 			String content, LocalDateTime createTime, LocalDateTime publishTime, LocalDateTime editTime,
 			LocalDateTime expirationTime, LocalDateTime removeTime, String creator, String editor, String remover,
 			int views, int likes, int dislikes, int importance, int audienceLevel, boolean deleteFlag) {
 		super();
 		this.newsId = newsId;
 		this.catalog = catalog;
-		this.subcatalog = subcatalog;
 		this.title = title;
 		this.subtitle = subtitle;
 		this.tags = tags;
@@ -160,14 +152,6 @@ public class News {
 
 	public void setCatalog(Catalog catalog) {
 		this.catalog = catalog;
-	}
-
-	public Catalog getSubcatalog() {
-		return subcatalog;
-	}
-
-	public void setSubcatalog(Catalog subcatalog) {
-		this.subcatalog = subcatalog;
 	}
 
 	public String getTitle() {

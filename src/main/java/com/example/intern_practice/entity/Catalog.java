@@ -1,11 +1,17 @@
 package com.example.intern_practice.entity;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "catalog")
@@ -16,34 +22,34 @@ public class Catalog {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "catalog_id")
 	private Integer catalogId;
-	
+
 	// 名前
 	@Column(name = "name")
 	private String name;
-	
+
 	// 親カタログ
 	@Column(name = "parent")
 	private String parent;
-	
-	// ニュース数
-	@Column(name = "news_amount")
-	private int newsAmount;
-	
+
 	// 削除フラグ
 	@Column(name = "delete_flag")
 	private boolean deleteFlag;
+
+	// ニュース数
+	@JsonManagedReference
+	@OneToMany(mappedBy = "catalog", fetch = FetchType.EAGER)
+	private Set<News> news;
 
 	// コンストラクタ
 	public Catalog() {
 		super();
 	}
 
-	public Catalog(Integer catalogId, String name, String parent, int newsAmount, boolean deleteFlag) {
+	public Catalog(Integer catalogId, String name, String parent, boolean deleteFlag) {
 		super();
 		this.catalogId = catalogId;
 		this.name = name;
 		this.parent = parent;
-		this.newsAmount = newsAmount;
 		this.deleteFlag = deleteFlag;
 	}
 
@@ -72,14 +78,6 @@ public class Catalog {
 		this.parent = parent;
 	}
 
-	public int getNewsAmount() {
-		return newsAmount;
-	}
-
-	public void setNewsAmount(int newsAmount) {
-		this.newsAmount = newsAmount;
-	}
-
 	public boolean isDeleteFlag() {
 		return deleteFlag;
 	}
@@ -87,5 +85,13 @@ public class Catalog {
 	public void setDeleteFlag(boolean deleteFlag) {
 		this.deleteFlag = deleteFlag;
 	}
-		
+
+	public Set<News> getNews() {
+		return news;
+	}
+	
+	public void setNews(Set<News> news) {
+		this.news = news;
+	}
+	
 }

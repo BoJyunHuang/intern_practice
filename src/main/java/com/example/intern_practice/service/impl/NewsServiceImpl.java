@@ -28,10 +28,9 @@ public class NewsServiceImpl implements NewsService {
 		return checkNull(request, Action.ADD) ? new NewsResponse(MSG.CANNOT_EMPTY)
 				// 入力値の検証が正常であり、ニュースの挿入が成功した場合に対応する結果を返す。
 				: result(checkInput(request, Action.ADD) && newsDao.insertNews(request.getCatalog().getCatalogId(),
-						request.getSubcatalog().getCatalogId(), request.getTitle(), request.getSubtitle(),
-						request.getTags(), request.getContent(), LocalDateTime.now(), request.getPublishTime(),
-						request.getExpirationTime(), request.getCreator(), request.getImportance(),
-						request.getAudienceLevel()) == 1);
+						request.getTitle(), request.getSubtitle(), request.getTags(), request.getContent(),
+						LocalDateTime.now(), request.getPublishTime(), request.getExpirationTime(),
+						request.getCreator(), request.getImportance(), request.getAudienceLevel()) == 1);
 	}
 
 	@Override
@@ -50,11 +49,11 @@ public class NewsServiceImpl implements NewsService {
 		// 入力値チェックを行う。
 		return checkNull(request, Action.REVISE) ? new NewsResponse(MSG.CANNOT_EMPTY)
 				// 入力値の検証が正常であり、ニュースの更新が成功した場合に対応する結果を返す。
-				: result(checkInput(request, Action.REVISE) && newsDao.updateNews(request.getNewsId(),
-						request.getCatalog().getCatalogId(), request.getSubcatalog().getCatalogId(), request.getTitle(),
-						request.getSubtitle(), request.getTags(), request.getContent(), request.getPublishTime(),
-						LocalDateTime.now(), request.getExpirationTime(), request.getEditor(), request.getImportance(),
-						request.getAudienceLevel()) == 1);
+				: result(checkInput(request, Action.REVISE)
+						&& newsDao.updateNews(request.getNewsId(), request.getCatalog().getCatalogId(),
+								request.getTitle(), request.getSubtitle(), request.getTags(), request.getContent(),
+								request.getPublishTime(), LocalDateTime.now(), request.getExpirationTime(),
+								request.getEditor(), request.getImportance(), request.getAudienceLevel()) == 1);
 	}
 
 	@Override
@@ -112,19 +111,19 @@ public class NewsServiceImpl implements NewsService {
 	private boolean checkNull(NewsRequest request, Action action) {
 		switch (action) {
 		case ADD:
-			return request.getCatalog() == null || request.getSubcatalog() == null
-					|| !StringUtils.hasText(request.getTitle()) || !StringUtils.hasText(request.getSubtitle())
-					|| !StringUtils.hasText(request.getContent()) || request.getPublishTime() == null
-					|| request.getExpirationTime() == null || !StringUtils.hasText(request.getCreator())
-					|| request.getImportance() < 1 || request.getAudienceLevel() < 1;
+			return request.getCatalog() == null || !StringUtils.hasText(request.getTitle())
+					|| !StringUtils.hasText(request.getSubtitle()) || !StringUtils.hasText(request.getContent())
+					|| request.getPublishTime() == null || request.getExpirationTime() == null
+					|| !StringUtils.hasText(request.getCreator()) || request.getImportance() < 1
+					|| request.getAudienceLevel() < 1;
 		case GET:
 			return request == null;
 		case REVISE:
-			return request.getNewsId() == 0 || request.getCatalog() == null || request.getSubcatalog() == null
-					|| !StringUtils.hasText(request.getTitle()) || !StringUtils.hasText(request.getSubtitle())
-					|| !StringUtils.hasText(request.getContent()) || request.getPublishTime() == null
-					|| request.getExpirationTime() == null || !StringUtils.hasText(request.getEditor())
-					|| request.getImportance() < 1 || request.getAudienceLevel() < 1;
+			return request.getNewsId() == 0 || request.getCatalog() == null || !StringUtils.hasText(request.getTitle())
+					|| !StringUtils.hasText(request.getSubtitle()) || !StringUtils.hasText(request.getContent())
+					|| request.getPublishTime() == null || request.getExpirationTime() == null
+					|| !StringUtils.hasText(request.getEditor()) || request.getImportance() < 1
+					|| request.getAudienceLevel() < 1;
 		case PLUS:
 			return request.getNewsId() == 0;
 		case DELETE:
@@ -140,15 +139,15 @@ public class NewsServiceImpl implements NewsService {
 	private boolean checkInput(NewsRequest request, Action action) {
 		switch (action) {
 		case ADD:
-			return request.getCatalog().getCatalogId() > 0 && request.getSubcatalog().getCatalogId() > 0
-					&& request.getTitle().length() <= 40 && request.getSubtitle().length() <= 80
-					&& request.getTags().length() <= 120 && request.getContent().length() <= 1000
+			return request.getCatalog().getCatalogId() > 0 && request.getTitle().length() <= 40
+					&& request.getSubtitle().length() <= 80 && request.getTags().length() <= 120
+					&& request.getContent().length() <= 1000
 					&& request.getExpirationTime().isAfter(request.getPublishTime())
 					&& request.getCreator().length() <= 45;
 		case REVISE:
-			return request.getCatalog().getCatalogId() > 0 && request.getSubcatalog().getCatalogId() > 0
-					&& request.getTitle().length() <= 40 && request.getSubtitle().length() <= 80
-					&& request.getTags().length() <= 120 && request.getContent().length() <= 1000
+			return request.getCatalog().getCatalogId() > 0 && request.getTitle().length() <= 40
+					&& request.getSubtitle().length() <= 80 && request.getTags().length() <= 120
+					&& request.getContent().length() <= 1000
 					&& request.getExpirationTime().isAfter(request.getPublishTime())
 					&& request.getEditor().length() <= 45;
 		case DELETE:

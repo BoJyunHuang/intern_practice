@@ -14,8 +14,6 @@ public class NewsRequest {
 	private int newsId;
 	// カタログ
 	private Catalog catalog;
-	// サブカタログ
-	private Catalog subcatalog;
 	// タイトル
 	private String title;
 	// サブタイトル
@@ -83,12 +81,6 @@ public class NewsRequest {
 	}
 	public void setCatalog(Catalog catalog) {
 		this.catalog = catalog;
-	}
-	public Catalog getSubcatalog() {
-		return subcatalog;
-	}
-	public void setSubcatalog(Catalog subcatalog) {
-		this.subcatalog = subcatalog;
 	}
 	public String getTitle() {
 		return title;

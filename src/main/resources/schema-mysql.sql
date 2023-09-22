@@ -30,7 +30,6 @@ CREATE TABLE IF NOT EXISTS `intern_practice`.`catalog` (
   `catalog_id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(20) NOT NULL,
   `parent` VARCHAR(20) NOT NULL,
-  `news_amount` INT NOT NULL DEFAULT 0,
   `delete_flag` TINYINT NOT NULL DEFAULT 0,
   PRIMARY KEY (`catalog_id`))
 ENGINE = InnoDB
