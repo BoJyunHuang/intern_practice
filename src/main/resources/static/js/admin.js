@@ -122,7 +122,16 @@ function save() {
 		},
 		body: JSON.stringify(requestBody)
 	}).then(response => response.json())
-		.then(data => alert(data.msg))
+		.then(data => {
+			switch (data.msg) {
+				case 'SUCCESS':
+					alert('操作成功');
+					break;
+				default:
+					alert('エラーが発生しました');
+			}
+		})
+
 }
 
 function goBack() {

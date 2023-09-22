@@ -6,14 +6,16 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.example.intern_practice.entity.Catalog;
+
 public class NewsRequest {
 
 	// ニュースID
 	private int newsId;
 	// カタログ
-	private Integer catalog;
+	private Catalog catalog;
 	// サブカタログ
-	private Integer subcatalog;
+	private Catalog subcatalog;
 	// タイトル
 	private String title;
 	// サブタイトル
@@ -76,16 +78,16 @@ public class NewsRequest {
 	public void setNewsId(int newsId) {
 		this.newsId = newsId;
 	}
-	public Integer getCatalog() {
+	public Catalog getCatalog() {
 		return catalog;
 	}
-	public void setCatalog(Integer catalog) {
+	public void setCatalog(Catalog catalog) {
 		this.catalog = catalog;
 	}
-	public Integer getSubcatalog() {
+	public Catalog getSubcatalog() {
 		return subcatalog;
 	}
-	public void setSubcatalog(Integer subcatalog) {
+	public void setSubcatalog(Catalog subcatalog) {
 		this.subcatalog = subcatalog;
 	}
 	public String getTitle() {

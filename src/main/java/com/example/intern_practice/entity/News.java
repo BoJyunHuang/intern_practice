@@ -2,14 +2,19 @@ package com.example.intern_practice.entity;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "news")
@@ -22,12 +27,16 @@ public class News {
 	private Integer newsId;
 
 	// カタログ
-	@Column(name = "catalog")
-	private Integer catalog;
+	@JsonBackReference
+    @ManyToOne(cascade = CascadeType.REFRESH)
+    @JoinColumn(name="catalog_id")
+	private Catalog catalog;
 
 	// サブカタログ
-	@Column(name = "subcatalog")
-	private Integer subcatalog;
+	@JsonBackReference
+    @ManyToOne(cascade = CascadeType.REFRESH)
+    @JoinColumn(name="subcatalog_id")
+	private Catalog subcatalog;
 
 	// タイトル
 	@Column(name = "title")
@@ -108,7 +117,7 @@ public class News {
 		super();
 	}
 
-	public News(Integer newsId, Integer catalog, Integer subcatalog, String title, String subtitle, String tags,
+	public News(Integer newsId, Catalog catalog, Catalog subcatalog, String title, String subtitle, String tags,
 			String content, LocalDateTime createTime, LocalDateTime publishTime, LocalDateTime editTime,
 			LocalDateTime expirationTime, LocalDateTime removeTime, String creator, String editor, String remover,
 			int views, int likes, int dislikes, int importance, int audienceLevel, boolean deleteFlag) {
@@ -145,19 +154,19 @@ public class News {
 		this.newsId = newsId;
 	}
 
-	public Integer getCatalog() {
+	public Catalog getCatalog() {
 		return catalog;
 	}
 
-	public void setCatalog(Integer catalog) {
+	public void setCatalog(Catalog catalog) {
 		this.catalog = catalog;
 	}
 
-	public Integer getSubcatalog() {
+	public Catalog getSubcatalog() {
 		return subcatalog;
 	}
 
-	public void setSubcatalog(Integer subcatalog) {
+	public void setSubcatalog(Catalog subcatalog) {
 		this.subcatalog = subcatalog;
 	}
 

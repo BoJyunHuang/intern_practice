@@ -1,8 +1,10 @@
 package com.example.intern_practice.controller;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 
@@ -27,6 +29,7 @@ import com.example.intern_practice.vo.CatalogRequest;
 import com.example.intern_practice.vo.CatalogResponse;
 import com.example.intern_practice.vo.NewsRequest;
 import com.example.intern_practice.vo.NewsResponse;
+import com.example.intern_practice.vo.NewsVO;
 
 @Controller
 public class NewsController {
@@ -40,7 +43,11 @@ public class NewsController {
 	// ホームページを表示する
 	@GetMapping("/home")
 	public String home(Model model) {
-		model.addAttribute("newsList", newsService.getNews(null).getNewsList());
+		model.addAttribute("newsList", newsService.getNews(null).getNewsList().stream()
+				// 公開済みで有効期限内のニュースを選別する
+				.filter(news -> news.getPublishTime().isBefore(LocalDateTime.now())
+						&& news.getExpirationTime().isAfter(LocalDateTime.now()))
+				.collect(Collectors.toList()));
 		return HTML.HOME_PAGE.getPage();
 	}
 
@@ -61,16 +68,15 @@ public class NewsController {
 	@GetMapping("/revise_news/{newsId}")
 	public String reviseNews(@PathVariable Integer newsId, Model model) {
 		News news = newsService.getNews(new NewsRequest(newsId)).getNews();
-		Catalog catalog = catalogService.getCatalog(new CatalogRequest(news.getCatalog())).getCatalog();
-		return toEditPage(model, news, catalog.getName(), false);
+		return toEditPage(model, news, news.getCatalog(), false);
 	}
 
 	// ニュースを追加し、結果メッセージを返す。
 	@PostMapping("/add_news")
 	public String addNews(@ModelAttribute("news") NewsRequest request, Model model) {
 		// カタログにニュースを追加し、結果メッセージを取得する。
-		CatalogResponse catalogResponse = catalogService.plusNews(
-				new CatalogRequest(new ArrayList<>(Arrays.asList(request.getCatalog(), request.getSubcatalog()))));
+		CatalogResponse catalogResponse = catalogService.plusNews(new CatalogRequest(new ArrayList<>(
+				Arrays.asList(request.getCatalog().getCatalogId(), request.getSubcatalog().getCatalogId()))));
 		// ニュースを追加し、結果メッセージを取得する。
 		NewsResponse newsResponse = newsService.addNews(request);
 		return toResponsePage(model, catalogResponse.getMsg(), newsResponse.getMsg());
@@ -81,11 +87,11 @@ public class NewsController {
 	public String reviseNews(@ModelAttribute("news") NewsRequest request, Model model) {
 		News oldNews = newsService.getNews(request).getNews();
 		// カタログからニュースを削除し、結果メッセージを取得する。
-		CatalogResponse minusNewsResponse = catalogService.minusNews(
-				new CatalogRequest(new ArrayList<>(Arrays.asList(oldNews.getCatalog(), oldNews.getSubcatalog()))));
+		CatalogResponse minusNewsResponse = catalogService.minusNews(new CatalogRequest(new ArrayList<>(
+				Arrays.asList(oldNews.getCatalog().getCatalogId(), oldNews.getSubcatalog().getCatalogId()))));
 		// カタログにニュースを追加し、結果メッセージを取得する。
-		CatalogResponse plusNewsResponse = catalogService.plusNews(
-				new CatalogRequest(new ArrayList<>(Arrays.asList(request.getCatalog(), request.getSubcatalog()))));
+		CatalogResponse plusNewsResponse = catalogService.plusNews(new CatalogRequest(new ArrayList<>(
+				Arrays.asList(request.getCatalog().getCatalogId(), request.getSubcatalog().getCatalogId()))));
 		// ニュースを修正し、結果メッセージを取得する。
 		NewsResponse newsResponse = newsService.reviseNews(request);
 		return toResponsePage(model, minusNewsResponse.getMsg(), plusNewsResponse.getMsg(), newsResponse.getMsg());
@@ -102,30 +108,30 @@ public class NewsController {
 	@GetMapping("/read_news/{newsId}")
 	public String readNews(@PathVariable Integer newsId, Model model) {
 		newsService.viewNews(new NewsRequest(newsId));
-		return toNewsPage(model, newsService.getNews(new NewsRequest(newsId)).getNews());
+		return toNewsPage(model, newsService.getNews(new NewsRequest(newsId)).getNews(), Action.TYPE_NEWS);
 	}
 
 	// ニュースをプレビューし、セッションにプレビュー情報を保存する
 	@PostMapping("/preview_news")
 	@ResponseBody
-	public NewsResponse previewNews(@RequestBody NewsRequest request, HttpSession session, Model model) {
-		session.setAttribute("previewNews", request);
+	public NewsResponse previewNews(@RequestBody NewsVO vo, HttpSession session, Model model) {
+		session.setAttribute("previewNews", vo);
 		return new NewsResponse(MSG.SUCCESS);
 	}
 
 	// ニュースのプレビュー情報を表示するためのページに移動する。
 	@GetMapping("/preview_news")
 	public String previewNews(Model model, HttpSession session) {
-		return toNewsPage(model, (NewsRequest) session.getAttribute("previewNews"));
+		return toNewsPage(model, (NewsVO) session.getAttribute("previewNews"), Action.TYPE_VIEW);
 	}
 
 	// ニュース編集ページに導入する。
-	private String toEditPage(Model model, Object news, String catalogName, boolean isNew) {
+	private String toEditPage(Model model, Object news, Catalog catalog, boolean isNew) {
 		// カタログオプションを取得し、モデルに追加する。
 		CatalogRequest request = new CatalogRequest();
 		List<Catalog> catalogList = catalogService.findCatalog(request).getCatalogList();
 		model.addAttribute("catalogOptions", catalogList);
-		request.setParent(isNew ? catalogList.get(0).getName() : catalogName);
+		request.setParent(isNew ? catalogList.get(0).getName() : catalog.getName());
 		model.addAttribute("subcatalogOptions", catalogService.findCatalog(request).getCatalogList());
 		// ニュースと新規ニュースの狀態をモデルに追加する。
 		model.addAttribute("news", news);
@@ -144,7 +150,8 @@ public class NewsController {
 	}
 
 	// ニュースページに導入する。
-	private String toNewsPage(Model model, Object news) {
+	private String toNewsPage(Model model, Object news, Action act) {
+		model.addAttribute("type", act.getType());
 		model.addAttribute("news", news);
 		return HTML.NEWS_PAGE.getPage();
 	}

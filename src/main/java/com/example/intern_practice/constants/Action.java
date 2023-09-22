@@ -9,8 +9,9 @@ public enum Action {
     DELETE("delete"),
     FIND("find"),	
     TYPE_NEWS("news"),
-	TYPE_CATALOG("catalog");
-	
+	TYPE_CATALOG("catalog"),
+	TYPE_VIEW("view");
+
 	private String type;
 
 	private Action(String type) {
@@ -24,6 +25,5 @@ public enum Action {
 	public void setType(String type) {
 		this.type = type;
 	}
-	
-	
+
 }

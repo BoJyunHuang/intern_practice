@@ -25,7 +25,8 @@
 		<div class="container px-4 px-lg-5">
 			<div class="row gx-4 gx-lg-5 justify-content-center">
 				<div class="col-md-10 col-lg-8 col-xl-7" th:object="${news}">
-					<p th:text="*{catalog} + '/' + *{subcatalog}"></p>
+					<p th:if="${type == 'news'}" th:text="*{catalog.name} + '/' + *{subcatalog.name}"></p>
+					<p th:unless="${type == 'news'}" th:text="*{catalog} + '/' + *{subcatalog}"></p>
 					<h2 class="section-heading" th:text="*{title}"></h2>
 					<h4 class="my-4" th:text="*{subtitle}"></h4>
 					<p class="d-inline pb-4 fs-6" th:text="*{#temporals.format(publishTime, 'yyyy-MM-dd HH:mm')}"></p>

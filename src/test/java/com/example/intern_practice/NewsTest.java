@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
 
 import com.example.intern_practice.constants.MSG;
+import com.example.intern_practice.entity.Catalog;
 import com.example.intern_practice.entity.News;
 import com.example.intern_practice.repository.NewsDao;
 import com.example.intern_practice.service.ifs.NewsService;
@@ -74,8 +75,9 @@ public class NewsTest {
 
 	@BeforeAll
 	private void BeforeAll() {
-		newsDao.save(new News(1, 1, 2, "首相、処理水の安全性説明へ　中国に科学的対応要求", "【ジャカルタ共同】岸田文雄首相は6日、インドネシアで開かれた東南アジア諸国連合（ASEAN）プラス3",
-				"主要,政治", news1, LocalDateTime.of(2023, 9, 6, 11, 28), LocalDateTime.of(2023, 9, 6, 17, 11), null,
+		newsDao.save(new News(1, new Catalog(1, "トップ", "none", 0, false), new Catalog(2, "政治", "トップ", 0, false),
+				"首相、処理水の安全性説明へ　中国に科学的対応要求", "【ジャカルタ共同】岸田文雄首相は6日、インドネシアで開かれた東南アジア諸国連合（ASEAN）プラス3", "主要,政治", news1,
+				LocalDateTime.of(2023, 9, 6, 11, 28), LocalDateTime.of(2023, 9, 6, 17, 11), null,
 				LocalDateTime.of(2023, 9, 9, 00, 00), null, "© 一般社団法人共同通信社", null, null, 0, 0, 0, 1, 1, false));
 	}
 
@@ -135,8 +137,8 @@ public class NewsTest {
 	public void addNewsTest() {
 		NewsRequest request = new NewsRequest();
 		Assert.isTrue(newsService.addNews(request).getMsg().equals(MSG.CANNOT_EMPTY), MSG.TEST1_ERROR.getMessage());
-		request.setCatalog(14);
-		request.setSubcatalog(13);
+		request.setCatalog(new Catalog(14, "社会", "none", 0, false));
+		request.setSubcatalog(new Catalog(13, "文化", "社会", 0, false));
 		request.setTitle("今日は何の日：9月6日");
 		request.setSubtitle("秋篠宮悠仁さま誕生");
 		request.setTags("皇室,映画,秋篠宮家,黒澤明,北野武／ビートたけし");
@@ -165,8 +167,8 @@ public class NewsTest {
 		NewsRequest request = new NewsRequest();
 		Assert.isTrue(newsService.reviseNews(request).getMsg().equals(MSG.CANNOT_EMPTY), MSG.TEST1_ERROR.getMessage());
 		request.setNewsId(100);
-		request.setCatalog(14);
-		request.setSubcatalog(13);
+		request.setCatalog(new Catalog(14, "社会", "none", 0, false));
+		request.setSubcatalog(new Catalog(13, "文化", "社会", 0, false));
 		request.setTitle("今日は何の日：9月6日");
 		request.setSubtitle("秋篠宮悠仁さま誕生");
 		request.setTags("映画,秋篠宮家,黒澤明,北野武／ビートたけし");

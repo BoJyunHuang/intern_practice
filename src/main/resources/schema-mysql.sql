@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS `intern_practice`.`news` (
   `news_id` INT NOT NULL AUTO_INCREMENT,
-  `catalog` INT NOT NULL,
-  `subcatalog` INT NOT NULL,
+  `catalog_id` INT NOT NULL,
+  `subcatalog_id` INT NOT NULL,
   `title` VARCHAR(45) NOT NULL,
   `subtitle` VARCHAR(90) NOT NULL,
   `tags` VARCHAR(150) NULL DEFAULT 'null',
@@ -20,7 +20,9 @@ CREATE TABLE IF NOT EXISTS `intern_practice`.`news` (
   `importance` INT NOT NULL,
   `audience_level` INT NOT NULL,
   `delete_flag` TINYINT NOT NULL DEFAULT 0,
-  PRIMARY KEY (`news_id`))
+  PRIMARY KEY (`news_id`),
+  FOREIGN KEY (`catalog_id`) REFERENCES `catalog` (`catalog_id`),
+  FOREIGN KEY (`subcatalog_id`) REFERENCES `catalog` (`catalog_id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 

@@ -34,13 +34,13 @@
 								<div class="row g-3 my-2">
 									<div class="col">
 										<label for="catalog" class="form-label fw-bold">*カタログ</label>
-										<select id="catalog" name="catalog" th:field="*{catalog}" class="form-control" required>
+										<select id="catalog" name="catalog" th:field="${news.catalog}" class="form-control" required>
 											<option th:each="option : ${catalogOptions}" th:value="${option.catalogId}" th:text="${option.name}"></option>
 										</select>
 									</div>
 									<div class="col">
 										<label for="subcatalog" class="form-label fw-bold">*サブカタログ</label>
-										<select id="subcatalog" name="subcatalog" th:field="*{subcatalog}" class="form-control" required>
+										<select id="subcatalog" name="subcatalog" th:field="${news.subcatalog}" class="form-control" required>
 											<option th:each="option : ${subcatalogOptions}" th:value="${option.catalogId}" th:text="${option.name}"></option>
 										</select>
 									</div>

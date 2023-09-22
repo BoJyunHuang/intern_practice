@@ -57,8 +57,7 @@
 		<div class="row gx-4 gx-lg-5 justify-content-center">
 			<div class="col-md-10 col-lg-8 col-xl-7">
 				<!-- Post preview-->
-				<div th:each="news : ${newsList}" th:object="${news}"
-					th:if="${news.publishTime le #temporals.createNow() and news.expirationTime ge #temporals.createNow() and !news.deleteFlag}" class="post-preview">
+				<div th:each="news : ${newsList}" th:object="${news}" th:if="${!news.deleteFlag}" class="post-preview">
 					<div>
 						<a th:href="@{/read_news/{newsId}(newsId=*{newsId})}" class="text-decoration-none">
 							<h2 class="post-title" th:text="*{title}"></h2>
