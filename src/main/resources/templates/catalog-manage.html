@@ -68,8 +68,8 @@
 									<tr th:each="catalog : ${catalogList}" th:object="${catalog}" th:if="${!catalog.deleteFlag}">
 										<td th:text="*{catalogId}"></td>
 										<td th:text="*{name}"></td>
-										<td th:text="*{parent}"></td>
-										<td th:text="*{parent != 'none' ? #sets.size(news) : '--'}"></td>
+										<td th:text="*{parent == 'カタログ' ? '--' : parent}"></td>
+										<td th:text="*{#sets.size(news)}"></td>
 										<td>
 											<a th:href="@{/revise_catalog/{catalogId}(catalogId=*{catalogId})}">編集</a>
 										</td>

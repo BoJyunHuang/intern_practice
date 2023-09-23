@@ -10,7 +10,9 @@ public enum Action {
     FIND("find"),	
     TYPE_NEWS("news"),
 	TYPE_CATALOG("catalog"),
-	TYPE_VIEW("view");
+	TYPE_VIEW("view"),
+	DATA_TYPE_CATALOG("カタログ"),
+	DATA_TYPE_TAGS("タグ");
 
 	private String type;
 

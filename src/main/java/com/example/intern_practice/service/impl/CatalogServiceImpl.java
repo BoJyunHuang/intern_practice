@@ -1,5 +1,8 @@
 package com.example.intern_practice.service.impl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,6 +11,7 @@ import org.springframework.util.StringUtils;
 
 import com.example.intern_practice.constants.Action;
 import com.example.intern_practice.constants.MSG;
+import com.example.intern_practice.entity.Catalog;
 import com.example.intern_practice.repository.CatalogDao;
 import com.example.intern_practice.service.ifs.CatalogService;
 import com.example.intern_practice.vo.CatalogRequest;
@@ -32,7 +36,8 @@ public class CatalogServiceImpl implements CatalogService {
 	@Override
 	public CatalogResponse getCatalog(CatalogRequest request) {
 		// 入力値チェックを行う。リクエストがnullの場合は全てのカタログを返す。
-		return checkNull(request, Action.GET) ? new CatalogResponse(MSG.SUCCESS, catalogDao.findAll())
+		return checkNull(request, Action.GET)
+				? new CatalogResponse(MSG.SUCCESS, calculateNewsAmount(catalogDao.findAll()))
 				// カタログIDに対応するカタログを取得する。カタログが存在しない場合、nullを返す。
 				: new CatalogResponse(MSG.SUCCESS, catalogDao.findById(request.getCatalogId()).orElse(null));
 	}
@@ -93,6 +98,21 @@ public class CatalogServiceImpl implements CatalogService {
 	// 操作の結果に基づいて適切なレスポンスを返す。
 	private CatalogResponse result(boolean isSuccess) {
 		return isSuccess ? new CatalogResponse(MSG.SUCCESS) : new CatalogResponse(MSG.INCORRECT);
+	}
+
+	// カタログの数を計算するメソッド。
+	private List<Catalog> calculateNewsAmount(List<Catalog> catalogList) {
+		// 各カタログの "news" リストから、"deleteFlag" が true の項目を削除する。
+		catalogList.forEach(catalog -> catalog.getNews().removeIf(news -> news.isDeleteFlag()));
+		// プロパティ "parent" が "DATA_TYPE_CATALOG" に等しいカタログをフィルタリングし、各カタログについて以下の操作を実行。
+		catalogList.stream().filter(catalog -> catalog.getParent().equals(Action.DATA_TYPE_CATALOG.getType()))
+				.forEach(catalog -> {
+					// 同じ "name" 値を持つ他のカタログを検索し、それらの "news" を合併して現在のカタログの "news" に追加。
+					catalog.getNews().addAll(catalogList.stream().filter(c -> catalog.getName().equals(c.getParent()))
+							.flatMap(c -> c.getNews().stream()).collect(Collectors.toSet()));
+				});
+		// 処理が完了したカタログリストを返す。
+		return catalogList;
 	}
 
 }

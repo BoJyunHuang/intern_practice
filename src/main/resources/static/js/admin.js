@@ -79,11 +79,11 @@ function toggleParentInput() {
 	var catalogTypeRadio = document.querySelector('input[name="type"]:checked');
 	var parentSelect = document.getElementById("parent");
 	if (catalogTypeRadio.value === "catalog") {
-		parentSelect.querySelector('option[value="none"]').disabled = false;
-		parentSelect.value = "none";
+		parentSelect.querySelector('option[value="カタログ"]').disabled = false;
+		parentSelect.value = "カタログ";
 		parentSelect.disabled = true;
 	} else {
-		parentSelect.querySelector('option[value="none"]').disabled = true;
+		parentSelect.querySelector('option[value="カタログ"]').disabled = true;
 		parentSelect.disabled = false;
 	}
 }

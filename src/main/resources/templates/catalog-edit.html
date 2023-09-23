@@ -34,9 +34,9 @@
 								<div class="form-group my-2">
 									<label for="catalogType" class="form-label text-end fw-bold">*タイプ</label>
 									<br>
-									<input type="radio" id="catalog" name="type" value="catalog" onclick="toggleParentInput()" th:checked="${catalog.parent == 'none'}">
+									<input type="radio" id="catalog" name="type" value="catalog" onclick="toggleParentInput()" th:checked="${catalog.parent == 'カタログ'}">
 									<label for="catalog">カタログ</label>
-									<input type="radio" id="subCatalog" name="type" value="subcatalog" onclick="toggleParentInput()" th:checked="${catalog.parent != 'none'}">
+									<input type="radio" id="subCatalog" name="type" value="subcatalog" onclick="toggleParentInput()" th:checked="${catalog.parent != 'カタログ'}">
 									<label for="subCatalog">サブカタログ</label>
 								</div>
 								<div class="form-group">
@@ -48,8 +48,8 @@
 								</div>
 								<div class="form-group">
 									<label for="parent" class="form-label text-end fw-bold">*親カタログ</label>
-									<select id="parent" name="parent" th:field="*{parent}" class="form-control" required th:disabled="${catalog.parent == 'none'}">
-										<option value="none">none</option>
+									<select id="parent" name="parent" th:field="*{parent}" class="form-control" required th:disabled="${catalog.parent == 'カタログ'}">
+										<option value="カタログ">--</option>
 										<option th:each="option : ${catalogOptions}" th:value="${option.name}" th:text="${option.name}"></option>
 									</select>
 								</div>
