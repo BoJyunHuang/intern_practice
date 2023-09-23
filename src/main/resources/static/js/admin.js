@@ -1,8 +1,22 @@
-window.addEventListener('DOMContentLoaded', event => {
-	const datatablesSimple = document.getElementById('datatablesSimple');
-	if (datatablesSimple) {
-		new simpleDatatables.DataTable(datatablesSimple);
-	}
+$(document).ready(function() {
+	$('#catalogTable').DataTable({
+		"scrollY": "700px", 
+		language: {
+			url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/ja.json',
+		},
+		"order": [[ 1, "asc" ]]
+	});
+});
+
+$(document).ready(function() {
+	$('#newsTable').DataTable({
+		"scrollCollapse": true, 
+		"scrollY": "700px",
+		language: {
+			url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/ja.json',
+		},
+		"order": [[ 6, "desc" ]]
+	});
 });
 
 window.addEventListener('DOMContentLoaded', event => {
@@ -131,7 +145,13 @@ function save() {
 					alert('エラーが発生しました');
 			}
 		})
+}
 
+function revealNews(button) {
+	var nextRow = button.closest('tr').nextElementSibling;
+	if (nextRow) {
+		nextRow.style.display = (nextRow.style.display === 'none' || nextRow.style.display === '') ? 'table-row' : 'none';
+	}
 }
 
 function goBack() {
