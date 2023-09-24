@@ -37,7 +37,7 @@
 					<div class="card mb-4">
 						<div class="card-body d-flex justify-content-between">
 							<a th:href="@{/add_catalog}" class="btn btn-primary mx-5">新規追加</a>
-							<a class="btn btn-danger mx-5" th:attr="onclick='confirmDelete(\'' + (*{catalogId} ?: '') + '\', \'catalog\')'">削除</a>
+							<a class="btn btn-danger mx-5" th:attr="onclick='confirmDelete(\'' + (*{catalogId} ?: '') + '\', \'catalog\')'">一括削除</a>
 						</div>
 					</div>
 					<div class="card mb-4">
@@ -60,7 +60,7 @@
 								<tbody>
 									<tr th:each="catalog : ${catalogList}" th:object="${catalog}" th:if="${!catalog.deleteFlag}">
 										<td>
-											<button onclick="revealNews(this)" th:if="${#sets.size(catalog.news) > 0}">
+											<button class="toggle-button" th:if="${#sets.size(catalog.news) > 0}">
 												<i class="fa-solid fa-plus"></i>
 											</button>
 										</td>

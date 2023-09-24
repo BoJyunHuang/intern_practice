@@ -1,27 +1,25 @@
-window.addEventListener('DOMContentLoaded', () => {
+$(document).ready(function() {
     let scrollPos = 0;
-    const mainNav = document.getElementById('mainNav');
-    const headerHeight = mainNav.clientHeight;
-    window.addEventListener('scroll', function() {
-        const currentTop = document.body.getBoundingClientRect().top * -1;
-        if ( currentTop < scrollPos) {
-            // Scrolling Up
-            if (currentTop > 0 && mainNav.classList.contains('is-fixed')) {
-                mainNav.classList.add('is-visible');
+    const $mainNav = $('#mainNav');
+    const headerHeight = $mainNav.height(); 
+    $(window).scroll(function() {
+        const currentTop = $('body').offset().top * -1;  
+        if (currentTop < scrollPos) {
+            if (currentTop > 0 && $mainNav.hasClass('is-fixed')) {
+                $mainNav.addClass('is-visible');
             } else {
-                console.log(123);
-                mainNav.classList.remove('is-visible', 'is-fixed');
+                $mainNav.removeClass('is-visible is-fixed');
             }
         } else {
-            // Scrolling Down
-            mainNav.classList.remove(['is-visible']);
-            if (currentTop > headerHeight && !mainNav.classList.contains('is-fixed')) {
-                mainNav.classList.add('is-fixed');
+            $mainNav.removeClass('is-visible');           
+            if (currentTop > headerHeight && !$mainNav.hasClass('is-fixed')) {
+                $mainNav.addClass('is-fixed');
             }
-        }
+        }     
         scrollPos = currentTop;
     });
-})
+});
+
 
 function goBack() {
 	window.history.back();

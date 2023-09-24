@@ -44,7 +44,7 @@ $(document).ready(function() {
 			.then(result => {
 				var subcatalogSelect = $('#catalog');
 				subcatalogSelect.empty();
-				$.each(result.catalogList, function(index, option) {
+				$.each(result.catalogList, function(option) {
 					subcatalogSelect.append($('<option>', {
 						value: option.catalogId,
 						text: option.name

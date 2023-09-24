@@ -1,5 +1,6 @@
 package com.example.intern_practice.vo;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -54,10 +55,12 @@ public class NewsRequest {
 	private boolean deleteFlag;
 	// IDリスト
 	private List<Integer> idList;
-	// 開始日時
-	private LocalDateTime startTime;
-	// 終了日時
-	private LocalDateTime endTime;
+	// 開始日付
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate startDate;
+	// 終了日付
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate endDate;
 
 	// コンストラクタ
 	public NewsRequest() {
@@ -196,17 +199,17 @@ public class NewsRequest {
 	public void setIdList(List<Integer> idList) {
 		this.idList = idList;
 	}
-	public LocalDateTime getStartTime() {
-		return startTime;
+	public LocalDate getStartDate() {
+		return startDate;
 	}
-	public void setStartTime(LocalDateTime startTime) {
-		this.startTime = startTime;
+	public void setStartDate(LocalDate startDate) {
+		this.startDate = startDate;
 	}
-	public LocalDateTime getEndTime() {
-		return endTime;
+	public LocalDate getEndDate() {
+		return endDate;
 	}
-	public void setEndTime(LocalDateTime endTime) {
-		this.endTime = endTime;
+	public void setEndDate(LocalDate endDate) {
+		this.endDate = endDate;
 	}
 
 }

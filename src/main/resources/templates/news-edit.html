@@ -94,12 +94,12 @@
 									<div class="col">
 										<label for="publishTime" class="form-label fw-bold">*公開日時</label>
 										<input type="datetime-local" id="publishTime" name="publishTime" th:field="*{publishTime}" class="form-control"
-											th:value="${#dates.format(publishTime, 'yyyy-MM-ddTHH:mm')}" th:min="${#dates.createNow()}" required>
+											th:value="${#dates.format(publishTime, 'yyyy-MM-ddTHH:mm')}" th:min="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd HH:mm', locale)}" required>
 									</div>
 									<div class="col">
 										<label for="expirationTime" class="form-label fw-bold">*取り下げる日時</label>
 										<input type="datetime-local" id="expirationTime" name="expirationTime" th:field="*{expirationTime}" class="form-control"
-											th:value="${#dates.format(expirationTime, 'yyyy-MM-ddTHH:mm')}" required>
+											th:value="${#dates.format(expirationTime, 'yyyy-MM-ddTHH:mm')}" th:min="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd HH:mm', locale)}" required>
 									</div>
 								</div>
 								<div class="form-group mt-3">

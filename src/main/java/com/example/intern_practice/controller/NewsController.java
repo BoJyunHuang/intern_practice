@@ -51,6 +51,7 @@ public class NewsController {
 	// ニュースリストを表示し、モデルにニュースリストを追加する。
 	@GetMapping("/news_manage")
 	public String newsManagement(Model model) {
+		model.addAttribute("timeRequest", new NewsRequest());
 		model.addAttribute("newsList", newsService.getNews(null).getNewsList());
 		return HTML.NEWS_MANAGEMENT_PAGE.getPage();
 	}
@@ -85,6 +86,14 @@ public class NewsController {
 	@ResponseBody
 	public NewsResponse deleteNews(@RequestBody NewsRequest request) {
 		return newsService.deleteNews(request);
+	}
+	
+	// 指定した時間ニュースリストを検索する。
+	@PostMapping("/find_news")
+	public String findNews(@ModelAttribute("timeRequest") NewsRequest request, Model model) {
+		model.addAttribute("timeRequest", request);
+		model.addAttribute("newsList", newsService.findNews(request).getNewsList());
+		return HTML.NEWS_MANAGEMENT_PAGE.getPage();
 	}
 
 	// ニュースを読むためのページに移動する。

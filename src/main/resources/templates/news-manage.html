@@ -37,7 +37,33 @@
 					<div class="card mb-4">
 						<div class="card-body d-flex justify-content-between">
 							<a th:href="@{/add_news}" class="btn btn-primary mx-5">新規追加</a>
-							<a class="btn btn-danger mx-5" th:attr="onclick='confirmDelete(\'' + (*{newsId} ?: '') + '\', \'news\')'">削除</a>
+							<a class="btn btn-danger mx-5" th:attr="onclick='confirmDelete(\'' + (*{newsId} ?: '') + '\', \'news\')'">一括削除</a>
+						</div>
+					</div>
+					<div class="card mb-4">
+						<div class="card-body">
+						<h5>公開期間検索</h5>
+							<form class="row row-cols-lg-auto align-items-center" th:action="@{/find_news}" th:object="${timeRequest}" method="post">
+								<div class="col">
+									<label for="startTime" class="fw-bold">開始日時</label>
+								</div>
+								<div class="col">
+									<input type="date" id="startTime" name="startTime" th:field="*{startTime}" class="form-control"
+										th:value="${#dates.format(startTime, 'yyyy-MM-dd')}">
+								</div>
+								<div class="col">
+									<label for="endTime" class="fw-bold">終了日時</label>
+								</div>
+								<div class="col">
+									<input type="date" id="endTime" name="endTime" th:field="*{endTime}" class="form-control" th:value="${#dates.format(endTime, 'yyyy-MM-dd')}">
+								</div>
+								<div class="col">
+									<input type="submit" id="submitButton" class="btn btn-info" value="検索">
+								</div>
+								<div class="col">
+									<a class="btn btn-info" th:href="@{/news_manage}">すべて</a>
+								</div>
+							</form>
 						</div>
 					</div>
 					<div class="card mb-4">
@@ -55,6 +81,7 @@
 										<th>作成日時</th>
 										<th>作者</th>
 										<th>公開日時</th>
+										<th>取り下げる日時</th>
 										<th>操作</th>
 										<th>選ぶ</th>
 									</tr>
@@ -68,9 +95,10 @@
 										<td th:text="*{#temporals.format(createTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
 										<td th:text="*{creator}"></td>
 										<td th:text="*{#temporals.format(publishTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+										<td th:text="*{#temporals.format(expirationTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
 										<td>
-											<a class="btn btn-primary mx-5" th:href="@{/revise_news/{newsId}(newsId=*{newsId})}">編集</a>
-											<a class="btn btn-danger mx-5" th:attr="onclick='confirmDelete(\'' + (*{newsId} ?: '') + '\', \'news\')'">削除</a>
+											<a class="btn btn-primary" th:href="@{/revise_news/{newsId}(newsId=*{newsId})}">編集</a>
+											<a class="btn btn-danger" th:attr="onclick='confirmDelete(\'' + (*{newsId} ?: '') + '\', \'news\')'">削除</a>
 										</td>
 										<td>
 											<input type="checkbox" class="news-checkbox" th:value="*{newsId}">

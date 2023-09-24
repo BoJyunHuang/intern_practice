@@ -121,12 +121,11 @@ public class CatalogServiceImpl implements CatalogService {
 					: request.getIdList().contains(catalog.getCatalogId())) {
 				// 特定のタイプの親カタログである場合。
 				if (catalog.getParent().equals(Action.DATA_TYPE_CATALOG.getType())) {
-					// 子カタログにニュースが存在を確認。
-					return allCatalog.stream()
-							.noneMatch(c -> c.getParent().equals(catalog.getName()) && c.getNews().size() > 0);
+					// 子カタログが存在を確認。
+					return allCatalog.stream().noneMatch(c -> c.getParent().equals(catalog.getName()));
 				} else {
 					// ニュースが存在を確認。
-					return catalog.getNews().size() == 0;
+					return catalog.getNews().stream().anyMatch(news -> news.isDeleteFlag());
 				}
 			}
 			// 上記の条件に該当しない場合は true を返す。

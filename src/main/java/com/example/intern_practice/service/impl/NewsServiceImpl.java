@@ -96,17 +96,17 @@ public class NewsServiceImpl implements NewsService {
 	public NewsResponse findNews(NewsRequest request) {
 		// 入力値チェックを行う。
 		return checkNull(request, Action.FIND) ? new NewsResponse(MSG.CANNOT_EMPTY)
-				: new NewsResponse(MSG.SUCCESS, (request.getStartTime() != null && request.getEndTime() != null
-						&& checkInput(request, Action.FIND))
-								// 指定した開始時間と終了時間の間にあるニュース検索メソッド。
-								? newsDao.findByPublishTimeAfterAndExpirationTimeBeforeOrderByPublishTimeDesc(
-										request.getStartTime(), request.getEndTime())
-								: (request.getEndTime() != null
-										// 指定した終了時間以前のニュース検索メソッド。
-										? newsDao.findByExpirationTimeBeforeOrderByPublishTimeDesc(request.getEndTime())
-										// 指定した開始時間以降のニュース検索メソッド。
-										: newsDao
-												.findByPublishTimeAfterOrderByPublishTimeDesc(request.getStartTime())));
+				: new NewsResponse(MSG.SUCCESS, (checkInput(request, Action.FIND))
+						// 指定した開始時間と終了時間の間にあるニュース検索メソッド。
+						? newsDao.findByPublishTimeAfterAndExpirationTimeBeforeOrderByPublishTimeDesc(
+								request.getStartDate().atStartOfDay(), request.getEndDate().atStartOfDay())
+						: (request.getEndDate() != null
+								// 指定した終了時間以前のニュース検索メソッド。
+								? newsDao.findByExpirationTimeBeforeOrderByPublishTimeDesc(
+										request.getEndDate().atStartOfDay())
+								// 指定した開始時間以降のニュース検索メソッド。
+								: newsDao.findByPublishTimeAfterOrderByPublishTimeDesc(
+										request.getStartDate().atStartOfDay())));
 	}
 
 	// 入力値チェックメソッド
@@ -131,7 +131,7 @@ public class NewsServiceImpl implements NewsService {
 		case DELETE:
 			return CollectionUtils.isEmpty(request.getIdList()) && request.getNewsId() == 0;
 		case FIND:
-			return request.getStartTime() == null && request.getEndTime() == null;
+			return request.getStartDate() == null && request.getEndDate() == null;
 		default:
 			return true;
 		}
@@ -155,7 +155,8 @@ public class NewsServiceImpl implements NewsService {
 		case DELETE:
 			return request.getNewsId() > 0;
 		case FIND:
-			return request.getStartTime().isBefore(request.getEndTime());
+			return request.getStartDate() != null && request.getEndDate() != null
+					&& request.getStartDate().isBefore(request.getEndDate());
 		default:
 			return true;
 		}
