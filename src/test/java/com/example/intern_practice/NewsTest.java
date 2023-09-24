@@ -127,9 +127,9 @@ public class NewsTest {
 
 	@Test
 	public void deleteNewsTest() {
-		Assert.isTrue(newsDao.deleteNews(new ArrayList<>(Arrays.asList(0)), LocalDateTime.of(2023, 9, 6, 19, 27),
+		Assert.isTrue(newsDao.deleteMultiNews(new ArrayList<>(Arrays.asList(0)), LocalDateTime.of(2023, 9, 6, 19, 27),
 				"© 一般社団法人共同通信社") == 0, MSG.TEST1_ERROR.getMessage());
-		Assert.isTrue(newsDao.deleteNews(new ArrayList<>(Arrays.asList(2)), LocalDateTime.of(2023, 9, 6, 19, 27),
+		Assert.isTrue(newsDao.deleteMultiNews(new ArrayList<>(Arrays.asList(2)), LocalDateTime.of(2023, 9, 6, 19, 27),
 				"© 一般社団法人共同通信社") == 1, MSG.TEST2_ERROR.getMessage());
 	}
 

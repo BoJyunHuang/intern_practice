@@ -12,7 +12,8 @@ public enum Action {
 	TYPE_CATALOG("catalog"),
 	TYPE_VIEW("view"),
 	DATA_TYPE_CATALOG("カタログ"),
-	DATA_TYPE_TAGS("タグ");
+	DATA_TYPE_TAGS("タグ"),
+	ADNIN("管理者");
 
 	private String type;
 

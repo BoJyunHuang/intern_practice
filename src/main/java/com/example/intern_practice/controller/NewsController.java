@@ -114,7 +114,7 @@ public class NewsController {
 		CatalogRequest request = new CatalogRequest();
 		List<Catalog> catalogList = catalogService.findCatalog(request).getCatalogList();
 		model.addAttribute("catalogOptions", catalogList);
-		request.setParent(isNew ? catalogList.get(0).getName() : catalog.getName());
+		request.setParent(isNew ? catalogList.get(0).getName() : catalog.getParent());
 		model.addAttribute("subcatalogOptions", catalogService.findCatalog(request).getCatalogList());
 		// ニュースと新規ニュースの狀態をモデルに追加する。
 		model.addAttribute("news", news);

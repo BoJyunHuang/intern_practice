@@ -86,8 +86,10 @@ public class NewsServiceImpl implements NewsService {
 		// 入力値チェックを行う。
 		return checkNull(request, Action.DELETE) ? new NewsResponse(MSG.CANNOT_EMPTY)
 				// ニュースを削除し、削除した数が要求された数と一致する場合、対応する結果を返す。
-				: result(checkInput(request, Action.DELETE) && newsDao.deleteNews(request.getIdList(),
-						LocalDateTime.now(), request.getRemover()) == request.getIdList().size());
+				: result(checkInput(request, Action.DELETE)
+						? newsDao.deleteNews(request.getNewsId(), LocalDateTime.now(), Action.ADNIN.getType()) == 1
+						: newsDao.deleteMultiNews(request.getIdList(), LocalDateTime.now(),
+								Action.ADNIN.getType()) == request.getIdList().size());
 	}
 
 	@Override
@@ -127,7 +129,7 @@ public class NewsServiceImpl implements NewsService {
 		case PLUS:
 			return request.getNewsId() == 0;
 		case DELETE:
-			return CollectionUtils.isEmpty(request.getIdList()) || !StringUtils.hasText(request.getRemover());
+			return CollectionUtils.isEmpty(request.getIdList()) && request.getNewsId() == 0;
 		case FIND:
 			return request.getStartTime() == null && request.getEndTime() == null;
 		default:
@@ -151,7 +153,7 @@ public class NewsServiceImpl implements NewsService {
 					&& request.getExpirationTime().isAfter(request.getPublishTime())
 					&& request.getEditor().length() <= 45;
 		case DELETE:
-			return request.getRemover().length() <= 45;
+			return request.getNewsId() > 0;
 		case FIND:
 			return request.getStartTime().isBefore(request.getEndTime());
 		default:

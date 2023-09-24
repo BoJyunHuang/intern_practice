@@ -1,47 +1,38 @@
 $(document).ready(function() {
-	$('#catalogTable').DataTable({
-		"scrollY": "700px", 
-		language: {
-			url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/ja.json',
-		},
-		"order": [[ 1, "asc" ]]
+	$('#sidebarToggle').click(function(event) {
+		event.preventDefault();
+		$('body').toggleClass('sb-sidenav-toggled');
+		localStorage.setItem('sb|sidebar-toggle', $('body').hasClass('sb-sidenav-toggled'));
 	});
-});
 
-$(document).ready(function() {
-	$('#newsTable').DataTable({
-		"scrollCollapse": true, 
-		"scrollY": "700px",
-		language: {
-			url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/ja.json',
-		},
-		"order": [[ 6, "desc" ]]
-	});
-});
-
-window.addEventListener('DOMContentLoaded', event => {
-	const sidebarToggle = document.body.querySelector('#sidebarToggle');
-	if (sidebarToggle) {
-		sidebarToggle.addEventListener('click', event => {
-			event.preventDefault();
-			document.body.classList.toggle('sb-sidenav-toggled');
-			localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled'));
+	if ($('#catalogTable').length > 0) {
+		$('#catalogTable').DataTable({
+			"scrollY": "700px",
+			language: {
+				url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/ja.json',
+			},
+			"order": [[1, "asc"]]
 		});
-	}
-});
+	};
 
-var contentElement = document.getElementById('content');
-var catalogElement = document.getElementById("catalog-main");
+	if ($('#newsTable').length > 0) {
+		$('#newsTable').DataTable({
+			"scrollCollapse": true,
+			"scrollY": "700px",
+			language: {
+				url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/ja.json',
+			},
+			"order": [[6, "desc"]]
+		});
+	};
 
-if (contentElement) {
-	contentElement.addEventListener("input", function() {
-		document.getElementById("charCount").textContent = "字符数：" + this.value.length + "/ 1000";
+	$('#content').on('input', function() {
+		$('#charCount').text("字符数：" + this.value.length + "/ 1000");
 	});
-}
-if (catalogElement) {
-	catalogElement.addEventListener("change", function() {
+
+	$('#catalog-main').change(function() {
 		var requestBody = {
-			parent: this.options[this.selectedIndex].innerText
+			parent: $(this).find('option:selected').text()
 		};
 		fetch('/find_catalog', {
 			method: 'POST',
@@ -51,83 +42,97 @@ if (catalogElement) {
 			body: JSON.stringify(requestBody)
 		}).then(response => response.json())
 			.then(result => {
-				var subcatalogSelect = document.getElementById("catalog");
-				subcatalogSelect.innerHTML = '';
-				result.catalogList.forEach(option => {
-					var optionElement = document.createElement("option");
-					optionElement.value = option.catalogId;
-					optionElement.text = option.name;
-					subcatalogSelect.appendChild(optionElement);
+				var subcatalogSelect = $('#catalog');
+				subcatalogSelect.empty();
+				$.each(result.catalogList, function(index, option) {
+					subcatalogSelect.append($('<option>', {
+						value: option.catalogId,
+						text: option.name
+					}));
 				});
 			})
 			.catch(error => console.error("エラーが発生しました：", error));
 	});
+
+	$('.needs-validation').on('submit', function(event) {
+		if (!this.checkValidity()) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
+		$(this).addClass('was-validated');
+	});
+
+	$('table.display').on('click', '.toggle-button', function() {
+		var nextRow = $(this).closest('tr').next();
+		if (nextRow) {
+			nextRow.toggle();
+		}
+	});
+
+});
+
+function confirmDelete(id, type) {
+	confirm("以下の操作を実行してもよろしいでしょうか？") && deleteSelectedItems(id, type);
 }
 
-function confirmDelete() {
-	confirm("以下の操作を実行してもよろしいでしょうか？") && deleteSelected();
-}
-
-function deleteSelected() {
-	var selectedIds = [];
-	document.querySelectorAll('.catalog-checkbox:checked').forEach(checkbox => selectedIds.push(parseInt(checkbox.value)));
-	if (selectedIds.length > 0) {
-		var requestBody = {
-			idList: selectedIds
-		};
-		fetch('/delete_catalog', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(requestBody)
-		}).then(response => response.json())
-			.then(result => confirm(result.message) && window.location.reload())
-			.catch(error => console.error("エラーが発生しました：", error));
+function deleteSelectedItems(id, type) {
+	var requestBody = {};
+	if (id !== '') {
+		requestBody[type + 'Id'] = id;
 	} else {
-		alert("項目を選択してください");
+		var selectedIds = [];
+		$('.' + type + '-checkbox:checked').each(function() {
+			selectedIds.push(parseInt($(this).val()));
+		});
+		if (selectedIds.length > 0) {
+			requestBody.idList = selectedIds;
+		} else {
+			alert("項目を選択してください");
+			return;
+		}
 	}
+	fetch(type === 'news' ? '/delete_news' : '/delete_catalog', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(requestBody)
+	}).then(response => response.json())
+		.then(result => {
+			switch (result.msg) {
+				case 'SUCCESS':
+					alert('操作成功');
+					window.location.reload();
+					break;
+				default:
+					alert('操作失敗');
+			};
+		})
+		.catch(error => alert("エラーが発生しました：", error));
 }
 
 function toggleParentInput() {
-	var catalogTypeRadio = document.querySelector('input[name="type"]:checked');
-	var parentSelect = document.getElementById("parent");
-	if (catalogTypeRadio.value === "catalog") {
-		parentSelect.querySelector('option[value="カタログ"]').disabled = false;
-		parentSelect.value = "カタログ";
-		parentSelect.disabled = true;
+	var catalogTypeRadio = $('input[name="type"]:checked');
+	var parentSelect = $('#parent');
+	if (catalogTypeRadio.val() === "catalog") {
+		parentSelect.find('option[value="カタログ"]').prop('disabled', false);
+		parentSelect.val("カタログ").prop('disabled', true);
 	} else {
-		parentSelect.querySelector('option[value="カタログ"]').disabled = true;
-		parentSelect.disabled = false;
+		parentSelect.find('option[value="カタログ"]').prop('disabled', true);
+		parentSelect.prop('disabled', false);
 	}
 }
 
-(function() {
-	'use strict'
-	var forms = document.querySelectorAll('.needs-validation')
-	Array.prototype.slice.call(forms)
-		.forEach(function(form) {
-			form.addEventListener('submit', function(event) {
-				if (!form.checkValidity()) {
-					event.preventDefault()
-					event.stopPropagation()
-				}
-				form.classList.add('was-validated')
-			}, false)
-		})
-})()
-
 function save() {
-	var subcatalog = document.getElementById('catalog');
 	var requestBody = {
-		catalog: catalogElement.options[catalogElement.selectedIndex].innerText,
-		subcatalog: subcatalog.options[subcatalog.selectedIndex].innerText,
-		title: document.getElementById('title').value,
-		subtitle: document.getElementById('subtitle').value,
-		tags: document.getElementById('tags').value,
-		content: document.getElementById('content').value,
-		publishTime: document.getElementById('publishTime').value,
-		creator: document.getElementById('creator').value,
+		catalog: $('#catalog-main option:selected').text(),
+		subcatalog: $('#catalog').find('option:selected').text(),
+		title: $('#title').val(),
+		subtitle: $('#subtitle').val(),
+		tags: $('#tags').val(),
+		content: $('#content').val(),
+		publishTime: $('#publishTime').val(),
+		creator: $('#creator').val(),
 	};
 	fetch('/preview_news', {
 		method: 'POST',
@@ -142,16 +147,9 @@ function save() {
 					alert('操作成功');
 					break;
 				default:
-					alert('エラーが発生しました');
+					alert('操作失敗');
 			}
-		})
-}
-
-function revealNews(button) {
-	var nextRow = button.closest('tr').nextElementSibling;
-	if (nextRow) {
-		nextRow.style.display = (nextRow.style.display === 'none' || nextRow.style.display === '') ? 'table-row' : 'none';
-	}
+		});
 }
 
 function goBack() {

@@ -31,8 +31,14 @@ public interface CatalogDao extends JpaRepository<Catalog, Integer> {
 	// カタログを削除する。
 	@Transactional
 	@Modifying
+	@Query(value = "update catalog set delete_flag = true where catalog_id = :catalogId", nativeQuery = true)
+	public int deleteCatalog(@Param("catalogId") Integer catalogId);
+
+	// カタログリストを削除する。
+	@Transactional
+	@Modifying
 	@Query(value = "update catalog set delete_flag = true where catalog_id in :idList", nativeQuery = true)
-	public int deleteCatalog(@Param("idList") List<Integer> idList);
+	public int deleteMultiCatalog(@Param("idList") List<Integer> idList);
 
 	// 親と削除フラグに基づいてカタログを検索する。
 	public List<Catalog> findByParentAndDeleteFlag(String parent, boolean deleteFlag);

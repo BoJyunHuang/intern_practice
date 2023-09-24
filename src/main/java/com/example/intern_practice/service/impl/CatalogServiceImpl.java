@@ -30,7 +30,8 @@ public class CatalogServiceImpl implements CatalogService {
 		// 入力値チェックを行う。
 		return checkNull(request, Action.ADD) ? new CatalogResponse(MSG.CANNOT_EMPTY)
 				// 入力値の検証が正常であり、カタログの挿入が成功した場合に対応する結果を返す。
-				: result(checkInput(request) && catalogDao.insertCatalog(request.getName(), request.getParent()) == 1);
+				: result(checkInput(request, Action.ADD)
+						&& catalogDao.insertCatalog(request.getName(), request.getParent()) == 1);
 	}
 
 	@Override
@@ -48,8 +49,8 @@ public class CatalogServiceImpl implements CatalogService {
 		// 入力値チェックを行う。
 		return checkNull(request, Action.REVISE) ? new CatalogResponse(MSG.CANNOT_EMPTY)
 				// 入力値の検証が正常であり、カタログの更新が成功した場合に対応する結果を返す。
-				: result(checkInput(request) && catalogDao.updateCatalog(request.getCatalogId(), request.getName(),
-						request.getParent()) == 1);
+				: result(checkInput(request, Action.REVISE) && catalogDao.updateCatalog(request.getCatalogId(),
+						request.getName(), request.getParent()) == 1);
 	}
 
 	@Override
@@ -58,7 +59,9 @@ public class CatalogServiceImpl implements CatalogService {
 		// 入力値チェックを行う。
 		return checkNull(request, Action.DELETE) ? new CatalogResponse(MSG.CANNOT_EMPTY)
 				// カタログを削除し、削除した数が要求された数と一致する場合、対応する結果を返す。
-				: result(catalogDao.deleteCatalog(request.getIdList()) == request.getIdList().size());
+				: result(deleteRequest(request)
+						&& (checkInput(request, Action.DELETE) ? catalogDao.deleteCatalog(request.getCatalogId()) == 1
+								: catalogDao.deleteMultiCatalog(request.getIdList()) == request.getIdList().size()));
 	}
 
 	@Override
@@ -72,7 +75,7 @@ public class CatalogServiceImpl implements CatalogService {
 				: new CatalogResponse(MSG.SUCCESS, catalogDao.findByParentAndDeleteFlag(request.getParent(), false));
 	}
 
-	// 入力値チェックメソッド
+	// 入力値チェックメソッド。
 	private boolean checkNull(CatalogRequest request, Action action) {
 		switch (action) {
 		case ADD:
@@ -82,7 +85,7 @@ public class CatalogServiceImpl implements CatalogService {
 		case REVISE:
 			return request.getCatalogId() == 0 || !StringUtils.hasText(request.getName());
 		case DELETE:
-			return CollectionUtils.isEmpty(request.getIdList());
+			return CollectionUtils.isEmpty(request.getIdList()) && request.getCatalogId() == 0;
 		case FIND:
 			return StringUtils.hasText(request.getName());
 		default:
@@ -90,9 +93,17 @@ public class CatalogServiceImpl implements CatalogService {
 		}
 	}
 
-	// 入力値の検証メソッド。名前が15文字以上の場合はfalseを返す。
-	private boolean checkInput(CatalogRequest request) {
-		return request.getName().length() <= 15;
+	// 入力値の検証メソッド。
+	private boolean checkInput(CatalogRequest request, Action action) {
+		switch (action) {
+		case ADD:
+		case REVISE:
+			return request.getName().length() <= 15;
+		case DELETE:
+			return CollectionUtils.isEmpty(request.getIdList());
+		default:
+			return true;
+		}
 	}
 
 	// 操作の結果に基づいて適切なレスポンスを返す。
@@ -100,7 +111,30 @@ public class CatalogServiceImpl implements CatalogService {
 		return isSuccess ? new CatalogResponse(MSG.SUCCESS) : new CatalogResponse(MSG.INCORRECT);
 	}
 
-	// カタログの数を計算するメソッド。
+	// カタログの削除判定メソッド。
+	private boolean deleteRequest(CatalogRequest request) {
+		// すべてのカタログを取得。
+		List<Catalog> allCatalog = catalogDao.findAll();
+		return allCatalog.stream().allMatch(catalog -> {
+			// 削除リクエストに指定された ID リストが空である場合、またはカタログの ID が一致する場合。
+			if (request.getIdList() == null ? catalog.getCatalogId().equals(request.getCatalogId())
+					: request.getIdList().contains(catalog.getCatalogId())) {
+				// 特定のタイプの親カタログである場合。
+				if (catalog.getParent().equals(Action.DATA_TYPE_CATALOG.getType())) {
+					// 子カタログにニュースが存在を確認。
+					return allCatalog.stream()
+							.noneMatch(c -> c.getParent().equals(catalog.getName()) && c.getNews().size() > 0);
+				} else {
+					// ニュースが存在を確認。
+					return catalog.getNews().size() == 0;
+				}
+			}
+			// 上記の条件に該当しない場合は true を返す。
+			return true;
+		});
+	}
+
+	// カタログの数を計算メソッド。
 	private List<Catalog> calculateNewsAmount(List<Catalog> catalogList) {
 		// 各カタログの "news" リストから、"deleteFlag" が true の項目を削除する。
 		catalogList.forEach(catalog -> catalog.getNews().removeIf(news -> news.isDeleteFlag()));

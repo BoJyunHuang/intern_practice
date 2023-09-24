@@ -50,9 +50,9 @@ public class CatalogTest {
 
 	@Test
 	public void deleteCatalogTest() {
-		Assert.isTrue(catalogDao.deleteCatalog(new ArrayList<>(Arrays.asList(0, -1))) == 0,
+		Assert.isTrue(catalogDao.deleteMultiCatalog(new ArrayList<>(Arrays.asList(0, -1))) == 0,
 				MSG.TEST1_ERROR.getMessage());
-		Assert.isTrue(catalogDao.deleteCatalog(new ArrayList<>(Arrays.asList(1, 2))) == 2,
+		Assert.isTrue(catalogDao.deleteMultiCatalog(new ArrayList<>(Arrays.asList(1, 2))) == 2,
 				MSG.TEST2_ERROR.getMessage());
 	}
 
@@ -67,9 +67,11 @@ public class CatalogTest {
 	@Test
 	public void addCatalogTest() {
 		CatalogRequest request = new CatalogRequest();
-		Assert.isTrue(catalogService.addCatalog(request).getMsg().equals(MSG.CANNOT_EMPTY),	MSG.TEST1_ERROR.getMessage());
+		Assert.isTrue(catalogService.addCatalog(request).getMsg().equals(MSG.CANNOT_EMPTY),
+				MSG.TEST1_ERROR.getMessage());
 		request.setName("");
-		Assert.isTrue(catalogService.addCatalog(request).getMsg().equals(MSG.CANNOT_EMPTY),	MSG.TEST2_ERROR.getMessage());
+		Assert.isTrue(catalogService.addCatalog(request).getMsg().equals(MSG.CANNOT_EMPTY),
+				MSG.TEST2_ERROR.getMessage());
 		request.setParent("科学");
 		request.setName("医療医療医療医療医療医療医療医療");
 		Assert.isTrue(catalogService.addCatalog(request).getMsg().equals(MSG.INCORRECT), MSG.TEST3_ERROR.getMessage());
@@ -83,19 +85,23 @@ public class CatalogTest {
 		Assert.isTrue(catalogService.getCatalog(null).getCatalogList().size() == 6, MSG.TEST1_ERROR.getMessage());
 		Assert.isTrue(catalogService.getCatalog(request).getCatalog() == null, MSG.TEST2_ERROR.getMessage());
 		request.setCatalogId(1);
-		Assert.isTrue(catalogService.getCatalog(request).getCatalog().getCatalogId() == 1, MSG.TEST3_ERROR.getMessage());
+		Assert.isTrue(catalogService.getCatalog(request).getCatalog().getCatalogId() == 1,
+				MSG.TEST3_ERROR.getMessage());
 	}
 
 	@Test
 	public void reviseCatalogTest() {
 		CatalogRequest request = new CatalogRequest();
-		Assert.isTrue(catalogService.reviseCatalog(request).getMsg().equals(MSG.CANNOT_EMPTY), MSG.TEST1_ERROR.getMessage());
+		Assert.isTrue(catalogService.reviseCatalog(request).getMsg().equals(MSG.CANNOT_EMPTY),
+				MSG.TEST1_ERROR.getMessage());
 		request.setName("");
-		Assert.isTrue(catalogService.reviseCatalog(request).getMsg().equals(MSG.CANNOT_EMPTY), MSG.TEST2_ERROR.getMessage());
+		Assert.isTrue(catalogService.reviseCatalog(request).getMsg().equals(MSG.CANNOT_EMPTY),
+				MSG.TEST2_ERROR.getMessage());
 		request.setCatalogId(100);
 		request.setParent("科学");
 		request.setName("健康・医療");
-		Assert.isTrue(catalogService.reviseCatalog(request).getMsg().equals(MSG.INCORRECT), MSG.TEST3_ERROR.getMessage());
+		Assert.isTrue(catalogService.reviseCatalog(request).getMsg().equals(MSG.INCORRECT),
+				MSG.TEST3_ERROR.getMessage());
 		request.setCatalogId(9);
 		Assert.isTrue(catalogService.reviseCatalog(request).getMsg().equals(MSG.SUCCESS), MSG.TEST4_ERROR.getMessage());
 	}
@@ -103,16 +109,18 @@ public class CatalogTest {
 	@Test
 	public void deleteCatalogImplTest() {
 		CatalogRequest request = new CatalogRequest();
-		Assert.isTrue(catalogService.deleteCatalog(request).getMsg().equals(MSG.CANNOT_EMPTY), MSG.TEST1_ERROR.getMessage());
+		Assert.isTrue(catalogService.deleteCatalog(request).getMsg().equals(MSG.CANNOT_EMPTY),
+				MSG.TEST1_ERROR.getMessage());
 		request.setIdList(new ArrayList<>(Arrays.asList(0, -1)));
-		Assert.isTrue(catalogService.deleteCatalog(request).getMsg().equals(MSG.INCORRECT), MSG.TEST2_ERROR.getMessage());
+		Assert.isTrue(catalogService.deleteCatalog(request).getMsg().equals(MSG.INCORRECT),
+				MSG.TEST2_ERROR.getMessage());
 		request.setIdList(new ArrayList<>(Arrays.asList(3)));
 		Assert.isTrue(catalogService.deleteCatalog(request).getMsg().equals(MSG.SUCCESS), MSG.TEST3_ERROR.getMessage());
 	}
-	
+
 	@Test
 	public void Test() {
 		System.out.println(catalogDao.findById(1).get().getNews().size());
 	}
-	
+
 }
