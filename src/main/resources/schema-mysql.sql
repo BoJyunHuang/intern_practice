@@ -15,8 +15,6 @@ CREATE TABLE IF NOT EXISTS `intern_practice`.`news` (
   `editor` VARCHAR(45) NULL DEFAULT 'null',
   `remover` VARCHAR(45) NULL DEFAULT 'null',
   `views` INT NOT NULL DEFAULT 0,
-  `likes` INT NOT NULL DEFAULT 0,
-  `dislikes` INT NOT NULL DEFAULT 0,
   `importance` INT NOT NULL,
   `audience_level` INT NOT NULL,
   `delete_flag` TINYINT NOT NULL DEFAULT 0,

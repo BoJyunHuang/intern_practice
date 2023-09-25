@@ -47,18 +47,6 @@ public interface NewsDao extends JpaRepository<News, Integer> {
 	@Query(value = "update news set views = views + 1 where news_id = :newsId", nativeQuery = true)
 	public int plusView(@Param("newsId") Integer newsId);
 
-	// ニュースのいいね数を増やす。
-	@Transactional
-	@Modifying
-	@Query(value = "update news set likes = likes + 1 where news_id = :newsId", nativeQuery = true)
-	public int plusLike(@Param("newsId") Integer newsId);
-
-	// ニュースの「いいえ」数を増やす。
-	@Transactional
-	@Modifying
-	@Query(value = "update news set dislikes = dislikes + 1 where news_id = :newsId", nativeQuery = true)
-	public int plusDislike(@Param("newsId") Integer newsId);
-
 	// ニュースを削除する。
 	@Transactional
 	@Modifying

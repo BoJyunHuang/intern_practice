@@ -85,14 +85,6 @@ public class News {
 	@Column(name = "views")
 	private int views;
 
-	// いいね数
-	@Column(name = "likes")
-	private int likes;
-
-	// 嫌い数
-	@Column(name = "dislikes")
-	private int dislikes;
-
 	// 重要性
 	@Column(name = "importance")
 	private int importance;
@@ -113,7 +105,7 @@ public class News {
 	public News(Integer newsId, Catalog catalog, String title, String subtitle, String tags,
 			String content, LocalDateTime createTime, LocalDateTime publishTime, LocalDateTime editTime,
 			LocalDateTime expirationTime, LocalDateTime removeTime, String creator, String editor, String remover,
-			int views, int likes, int dislikes, int importance, int audienceLevel, boolean deleteFlag) {
+			int views, int importance, int audienceLevel, boolean deleteFlag) {
 		super();
 		this.newsId = newsId;
 		this.catalog = catalog;
@@ -130,8 +122,6 @@ public class News {
 		this.editor = editor;
 		this.remover = remover;
 		this.views = views;
-		this.likes = likes;
-		this.dislikes = dislikes;
 		this.importance = importance;
 		this.audienceLevel = audienceLevel;
 		this.deleteFlag = deleteFlag;
@@ -256,22 +246,6 @@ public class News {
 
 	public void setViews(int views) {
 		this.views = views;
-	}
-
-	public int getLikes() {
-		return likes;
-	}
-
-	public void setLikes(int likes) {
-		this.likes = likes;
-	}
-
-	public int getDislikes() {
-		return dislikes;
-	}
-
-	public void setDislikes(int dislikes) {
-		this.dislikes = dislikes;
 	}
 
 	public int getImportance() {

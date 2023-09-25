@@ -45,17 +45,17 @@
 						<h5>公開期間検索</h5>
 							<form class="row row-cols-lg-auto align-items-center" th:action="@{/find_news}" th:object="${timeRequest}" method="post">
 								<div class="col">
-									<label for="startTime" class="fw-bold">開始日時</label>
+									<label for="startDate" class="fw-bold">開始日時</label>
 								</div>
 								<div class="col">
-									<input type="date" id="startTime" name="startTime" th:field="*{startTime}" class="form-control"
-										th:value="${#dates.format(startTime, 'yyyy-MM-dd')}">
+									<input type="date" id="startDate" name="startDate" th:field="*{startDate}" class="form-control"
+										th:value="${#dates.format(startDate, 'yyyy-MM-dd')}">
 								</div>
 								<div class="col">
-									<label for="endTime" class="fw-bold">終了日時</label>
+									<label for="endDate" class="fw-bold">終了日時</label>
 								</div>
 								<div class="col">
-									<input type="date" id="endTime" name="endTime" th:field="*{endTime}" class="form-control" th:value="${#dates.format(endTime, 'yyyy-MM-dd')}">
+									<input type="date" id="endDate" name="endDate" th:field="*{endDate}" class="form-control" th:value="${#dates.format(endDate, 'yyyy-MM-dd')}">
 								</div>
 								<div class="col">
 									<input type="submit" id="submitButton" class="btn btn-info" value="検索">

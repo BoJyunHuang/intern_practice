@@ -17,12 +17,6 @@ public interface NewsService {
 	// ニュースを閲覧
 	public NewsResponse viewNews(NewsRequest request);
 
-	// ニュースにいいねする
-	public NewsResponse likeNews(NewsRequest request);
-
-	// ニュースを嫌いな情報にする
-	public NewsResponse dislikeNews(NewsRequest request);
-
 	// ニュースを削除
 	public NewsResponse deleteNews(NewsRequest request);
 

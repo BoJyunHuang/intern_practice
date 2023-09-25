@@ -43,10 +43,6 @@ public class NewsRequest {
 	private String remover;
 	// 再生回数
 	private int views;
-	// いいね数
-	private int likes;
-	// 嫌い数
-	private int dislikes;
 	// 重要性
 	private int importance;
 	// 視聴者のレベル
@@ -61,7 +57,9 @@ public class NewsRequest {
 	// 終了日付
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate endDate;
-
+	// 評価
+	private Boolean like;
+	
 	// コンストラクタ
 	public NewsRequest() {
 		super();
@@ -163,18 +161,6 @@ public class NewsRequest {
 	public void setViews(int views) {
 		this.views = views;
 	}
-	public int getLikes() {
-		return likes;
-	}
-	public void setLikes(int likes) {
-		this.likes = likes;
-	}
-	public int getDislikes() {
-		return dislikes;
-	}
-	public void setDislikes(int dislikes) {
-		this.dislikes = dislikes;
-	}
 	public int getImportance() {
 		return importance;
 	}
@@ -210,6 +196,12 @@ public class NewsRequest {
 	}
 	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
+	}
+	public Boolean isLike() {
+		return like;
+	}
+	public void setLike(Boolean like) {
+		this.like = like;
 	}
 
 }

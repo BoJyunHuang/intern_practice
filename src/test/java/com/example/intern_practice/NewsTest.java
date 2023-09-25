@@ -78,7 +78,7 @@ public class NewsTest {
 		newsDao.save(new News(1, new Catalog(2, "政治", "トップ", false), "首相、処理水の安全性説明へ　中国に科学的対応要求",
 				"【ジャカルタ共同】岸田文雄首相は6日、インドネシアで開かれた東南アジア諸国連合（ASEAN）プラス3", "主要,政治", news1,
 				LocalDateTime.of(2023, 9, 6, 11, 28), LocalDateTime.of(2023, 9, 6, 17, 11), null,
-				LocalDateTime.of(2023, 9, 9, 00, 00), null, "© 一般社団法人共同通信社", null, null, 0, 0, 0, 1, 1, false));
+				LocalDateTime.of(2023, 9, 9, 00, 00), null, "© 一般社団法人共同通信社", null, null, 0, 1, 1, false));
 	}
 
 	@Test
@@ -114,18 +114,6 @@ public class NewsTest {
 	}
 
 	@Test
-	public void plusLikeTest() {
-		Assert.isTrue(newsDao.plusLike(0) == 0, MSG.TEST1_ERROR.getMessage());
-		Assert.isTrue(newsDao.plusLike(1) == 1, MSG.TEST2_ERROR.getMessage());
-	}
-
-	@Test
-	public void plusDislikeTest() {
-		Assert.isTrue(newsDao.plusDislike(0) == 0, MSG.TEST1_ERROR.getMessage());
-		Assert.isTrue(newsDao.plusDislike(2) == 1, MSG.TEST2_ERROR.getMessage());
-	}
-
-	@Test
 	public void deleteNewsTest() {
 		Assert.isTrue(newsDao.deleteMultiNews(new ArrayList<>(Arrays.asList(0)), LocalDateTime.of(2023, 9, 6, 19, 27),
 				"© 一般社団法人共同通信社") == 0, MSG.TEST1_ERROR.getMessage());
@@ -158,7 +146,7 @@ public class NewsTest {
 		Assert.isTrue(newsService.getNews(null).getNewsList().size() == 3, MSG.TEST1_ERROR.getMessage());
 		Assert.isTrue(newsService.getNews(request).getNews() == null, MSG.TEST2_ERROR.getMessage());
 		request.setNewsId(2);
-		Assert.isTrue(newsService.getNews(request).getNews().getDislikes() == 1, MSG.TEST3_ERROR.getMessage());
+		Assert.isTrue(newsService.getNews(request).getNews() != null, MSG.TEST3_ERROR.getMessage());
 	}
 
 	@Test
@@ -189,26 +177,6 @@ public class NewsTest {
 		Assert.isTrue(newsService.viewNews(request).getMsg().equals(MSG.INCORRECT), MSG.TEST2_ERROR.getMessage());
 		request.setNewsId(2);
 		Assert.isTrue(newsService.viewNews(request).getMsg().equals(MSG.SUCCESS), MSG.TEST3_ERROR.getMessage());
-	}
-
-	@Test
-	public void likeNewsTest() {
-		NewsRequest request = new NewsRequest();
-		Assert.isTrue(newsService.likeNews(request).getMsg().equals(MSG.CANNOT_EMPTY), MSG.TEST1_ERROR.getMessage());
-		request.setNewsId(200);
-		Assert.isTrue(newsService.likeNews(request).getMsg().equals(MSG.INCORRECT), MSG.TEST2_ERROR.getMessage());
-		request.setNewsId(2);
-		Assert.isTrue(newsService.likeNews(request).getMsg().equals(MSG.SUCCESS), MSG.TEST3_ERROR.getMessage());
-	}
-
-	@Test
-	public void dislikeNewsTest() {
-		NewsRequest request = new NewsRequest();
-		Assert.isTrue(newsService.dislikeNews(request).getMsg().equals(MSG.CANNOT_EMPTY), MSG.TEST1_ERROR.getMessage());
-		request.setNewsId(200);
-		Assert.isTrue(newsService.dislikeNews(request).getMsg().equals(MSG.INCORRECT), MSG.TEST2_ERROR.getMessage());
-		request.setNewsId(2);
-		Assert.isTrue(newsService.dislikeNews(request).getMsg().equals(MSG.SUCCESS), MSG.TEST3_ERROR.getMessage());
 	}
 
 	@Test

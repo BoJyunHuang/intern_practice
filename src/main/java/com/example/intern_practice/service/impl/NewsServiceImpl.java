@@ -59,25 +59,9 @@ public class NewsServiceImpl implements NewsService {
 	@Override
 	public NewsResponse viewNews(NewsRequest request) {
 		// 入力値チェックを行う。
-		return checkNull(request, Action.PLUS) ? new NewsResponse(MSG.CANNOT_EMPTY)
+		return checkNull(request, Action.VIEW) ? new NewsResponse(MSG.CANNOT_EMPTY)
 				// ニュースの閲覧回数を増加し、増加した数が1と一致する場合、対応する結果を返す。
 				: result(newsDao.plusView(request.getNewsId()) == 1);
-	}
-
-	@Override
-	public NewsResponse likeNews(NewsRequest request) {
-		// 入力値チェックを行う。
-		return checkNull(request, Action.PLUS) ? new NewsResponse(MSG.CANNOT_EMPTY)
-				// ニュースのいいね数を増加し、増加した数が1と一致する場合、対応する結果を返す。
-				: result(newsDao.plusLike(request.getNewsId()) == 1);
-	}
-
-	@Override
-	public NewsResponse dislikeNews(NewsRequest request) {
-		// 入力値チェックを行う。
-		return checkNull(request, Action.PLUS) ? new NewsResponse(MSG.CANNOT_EMPTY)
-				// ニュースの嫌い数を増加し、増加した数が1と一致する場合、対応する結果を返す。
-				: result(newsDao.plusDislike(request.getNewsId()) == 1);
 	}
 
 	@Override
@@ -126,7 +110,7 @@ public class NewsServiceImpl implements NewsService {
 					|| request.getPublishTime() == null || request.getExpirationTime() == null
 					|| !StringUtils.hasText(request.getEditor()) || request.getImportance() < 1
 					|| request.getAudienceLevel() < 1;
-		case PLUS:
+		case VIEW:
 			return request.getNewsId() == 0;
 		case DELETE:
 			return CollectionUtils.isEmpty(request.getIdList()) && request.getNewsId() == 0;

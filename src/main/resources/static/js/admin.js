@@ -145,6 +145,7 @@ function save() {
 			switch (data.msg) {
 				case 'SUCCESS':
 					alert('操作成功');
+					$('#previewButton').removeClass('d-none');
 					break;
 				default:
 					alert('操作失敗');
