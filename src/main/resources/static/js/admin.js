@@ -7,18 +7,16 @@ $(document).ready(function() {
 
 	if ($('#catalogTable').length > 0) {
 		$('#catalogTable').DataTable({
-			"scrollY": "700px",
 			language: {
 				url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/ja.json',
 			},
-			"order": [[1, "asc"]]
+			"order": [[2, "asc"], [0, "asc"]]
 		});
 	};
 
 	if ($('#newsTable').length > 0) {
 		$('#newsTable').DataTable({
 			"scrollCollapse": true,
-			"scrollY": "700px",
 			language: {
 				url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/ja.json',
 			},
@@ -60,13 +58,6 @@ $(document).ready(function() {
 			event.stopPropagation();
 		}
 		$(this).addClass('was-validated');
-	});
-
-	$('table.display').on('click', '.toggle-button', function() {
-		var nextRow = $(this).closest('tr').next();
-		if (nextRow) {
-			nextRow.toggle();
-		}
 	});
 
 });

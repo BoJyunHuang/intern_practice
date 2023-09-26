@@ -48,7 +48,6 @@
 							<table id="catalogTable" class="display">
 								<thead>
 									<tr>
-										<th></th>
 										<th>カタログID</th>
 										<th>名前</th>
 										<th>親カタログ</th>
@@ -59,48 +58,17 @@
 								</thead>
 								<tbody>
 									<tr th:each="catalog : ${catalogList}" th:object="${catalog}" th:if="${!catalog.deleteFlag}">
-										<td>
-											<button class="toggle-button" th:if="${#sets.size(catalog.news) > 0}">
-												<i class="fa-solid fa-plus"></i>
-											</button>
-										</td>
 										<td th:text="*{catalogId}"></td>
 										<td th:text="*{name}"></td>
 										<td th:text="*{parent == 'カタログ' ? '--' : parent}"></td>
 										<td th:text="*{#sets.size(news)}"></td>
 										<td>
-											<a class="btn btn-primary mx-5" th:href="@{/revise_catalog/{catalogId}(catalogId=*{catalogId})}">編集</a>
-											<a class="btn btn-danger mx-5" th:attr="onclick='confirmDelete(\'' + (*{catalogId} ?: '') + '\', \'catalog\')'">削除</a>
+											<a class="btn btn-primary" th:href="@{/revise_catalog/{catalogId}(catalogId=*{catalogId})}">編集</a>
+											<a class="btn btn-danger" th:attr="onclick='confirmDelete(\'' + (*{catalogId} ?: '') + '\', \'catalog\')'">削除</a>
 										</td>
 										<td>
 											<input type="checkbox" class="catalog-checkbox" th:value="*{catalogId}">
 										</td>
-									</tr>
-									<tr th:each="catalog : ${catalogList}" th:object="${catalog}" th:if="${#sets.size(catalog.news) > 0}">
-										<td></td>
-										<td th:text="*{catalogId}" class="d-none"></td>
-										<td colspan="6">
-											<table class="table">
-												<thead>
-													<tr>
-														<th>タイトル</th>
-														<th>公開日時</th>
-														<th>取り下げる日時</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr th:each="news : ${catalog.news}" th:object="${news}">
-														<td th:text="*{title}"></td>
-														<td th:text="*{#temporals.format(publishTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
-														<td th:text="*{#temporals.format(expirationTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
-													</tr>
-												</tbody>
-											</table>
-										</td>
-										<td style="display: none;"></td>
-										<td style="display: none;"></td>
-										<td style="display: none;"></td>
-										<td style="display: none;"></td>
 									</tr>
 								</tbody>
 							</table>
