@@ -32,7 +32,7 @@ public class CatalogController {
 	// カタログリストを表示し、モデルにカタログリストを追加する。
 	@GetMapping("/catalog_manage")
 	public String catalogList(Model model) {
-		model.addAttribute("catalogList", catalogService.getCatalog(null).getCatalogList());
+		model.addAttribute("catalogList", catalogService.get(null).getCatalogList());
 		return HTML.CATALOG_MANAGEMENT_PAGE.getPage();
 	}
 
@@ -45,20 +45,20 @@ public class CatalogController {
 	// カタログを修正するためのページに導入する。
 	@GetMapping("/revise_catalog/{catalogId}")
 	public String reviseCatalog(@PathVariable Integer catalogId, Model model) {
-		return toEditPage(model, catalogService.getCatalog(new CatalogRequest(catalogId)).getCatalog(), false);
+		return toEditPage(model, catalogService.get(new CatalogRequest(catalogId)).getCatalog(), false);
 	}
 
 	// カタログを追加し、レスポンスページに遷移する。
 	@PostMapping("/add_catalog")
 	public String addCatalog(@ModelAttribute("catalog") CatalogRequest request, Model model) {
-		MSG msg = catalogService.addCatalog(request).getMsg();
+		MSG msg = catalogService.add(request).getMsg();
 		return toResponsePage(model, msg.getCode(), msg.getMessage());
 	}
 
 	// カタログを修正し、レスポンスページに遷移する。
 	@PostMapping("/revise_catalog")
 	public String reviseCatalog(@ModelAttribute("catalog") CatalogRequest request, Model model) {
-		MSG msg = catalogService.reviseCatalog(request).getMsg();
+		MSG msg = catalogService.revise(request).getMsg();
 		return toResponsePage(model, msg.getCode(), msg.getMessage());
 	}
 
@@ -66,14 +66,14 @@ public class CatalogController {
 	@PostMapping("/delete_catalog")
 	@ResponseBody
 	public CatalogResponse deleteCatalog(@RequestBody CatalogRequest request) {
-		return catalogService.deleteCatalog(request);
+		return catalogService.delete(request);
 	}
 
 	// カタログを検索し、検索結果を返す。
 	@PostMapping("/find_catalog")
 	@ResponseBody
 	public CatalogResponse findCatalog(@RequestBody CatalogRequest request) {
-		return catalogService.findCatalog(request);
+		return catalogService.find(request);
 	}
 
 	// カタログ編集ページに導入する。

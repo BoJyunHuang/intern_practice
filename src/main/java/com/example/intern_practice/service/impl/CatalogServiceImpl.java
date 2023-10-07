@@ -24,9 +24,10 @@ public class CatalogServiceImpl implements CatalogService {
 	@Autowired
 	private CatalogDao catalogDao;
 
+	// カタログを新規
 	@Override
 	@Transactional
-	public CatalogResponse addCatalog(CatalogRequest request) {
+	public CatalogResponse add(CatalogRequest request) {
 		// 入力値チェックを行う。
 		return checkNull(request, Action.ADD) ? new CatalogResponse(MSG.CANNOT_EMPTY)
 				// 入力値の検証が正常であり、カタログの挿入が成功した場合に対応する結果を返す。
@@ -34,8 +35,9 @@ public class CatalogServiceImpl implements CatalogService {
 						&& catalogDao.insertCatalog(request.getName(), request.getParent()) == 1);
 	}
 
+	// カタログを取得
 	@Override
-	public CatalogResponse getCatalog(CatalogRequest request) {
+	public CatalogResponse get(CatalogRequest request) {
 		// 入力値チェックを行う。リクエストがnullの場合は全てのカタログを返す。
 		return checkNull(request, Action.GET)
 				? new CatalogResponse(MSG.SUCCESS, calculateNewsAmount(catalogDao.findAll()))
@@ -43,9 +45,10 @@ public class CatalogServiceImpl implements CatalogService {
 				: new CatalogResponse(MSG.SUCCESS, catalogDao.findById(request.getCatalogId()).orElse(null));
 	}
 
+	// カタログを編集
 	@Override
 	@Transactional
-	public CatalogResponse reviseCatalog(CatalogRequest request) {
+	public CatalogResponse revise(CatalogRequest request) {
 		// 入力値チェックを行う。
 		return checkNull(request, Action.REVISE) ? new CatalogResponse(MSG.CANNOT_EMPTY)
 				// 入力値の検証が正常であり、カタログの更新が成功した場合に対応する結果を返す。
@@ -53,9 +56,10 @@ public class CatalogServiceImpl implements CatalogService {
 						request.getName(), request.getParent()) == 1);
 	}
 
+	// カタログを削除
 	@Override
 	@Transactional
-	public CatalogResponse deleteCatalog(CatalogRequest request) {
+	public CatalogResponse delete(CatalogRequest request) {
 		// 入力値チェックを行う。
 		return checkNull(request, Action.DELETE) ? new CatalogResponse(MSG.CANNOT_EMPTY)
 				// カタログを削除し、削除した数が要求された数と一致する場合、対応する結果を返す。
@@ -64,8 +68,9 @@ public class CatalogServiceImpl implements CatalogService {
 								: catalogDao.deleteMultiCatalog(request.getIdList()) == request.getIdList().size()));
 	}
 
+	// カタログを検索
 	@Override
-	public CatalogResponse findCatalog(CatalogRequest request) {
+	public CatalogResponse find(CatalogRequest request) {
 		// 入力値チェックを行う。
 		return checkNull(request, Action.FIND)
 				// 名前と親カタログに基づいてカタログを検索し、該当する結果を返す。

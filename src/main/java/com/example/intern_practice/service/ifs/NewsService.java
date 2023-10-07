@@ -3,23 +3,9 @@ package com.example.intern_practice.service.ifs;
 import com.example.intern_practice.vo.NewsResponse;
 import com.example.intern_practice.vo.NewsRequest;
 
-public interface NewsService {
-
-	// ニュースを新規
-	public NewsResponse addNews(NewsRequest request);
-
-	// ニュースを取得
-	public NewsResponse getNews(NewsRequest request);
-
-	// ニュースを編集
-	public NewsResponse reviseNews(NewsRequest request);
+public interface NewsService extends CRUD<NewsRequest, NewsResponse>{
 
 	// ニュースを閲覧
 	public NewsResponse viewNews(NewsRequest request);
-
-	// ニュースを削除
-	public NewsResponse deleteNews(NewsRequest request);
-
-	// ニュースを検索
-	public NewsResponse findNews(NewsRequest request);
+	
 }

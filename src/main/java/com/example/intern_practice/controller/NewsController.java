@@ -40,7 +40,7 @@ public class NewsController {
 	// ホームページを表示する
 	@GetMapping("/home")
 	public String home(Model model) {
-		model.addAttribute("newsList", newsService.getNews(null).getNewsList().stream()
+		model.addAttribute("newsList", newsService.get(null).getNewsList().stream()
 				// 公開済みで有効期限内のニュースを選別する
 				.filter(news -> news.getPublishTime().isBefore(LocalDateTime.now())
 						&& news.getExpirationTime().isAfter(LocalDateTime.now()))
@@ -52,7 +52,7 @@ public class NewsController {
 	@GetMapping("/news_manage")
 	public String newsManagement(Model model) {
 		model.addAttribute("timeRequest", new NewsRequest());
-		model.addAttribute("newsList", newsService.getNews(null).getNewsList());
+		model.addAttribute("newsList", newsService.get(null).getNewsList());
 		return HTML.NEWS_MANAGEMENT_PAGE.getPage();
 	}
 
@@ -65,34 +65,34 @@ public class NewsController {
 	// ニュースを修正するためのページに導入する。修正するニュースのIDを指定する。
 	@GetMapping("/revise_news/{newsId}")
 	public String reviseNews(@PathVariable Integer newsId, Model model) {
-		News news = newsService.getNews(new NewsRequest(newsId)).getNews();
+		News news = newsService.get(new NewsRequest(newsId)).getNews();
 		return toEditPage(model, news, news.getCatalog(), false);
 	}
 
 	// ニュースを追加し、結果メッセージを返す。
 	@PostMapping("/add_news")
 	public String addNews(@ModelAttribute("news") NewsRequest request, Model model) {
-		return toResponsePage(model, newsService.addNews(request).getMsg());
+		return toResponsePage(model, newsService.add(request).getMsg());
 	}
 
 	// ニュースを修正し、結果メッセージを返す。
 	@PostMapping("/revise_news")
 	public String reviseNews(@ModelAttribute("news") NewsRequest request, Model model) {
-		return toResponsePage(model, newsService.reviseNews(request).getMsg());
+		return toResponsePage(model, newsService.revise(request).getMsg());
 	}
 
 	// ニュースを削除し、削除結果を返す。
 	@PostMapping("/delete_news")
 	@ResponseBody
 	public NewsResponse deleteNews(@RequestBody NewsRequest request) {
-		return newsService.deleteNews(request);
+		return newsService.delete(request);
 	}
 	
 	// 指定した時間ニュースリストを検索する。
 	@PostMapping("/find_news")
 	public String findNews(@ModelAttribute("timeRequest") NewsRequest request, Model model) {
 		model.addAttribute("timeRequest", request);
-		model.addAttribute("newsList", newsService.findNews(request).getNewsList());
+		model.addAttribute("newsList", newsService.find(request).getNewsList());
 		return HTML.NEWS_MANAGEMENT_PAGE.getPage();
 	}
 
@@ -100,7 +100,7 @@ public class NewsController {
 	@GetMapping("/read_news/{newsId}")
 	public String readNews(@PathVariable Integer newsId, Model model) {
 		newsService.viewNews(new NewsRequest(newsId));
-		return toNewsPage(model, newsService.getNews(new NewsRequest(newsId)).getNews(), Action.TYPE_NEWS);
+		return toNewsPage(model, newsService.get(new NewsRequest(newsId)).getNews(), Action.TYPE_NEWS);
 	}
 
 	// ニュースをプレビューし、セッションにプレビュー情報を保存する
@@ -121,10 +121,10 @@ public class NewsController {
 	private String toEditPage(Model model, Object news, Catalog catalog, boolean isNew) {
 		// カタログオプションを取得し、モデルに追加する。
 		CatalogRequest request = new CatalogRequest();
-		List<Catalog> catalogList = catalogService.findCatalog(request).getCatalogList();
+		List<Catalog> catalogList = catalogService.find(request).getCatalogList();
 		model.addAttribute("catalogOptions", catalogList);
 		request.setParent(isNew ? catalogList.get(0).getName() : catalog.getParent());
-		model.addAttribute("subcatalogOptions", catalogService.findCatalog(request).getCatalogList());
+		model.addAttribute("subcatalogOptions", catalogService.find(request).getCatalogList());
 		// ニュースと新規ニュースの狀態をモデルに追加する。
 		model.addAttribute("news", news);
 		model.addAttribute("isNew", isNew);

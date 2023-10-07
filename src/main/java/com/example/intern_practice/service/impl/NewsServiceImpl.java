@@ -21,9 +21,10 @@ public class NewsServiceImpl implements NewsService {
 	@Autowired
 	private NewsDao newsDao;
 
+	// ニュースを新規
 	@Override
 	@Transactional
-	public NewsResponse addNews(NewsRequest request) {
+	public NewsResponse add(NewsRequest request) {
 		// 入力値チェックを行う。
 		return checkNull(request, Action.ADD) ? new NewsResponse(MSG.CANNOT_EMPTY)
 				// 入力値の検証が正常であり、ニュースの挿入が成功した場合に対応する結果を返す。
@@ -33,8 +34,9 @@ public class NewsServiceImpl implements NewsService {
 						request.getCreator(), request.getImportance(), request.getAudienceLevel()) == 1);
 	}
 
+	// ニュースを取得
 	@Override
-	public NewsResponse getNews(NewsRequest request) {
+	public NewsResponse get(NewsRequest request) {
 		// 入力値チェックを行う。
 		return checkNull(request, Action.GET)
 				// リクエストがnullの場合は全てのニュースを返す。
@@ -43,9 +45,10 @@ public class NewsServiceImpl implements NewsService {
 				: new NewsResponse(MSG.SUCCESS, newsDao.findById(request.getNewsId()).orElse(null));
 	}
 
+	// ニュースを編集
 	@Override
 	@Transactional
-	public NewsResponse reviseNews(NewsRequest request) {
+	public NewsResponse revise(NewsRequest request) {
 		// 入力値チェックを行う。
 		return checkNull(request, Action.REVISE) ? new NewsResponse(MSG.CANNOT_EMPTY)
 				// 入力値の検証が正常であり、ニュースの更新が成功した場合に対応する結果を返す。
@@ -56,6 +59,7 @@ public class NewsServiceImpl implements NewsService {
 								request.getEditor(), request.getImportance(), request.getAudienceLevel()) == 1);
 	}
 
+	// ニュースを閲覧
 	@Override
 	public NewsResponse viewNews(NewsRequest request) {
 		// 入力値チェックを行う。
@@ -64,9 +68,10 @@ public class NewsServiceImpl implements NewsService {
 				: result(newsDao.plusView(request.getNewsId()) == 1);
 	}
 
+	// ニュースを削除
 	@Override
 	@Transactional
-	public NewsResponse deleteNews(NewsRequest request) {
+	public NewsResponse delete(NewsRequest request) {
 		// 入力値チェックを行う。
 		return checkNull(request, Action.DELETE) ? new NewsResponse(MSG.CANNOT_EMPTY)
 				// ニュースを削除し、削除した数が要求された数と一致する場合、対応する結果を返す。
@@ -76,8 +81,9 @@ public class NewsServiceImpl implements NewsService {
 								Action.ADNIN.getType()) == request.getIdList().size());
 	}
 
+	// ニュースを検索
 	@Override
-	public NewsResponse findNews(NewsRequest request) {
+	public NewsResponse find(NewsRequest request) {
 		// 入力値チェックを行う。
 		return checkNull(request, Action.FIND) ? new NewsResponse(MSG.CANNOT_EMPTY)
 				: new NewsResponse(MSG.SUCCESS, (checkInput(request, Action.FIND))

@@ -124,7 +124,7 @@ public class NewsTest {
 	@Test
 	public void addNewsTest() {
 		NewsRequest request = new NewsRequest();
-		Assert.isTrue(newsService.addNews(request).getMsg().equals(MSG.CANNOT_EMPTY), MSG.TEST1_ERROR.getMessage());
+		Assert.isTrue(newsService.add(request).getMsg().equals(MSG.CANNOT_EMPTY), MSG.TEST1_ERROR.getMessage());
 		request.setCatalog(new Catalog(13, "文化", "社会", false));
 		request.setTitle("今日は何の日：9月6日");
 		request.setSubtitle("秋篠宮悠仁さま誕生");
@@ -135,24 +135,24 @@ public class NewsTest {
 		request.setCreator("無名");
 		request.setImportance(3);
 		request.setAudienceLevel(3);
-		Assert.isTrue(newsService.addNews(request).getMsg().equals(MSG.INCORRECT), MSG.TEST2_ERROR.getMessage());
+		Assert.isTrue(newsService.add(request).getMsg().equals(MSG.INCORRECT), MSG.TEST2_ERROR.getMessage());
 		request.setContent(news4);
-		Assert.isTrue(newsService.addNews(request).getMsg().equals(MSG.SUCCESS), MSG.TEST3_ERROR.getMessage());
+		Assert.isTrue(newsService.add(request).getMsg().equals(MSG.SUCCESS), MSG.TEST3_ERROR.getMessage());
 	}
 
 	@Test
 	public void findNewsTest() {
 		NewsRequest request = new NewsRequest();
-		Assert.isTrue(newsService.getNews(null).getNewsList().size() == 3, MSG.TEST1_ERROR.getMessage());
-		Assert.isTrue(newsService.getNews(request).getNews() == null, MSG.TEST2_ERROR.getMessage());
+		Assert.isTrue(newsService.get(null).getNewsList().size() == 3, MSG.TEST1_ERROR.getMessage());
+		Assert.isTrue(newsService.get(request).getNews() == null, MSG.TEST2_ERROR.getMessage());
 		request.setNewsId(2);
-		Assert.isTrue(newsService.getNews(request).getNews() != null, MSG.TEST3_ERROR.getMessage());
+		Assert.isTrue(newsService.get(request).getNews() != null, MSG.TEST3_ERROR.getMessage());
 	}
 
 	@Test
 	public void reviseNewsTest() {
 		NewsRequest request = new NewsRequest();
-		Assert.isTrue(newsService.reviseNews(request).getMsg().equals(MSG.CANNOT_EMPTY), MSG.TEST1_ERROR.getMessage());
+		Assert.isTrue(newsService.revise(request).getMsg().equals(MSG.CANNOT_EMPTY), MSG.TEST1_ERROR.getMessage());
 		request.setNewsId(100);
 		request.setCatalog(new Catalog(13, "文化", "社会", false));
 		request.setTitle("今日は何の日：9月6日");
@@ -164,9 +164,9 @@ public class NewsTest {
 		request.setEditor("無名");
 		request.setImportance(3);
 		request.setAudienceLevel(3);
-		Assert.isTrue(newsService.reviseNews(request).getMsg().equals(MSG.INCORRECT), MSG.TEST2_ERROR.getMessage());
+		Assert.isTrue(newsService.revise(request).getMsg().equals(MSG.INCORRECT), MSG.TEST2_ERROR.getMessage());
 		request.setNewsId(3);
-		Assert.isTrue(newsService.reviseNews(request).getMsg().equals(MSG.SUCCESS), MSG.TEST3_ERROR.getMessage());
+		Assert.isTrue(newsService.revise(request).getMsg().equals(MSG.SUCCESS), MSG.TEST3_ERROR.getMessage());
 	}
 
 	@Test
@@ -182,12 +182,12 @@ public class NewsTest {
 	@Test
 	public void deleteNewsImplTest() {
 		NewsRequest request = new NewsRequest();
-		Assert.isTrue(newsService.deleteNews(request).getMsg().equals(MSG.CANNOT_EMPTY), MSG.TEST1_ERROR.getMessage());
+		Assert.isTrue(newsService.delete(request).getMsg().equals(MSG.CANNOT_EMPTY), MSG.TEST1_ERROR.getMessage());
 		request.setIdList(new ArrayList<>(Arrays.asList(2)));
 		request.setRemover("管理者管理者管理者管理者管理者管理者管理者管理者管理者管理者管理者管理者管理者管理者管理者1");
-		Assert.isTrue(newsService.deleteNews(request).getMsg().equals(MSG.INCORRECT), MSG.TEST2_ERROR.getMessage());
+		Assert.isTrue(newsService.delete(request).getMsg().equals(MSG.INCORRECT), MSG.TEST2_ERROR.getMessage());
 		request.setRemover("管理者1");
-		Assert.isTrue(newsService.deleteNews(request).getMsg().equals(MSG.SUCCESS), MSG.TEST3_ERROR.getMessage());
+		Assert.isTrue(newsService.delete(request).getMsg().equals(MSG.SUCCESS), MSG.TEST3_ERROR.getMessage());
 	}
 
 }
