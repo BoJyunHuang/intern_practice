@@ -1,5 +1,6 @@
 package com.example.intern_practice.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -153,4 +154,53 @@ public class CatalogServiceImpl implements CatalogService {
 		return catalogList;
 	}
 
+	// カタログ家族の削除方法
+	public CatalogResponse deleteCatalogFamily(CatalogRequest request) {
+		// 入力値チェックを行う。
+		if (request.getCatalogId() == 0 && CollectionUtils.isEmpty(request.getIdList())) {
+			return new CatalogResponse(MSG.CANNOT_EMPTY);
+		}
+
+		// リクエストのIDを抽出する
+		List<Integer> target = new ArrayList<>();
+		if (request.getCatalogId() != 0) {
+			target.add(request.getCatalogId());
+		} else {
+			request.getIdList().stream().forEach(catalogId -> target.add(catalogId));
+		}
+
+		// すべてのカタログを取得。
+		List<Catalog> allCatalog = catalogDao.findAll();
+		List<Integer> deleteList = new ArrayList<>();
+		
+		// 削除条件を判断する
+		for (Integer t : target) {
+			for (Catalog c : allCatalog) {
+				if (c.getCatalogId().equals(t)) {
+					//　カタログの場合
+					if (c.getParent().equals(Action.DATA_TYPE_CATALOG.getType())) {
+						for (Catalog subC : allCatalog) {
+							//　カタログのサブカタログ抽出
+							if (subC.getParent().equals(c.getName())) {
+								//　ニュース存在の場合
+								if (subC.getNews().size() != 0) {
+									return new CatalogResponse(MSG.INCORRECT);
+								}
+								deleteList.add(subC.getCatalogId());
+							}
+						}
+						deleteList.add(c.getCatalogId());
+					//　サブカタログの場合
+					} else if (c.getNews().size() != 0) {
+						return new CatalogResponse(MSG.INCORRECT);
+					} else {
+						deleteList.add(c.getCatalogId());
+					}
+				}
+			}
+		}
+		
+		//　削除
+		return result(catalogDao.deleteMultiCatalog(request.getIdList()) == request.getIdList().size());
+	}
 }
